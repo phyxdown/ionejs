@@ -1,9 +1,9 @@
 define(function(require, exports, module) {
 
-  var ionejs;
+  var ionejs = {};
 
   ionejs.core = {};
-  ionejs.core.one = require("./core/one");
+  ionejs.core.one = require("./core/One");
   module.exports = ionejs;
 
 });

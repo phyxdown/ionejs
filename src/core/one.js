@@ -6,7 +6,7 @@ define(function(require, exports, module){
 	 * eh..
 	 * That is a pity.
 	 */
-	var one = function(){
+	var One = function(){
 		var listeners = {};
 			listeners["bubble"] = {};
 			listeners["capture"] = {};
@@ -14,7 +14,7 @@ define(function(require, exports, module){
 			this._listeners = listeners;
 	}
 
-	var p = one.prototype;
+	var p = One.prototype;
 
 	/**
 	 * Add event listener.
@@ -27,7 +27,7 @@ define(function(require, exports, module){
 	p.addEventListener = function(type, listener, useCapture){
 		var phase = useCapture ? "capture" : "bubble";
 		var arr = this._listeners[phase][type];
-		for (var i=0,l=arr.length; i<l; i++) {
+		for (var i=0,l=arr?arr.length:0; i<l; i++) {
             if (arr[i] == listener)
                 return;
         }
@@ -47,7 +47,7 @@ define(function(require, exports, module){
 	p.removeEventListener = function(type, listener, useCapture){
 		var phase = useCapture ? "capture" : "bubble";
 		var arr = this._listeners[phase][type];
-		for (var i=0,l=arr.length; i<l; i++) {
+		for (var i=0,l=arr?arr.length:0; i<l; i++) {
             if (arr[i] == listener) {
                 if (l == 1)
                     delete(this._listeners[phase][type]);
@@ -57,4 +57,6 @@ define(function(require, exports, module){
             }
         }
 	}
+
+	module.exports = One;
 });
