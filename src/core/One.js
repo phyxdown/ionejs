@@ -1,5 +1,7 @@
 define(function(require, exports, module){
 
+	var Matrix2D = require('../geom/Matrix2D');
+
 	/**
 	 * What is one? 
 	 * I mean oberservable nested existing.
@@ -22,7 +24,22 @@ define(function(require, exports, module){
 
 		this._parent = options.parent || null;
 		this._children = [];
-	}
+
+		this._active = true;
+		this._visible = true;
+		this._hitable = false;
+
+		this.x = options.x;
+        this.y = options.y;
+        this.regX = options.regX;
+        this.regY = options.regY;
+        this.rotation = options.rotation;
+        this.scaleX = options.scaleX;
+        this.scaleY = options.scaleY;
+        this.skewX = options.skewX;
+        this.skewY = options.skewY;
+        this.alpha = options.alpha;
+	};
 
 	var p = One.prototype;
 
@@ -72,12 +89,12 @@ define(function(require, exports, module){
 	};
 
 	/**
-	 * Get ancients.
-	 * Please read source code if you don't understand what is ancients.
+	 * Get ancestors.
+	 * Please read source code if you don't understand what is ancestors.
 	 * It's not long.
 	 * @return {Array}
 	 */
-	p.getAncients = function(){
+	p.getAncestors = function(){
         var arr = [];
         var cur = this;
         while (cur._parent) {
@@ -139,7 +156,7 @@ define(function(require, exports, module){
 	p.dispatchEvent = function(event){
         event.origin = this;
 
-        var arr = this.getAncients();
+        var arr = this.getAncestors();
 
         event.phase = Event.CAPTURING_PHASE;
         for(var i=arr.length-1; i>=0 ; i--) {
@@ -172,6 +189,64 @@ define(function(require, exports, module){
 			console.log("#ionejs#", e);
 		}
     };
+
+    p._getRelativeMatrix = function(){
+    	var matrix = new Matrix2D();
+    	return matrix.identity().appendTransform(this.x, this.y, this.scaleX, this.scaleY, this.rotation, this.skewX, this.skewY, this.regX, this.regY);
+    };
+
+    p._getAbsoluteMatrix = function(){
+    	var ancestors = this.getAncestors();
+    	var matrix = new Matrix2D();
+    	matrix.identity();
+    	for(var i = ancestors.length-1; i>-1; i--){
+    		matrix.appendMatrix(ancestors[i]._getRelativeMatrix());
+    	}
+    	matrix.appendMatrix(this._getRelativeMatrix());
+    	return matrix;
+    };
+
+    p._globalToLocal = function(point){
+    	var am = this._getAbsoluteMatrix();
+    	am.invert().append(1, 0, 0, 1, point.x, point.y);
+    	return {
+    		x : am.tx,
+    		y : am.ty
+    	};
+    };
+
+    p._localToGlobal = function(point){
+    	var am = this._getAbsoluteMatrix();
+    	am.append(1, 0, 0, 1, point.x, point.y);
+    	return {
+    		x : am.tx,
+    		y : am.ty
+    	};
+    };
+
+    /**
+     * Get one from descendants that seems to intersect the local coordinates,
+     * which means this one is rendered over other intersected ones.
+     * Please read source code if you don't understand what is descendants.
+	 * It's not long.
+     * @param  {core.Point} point
+     * @return {core.Object}
+     */
+    p.hit = function(point){
+    	var children = this._children;
+    	for(var i = children.length-1; i>-1; i--){
+    		if(children[i].hit(point)) return;
+    	}
+    	if(this._hitable){
+    		if(this.testHit(this._globalToLocal(point))) return this;
+    	}
+    	return null;
+    }
+
+    p.testHit = function(point){
+    	console.log('#point#', point);
+    	return false;
+    }
 
 	module.exports = One;
 });
