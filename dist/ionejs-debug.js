@@ -1,10 +1,70 @@
-define("phyxdown/ionejs/1.0.0/ionejs-debug", [ "./core/One-debug", "./geom/Matrix2D-debug", "./geom/Point-debug", "./core/Stage-debug", "./utils/inherits-debug", "./core/Event-debug", "./core/Canvas-debug", "./core/events/MouseEvent-debug" ], function(require, exports, module) {
+define("phyxdown/ionejs/1.0.0/ionejs-debug", [ "./core/Engine-debug", "./utils/inherits-debug", "./core/One-debug", "./geom/Matrix2D-debug", "./geom/Point-debug", "./core/events/MouseEvent-debug", "./core/Event-debug", "./core/Stage-debug" ], function(require, exports, module) {
+    var Engine = require("./core/Engine-debug");
     var ionejs = {};
+    ionejs.instance = new Engine();
     ionejs.One = require("./core/One-debug");
     ionejs.Stage = require("./core/Stage-debug");
     ionejs.Event = require("./core/Event-debug");
-    ionejs.Canvas = require("./core/Canvas-debug");
     module.exports = ionejs;
+});
+
+define("phyxdown/ionejs/1.0.0/core/Engine-debug", [ "phyxdown/ionejs/1.0.0/utils/inherits-debug", "phyxdown/ionejs/1.0.0/core/One-debug", "phyxdown/ionejs/1.0.0/geom/Matrix2D-debug", "phyxdown/ionejs/1.0.0/geom/Point-debug", "phyxdown/ionejs/1.0.0/core/events/MouseEvent-debug", "phyxdown/ionejs/1.0.0/core/Event-debug" ], function(require, exports, module) {
+    var inherits = require("phyxdown/ionejs/1.0.0/utils/inherits-debug");
+    var One = require("phyxdown/ionejs/1.0.0/core/One-debug");
+    var MouseEvent = require("phyxdown/ionejs/1.0.0/core/events/MouseEvent-debug");
+    var Point = require("phyxdown/ionejs/1.0.0/geom/Point-debug");
+    var Engine = function(options) {
+        this._stage = null;
+        this._canvas = null;
+    };
+    var p = Engine.prototype;
+    /**
+	 * @param  {core.Stage} stage
+	 */
+    p.init = function(stage, canvas) {
+        this._stage = stage;
+        this._canvas = canvas;
+        var offsetTop = canvas.offsetTop;
+        var offsetLeft = canvas.offsetLeft;
+        var listener = function(e) {
+            var global = new Point(e.pageX - offsetLeft, e.pageY - offsetTop);
+            var origin = stage.hit(global);
+            console.log(e.type);
+            if (!origin) {
+                console.log("nothing hit.");
+                return;
+            }
+            var local = origin.globalToLocal(global);
+            origin.dispatchEvent(new MouseEvent({
+                type: e.type,
+                global: global,
+                local: local
+            }));
+        };
+        var types = [ "mousedown", "mouseup", "click" ];
+        for (var index in types) {
+            canvas.addEventListener(types[index], listener);
+        }
+    };
+    p.run = function() {
+        var canvas = this._canvas, stage = this._stage, context = canvas.getContext("2d");
+        stage._draw(context);
+    };
+    module.exports = Engine;
+});
+
+define("phyxdown/ionejs/1.0.0/utils/inherits-debug", [], function(require, exports, module) {
+    module.exports = function(construct, superConstruct) {
+        construct._super = superConstruct;
+        return construct.prototype = Object.create(superConstruct.prototype, {
+            constructor: {
+                value: construct,
+                enumerable: false,
+                writable: true,
+                configurable: true
+            }
+        });
+    };
 });
 
 define("phyxdown/ionejs/1.0.0/core/One-debug", [ "phyxdown/ionejs/1.0.0/geom/Matrix2D-debug", "phyxdown/ionejs/1.0.0/geom/Point-debug" ], function(require, exports, module) {
@@ -212,8 +272,30 @@ define("phyxdown/ionejs/1.0.0/core/One-debug", [ "phyxdown/ionejs/1.0.0/geom/Mat
         }
         return null;
     };
+    /**
+     * testHit is useful when overrided, to test whether this one intersects the hit point.
+     * When _hitable is set to false, testHit does not work.
+     * @param  {geom.Point} point
+     * @return {boolean}
+     */
     p.testHit = function(point) {
         return false;
+    };
+    p._draw = function(context) {
+        context.save();
+        var matrix = this._getRelativeMatrix();
+        console.log(matrix);
+        context.transform(matrix.a, matrix.b, matrix.c, matrix.d, matrix.tx, matrix.ty);
+        this._visible && this.draw(context);
+        for (var i = 0, l = this._children.length; i < l; i++) {
+            var child = this._children[i];
+            child._draw(context);
+        }
+        context.restore();
+    };
+    p.draw = function(context) {
+        context.fillStyle = "yellow";
+        context.fillRect(0, 0, 30, 30);
     };
     module.exports = One;
 });
@@ -663,31 +745,16 @@ define("phyxdown/ionejs/1.0.0/geom/Point-debug", [], function(require, exports, 
     module.exports = Point;
 });
 
-define("phyxdown/ionejs/1.0.0/core/Stage-debug", [ "phyxdown/ionejs/1.0.0/utils/inherits-debug", "phyxdown/ionejs/1.0.0/core/One-debug", "phyxdown/ionejs/1.0.0/geom/Matrix2D-debug", "phyxdown/ionejs/1.0.0/geom/Point-debug" ], function(require, exports, module) {
+define("phyxdown/ionejs/1.0.0/core/events/MouseEvent-debug", [ "phyxdown/ionejs/1.0.0/utils/inherits-debug", "phyxdown/ionejs/1.0.0/core/Event-debug" ], function(require, exports, module) {
     var inherits = require("phyxdown/ionejs/1.0.0/utils/inherits-debug");
-    var One = require("phyxdown/ionejs/1.0.0/core/One-debug");
-    var Stage = function(options) {
-        options.parent = null;
-        One.apply(this, arguments);
-        this.width = options.width;
-        this.height = options.height;
+    var Event = require("phyxdown/ionejs/1.0.0/core/Event-debug");
+    var MouseEvent = function(options) {
+        Event.apply(this, arguments);
+        this.local = options.local;
+        this.global = options.global;
     };
-    var p = inherits(Stage, One);
-    module.exports = Stage;
-});
-
-define("phyxdown/ionejs/1.0.0/utils/inherits-debug", [], function(require, exports, module) {
-    module.exports = function(construct, superConstruct) {
-        construct._super = superConstruct;
-        return construct.prototype = Object.create(superConstruct.prototype, {
-            constructor: {
-                value: construct,
-                enumerable: false,
-                writable: true,
-                configurable: true
-            }
-        });
-    };
+    var p = inherits(MouseEvent, Event);
+    module.exports = MouseEvent;
 });
 
 define("phyxdown/ionejs/1.0.0/core/Event-debug", [], function(require, exports, module) {
@@ -716,55 +783,15 @@ define("phyxdown/ionejs/1.0.0/core/Event-debug", [], function(require, exports, 
     module.exports = Event;
 });
 
-define("phyxdown/ionejs/1.0.0/core/Canvas-debug", [ "phyxdown/ionejs/1.0.0/utils/inherits-debug", "phyxdown/ionejs/1.0.0/core/One-debug", "phyxdown/ionejs/1.0.0/geom/Matrix2D-debug", "phyxdown/ionejs/1.0.0/geom/Point-debug", "phyxdown/ionejs/1.0.0/core/events/MouseEvent-debug", "phyxdown/ionejs/1.0.0/core/Event-debug" ], function(require, exports, module) {
+define("phyxdown/ionejs/1.0.0/core/Stage-debug", [ "phyxdown/ionejs/1.0.0/utils/inherits-debug", "phyxdown/ionejs/1.0.0/core/One-debug", "phyxdown/ionejs/1.0.0/geom/Matrix2D-debug", "phyxdown/ionejs/1.0.0/geom/Point-debug" ], function(require, exports, module) {
     var inherits = require("phyxdown/ionejs/1.0.0/utils/inherits-debug");
     var One = require("phyxdown/ionejs/1.0.0/core/One-debug");
-    var MouseEvent = require("phyxdown/ionejs/1.0.0/core/events/MouseEvent-debug");
-    var Point = require("phyxdown/ionejs/1.0.0/geom/Point-debug");
-    var Canvas = function(options) {};
-    var p = Canvas.prototype;
-    /**
-	 * Init canvas by stage.
-	 * @param  {core.Stage} stage
-	 */
-    p.init = function(stage, div) {
-        var canvas = document.createElement("canvas");
-        canvas.width = stage.width;
-        canvas.height = stage.height;
-        div.appendChild(canvas);
-        var offsetTop = canvas.offsetTop;
-        var offsetLeft = canvas.offsetLeft;
-        var listener = function(e) {
-            var global = new Point(e.pageX - offsetLeft, e.pageY - offsetTop);
-            var origin = stage.hit(global);
-            console.log(e.type);
-            if (!origin) {
-                console.log("nothing hit.");
-                return;
-            }
-            var local = origin.globalToLocal(global);
-            origin.dispatchEvent(new MouseEvent({
-                type: e.type,
-                global: global,
-                local: local
-            }));
-        };
-        var types = [ "mousedown", "mouseup", "click" ];
-        for (var index in types) {
-            canvas.addEventListener(types[index], listener);
-        }
+    var Stage = function(options) {
+        options.parent = null;
+        One.apply(this, arguments);
+        this.width = options.width;
+        this.height = options.height;
     };
-    module.exports = Canvas;
-});
-
-define("phyxdown/ionejs/1.0.0/core/events/MouseEvent-debug", [ "phyxdown/ionejs/1.0.0/utils/inherits-debug", "phyxdown/ionejs/1.0.0/core/Event-debug" ], function(require, exports, module) {
-    var inherits = require("phyxdown/ionejs/1.0.0/utils/inherits-debug");
-    var Event = require("phyxdown/ionejs/1.0.0/core/Event-debug");
-    var MouseEvent = function(options) {
-        Event.apply(this, arguments);
-        this.local = options.local;
-        this.global = options.global;
-    };
-    var p = inherits(MouseEvent, Event);
-    module.exports = MouseEvent;
+    var p = inherits(Stage, One);
+    module.exports = Stage;
 });

@@ -145,7 +145,7 @@ define(function(require, exports, module){
                 break;
             }
         }
-	}
+	};
 
 	/**
 	 * Fire event.
@@ -237,7 +237,7 @@ define(function(require, exports, module){
     		if(this.testHit(this.globalToLocal(point))) return this;
     	}
     	return null;
-    }
+    };
 
     /**
      * testHit is useful when overrided, to test whether this one intersects the hit point.
@@ -247,7 +247,26 @@ define(function(require, exports, module){
      */
     p.testHit = function(point){
     	return false;
-    }
+    };
+
+
+    p._draw = function(context){
+    	context.save();
+    	var matrix = this._getRelativeMatrix();
+    	console.log(matrix);
+    	context.transform(matrix.a, matrix.b, matrix.c, matrix.d, matrix.tx, matrix.ty);
+    	this._visible && this.draw(context);
+    	for(var i = 0, l = this._children.length; i < l; i++){
+    		var child = this._children[i];
+    		child._draw(context);
+    	}
+    	context.restore();
+    };
+
+    p.draw = function(context){
+    	context.fillStyle = 'yellow';
+		context.fillRect(0, 0, 30, 30);
+    };
 
 	module.exports = One;
 });

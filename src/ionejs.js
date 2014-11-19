@@ -1,12 +1,15 @@
 define(function(require, exports, module){
 
-  var ionejs = {};
+	
+	var Engine = require("./core/Engine");
 
-  ionejs.One = require("./core/One");
-  ionejs.Stage = require("./core/Stage");
-  ionejs.Event = require("./core/Event");
-  ionejs.Canvas = require("./core/Canvas");
+	var ionejs = {};
 
-  module.exports = ionejs;
+	ionejs.instance = new Engine();
+	ionejs.One = require("./core/One");
+	ionejs.Stage = require("./core/Stage");
+	ionejs.Event = require("./core/Event");
+
+	module.exports = ionejs;
 
 });
