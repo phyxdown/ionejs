@@ -1,4 +1,4 @@
-define("phyxdown/ionejs/1.0.0/ionejs-debug", [ "./core/One-debug", "./geom/Matrix2D-debug", "./core/Event-debug" ], function(require, exports, module) {
+define("phyxdown/ionejs/1.0.0/ionejs-debug", [ "./core/One-debug", "./geom/Matrix2D-debug", "./geom/Point-debug", "./core/Event-debug" ], function(require, exports, module) {
     var ionejs = {};
     ionejs.core = {};
     ionejs.core.One = require("./core/One-debug");
@@ -6,8 +6,9 @@ define("phyxdown/ionejs/1.0.0/ionejs-debug", [ "./core/One-debug", "./geom/Matri
     module.exports = ionejs;
 });
 
-define("phyxdown/ionejs/1.0.0/core/One-debug", [ "phyxdown/ionejs/1.0.0/geom/Matrix2D-debug" ], function(require, exports, module) {
+define("phyxdown/ionejs/1.0.0/core/One-debug", [ "phyxdown/ionejs/1.0.0/geom/Matrix2D-debug", "phyxdown/ionejs/1.0.0/geom/Point-debug" ], function(require, exports, module) {
     var Matrix2D = require("phyxdown/ionejs/1.0.0/geom/Matrix2D-debug");
+    var Point = require("phyxdown/ionejs/1.0.0/geom/Point-debug");
     /**
 	 * What is one? 
 	 * I mean oberservable nested existing.
@@ -184,25 +185,19 @@ define("phyxdown/ionejs/1.0.0/core/One-debug", [ "phyxdown/ionejs/1.0.0/geom/Mat
     p._globalToLocal = function(point) {
         var am = this._getAbsoluteMatrix();
         am.invert().append(1, 0, 0, 1, point.x, point.y);
-        return {
-            x: am.tx,
-            y: am.ty
-        };
+        return new Point(am.tx, am.ty);
     };
     p._localToGlobal = function(point) {
         var am = this._getAbsoluteMatrix();
         am.append(1, 0, 0, 1, point.x, point.y);
-        return {
-            x: am.tx,
-            y: am.ty
-        };
+        return new Point(am.tx, am.ty);
     };
     /**
      * Get one from descendants that seems to intersect the local coordinates,
      * which means this one is rendered over other intersected ones.
      * Please read source code if you don't understand what is descendants.
 	 * It's not long.
-     * @param  {core.Point} point
+     * @param  {geom.Point} point
      * @return {core.Object}
      */
     p.hit = function(point) {
@@ -657,6 +652,14 @@ define("phyxdown/ionejs/1.0.0/geom/Matrix2D-debug", [], function(require, export
     // this has to be populated after the class is defined:
     Matrix2D.identity = new Matrix2D();
     module.exports = Matrix2D;
+});
+
+define("phyxdown/ionejs/1.0.0/geom/Point-debug", [], function(require, exports, module) {
+    var Point = function(x, y) {
+        this.x = x;
+        this.y = y;
+    };
+    module.exports = Point;
 });
 
 define("phyxdown/ionejs/1.0.0/core/Event-debug", [], function(require, exports, module) {

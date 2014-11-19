@@ -1,6 +1,7 @@
 define(function(require, exports, module){
 
 	var Matrix2D = require('../geom/Matrix2D');
+	var Point = require('../geom/Point');
 
 	/**
 	 * What is one? 
@@ -209,19 +210,13 @@ define(function(require, exports, module){
     p._globalToLocal = function(point){
     	var am = this._getAbsoluteMatrix();
     	am.invert().append(1, 0, 0, 1, point.x, point.y);
-    	return {
-    		x : am.tx,
-    		y : am.ty
-    	};
+    	return new Point(am.tx, am.ty);
     };
 
     p._localToGlobal = function(point){
     	var am = this._getAbsoluteMatrix();
     	am.append(1, 0, 0, 1, point.x, point.y);
-    	return {
-    		x : am.tx,
-    		y : am.ty
-    	};
+    	return new Point(am.tx, am.ty);
     };
 
     /**
@@ -229,7 +224,7 @@ define(function(require, exports, module){
      * which means this one is rendered over other intersected ones.
      * Please read source code if you don't understand what is descendants.
 	 * It's not long.
-     * @param  {core.Point} point
+     * @param  {geom.Point} point
      * @return {core.Object}
      */
     p.hit = function(point){
