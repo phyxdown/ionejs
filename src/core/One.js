@@ -262,6 +262,11 @@ define(function(require, exports, module) {
         context.restore();
     };
 
+    /**
+     * Abstract method
+     * Override it to draw something.
+     * @param  {Context} context This context is defined as local.
+     */
     p.draw = function(context) {
         context.fillStyle = 'yellow';
         context.fillRect(0, 0, 30, 30);
