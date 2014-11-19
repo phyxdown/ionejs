@@ -71,7 +71,7 @@ define("phyxdown/ionejs/1.0.0/core/One-debug", [ "phyxdown/ionejs/1.0.0/geom/Mat
     var Matrix2D = require("phyxdown/ionejs/1.0.0/geom/Matrix2D-debug");
     var Point = require("phyxdown/ionejs/1.0.0/geom/Point-debug");
     /**
-	 * What is one? 
+	 * What is one?
 	 * I mean oberservable nested existing.
 	 * eh..
 	 * That is a pity.
@@ -254,13 +254,13 @@ define("phyxdown/ionejs/1.0.0/core/One-debug", [ "phyxdown/ionejs/1.0.0/geom/Mat
         return new Point(am.tx, am.ty);
     };
     /**
-     * Get one from descendants that seems to intersect the local coordinates,
-     * which means this one is rendered over other intersected ones.
-     * Please read source code if you don't understand what is descendants.
+	 * Get one from descendants that seems to intersect the local coordinates,
+	 * which means this one is rendered over other intersected ones.
+	 * Please read source code if you don't understand what is descendants.
 	 * It's not long.
-     * @param  {geom.Point} point
-     * @return {core.Object}
-     */
+	 * @param  {geom.Point} point
+	 * @return {core.Object}
+	 */
     p.hit = function(point) {
         var children = this._children;
         for (var i = children.length - 1; i > -1; i--) {
@@ -273,11 +273,11 @@ define("phyxdown/ionejs/1.0.0/core/One-debug", [ "phyxdown/ionejs/1.0.0/geom/Mat
         return null;
     };
     /**
-     * testHit is useful when overrided, to test whether this one intersects the hit point.
-     * When _hitable is set to false, testHit does not work.
-     * @param  {geom.Point} point
-     * @return {boolean}
-     */
+	 * testHit is useful when overrided, to test whether this one intersects the hit point.
+	 * When _hitable is set to false, testHit does not work.
+	 * @param  {geom.Point} point
+	 * @return {boolean}
+	 */
     p.testHit = function(point) {
         return false;
     };
@@ -301,33 +301,33 @@ define("phyxdown/ionejs/1.0.0/core/One-debug", [ "phyxdown/ionejs/1.0.0/geom/Mat
 });
 
 /*
-* Matrix2D
-* Modified by phyxdown to fit CMD.
-* Visit http://createjs.com/ for documentation, updates and examples.
-*
-* Copyright (c) 2010 gskinner.com, inc.
-*
-* Permission is hereby granted, free of charge, to any person
-* obtaining a copy of this software and associated documentation
-* files (the "Software"), to deal in the Software without
-* restriction, including without limitation the rights to use,
-* copy, modify, merge, publish, distribute, sublicense, and/or sell
-* copies of the Software, and to permit persons to whom the
-* Software is furnished to do so, subject to the following
-* conditions:
-*
-* The above copyright notice and this permission notice shall be
-* included in all copies or substantial portions of the Software.
-*
-* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
-* OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-* NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
-* HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-* WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-* FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-* OTHER DEALINGS IN THE SOFTWARE.
-*/
+ * Matrix2D
+ * Modified by phyxdown to fit CMD.
+ * Visit http://createjs.com/ for documentation, updates and examples.
+ *
+ * Copyright (c) 2010 gskinner.com, inc.
+ *
+ * Permission is hereby granted, free of charge, to any person
+ * obtaining a copy of this software and associated documentation
+ * files (the "Software"), to deal in the Software without
+ * restriction, including without limitation the rights to use,
+ * copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following
+ * conditions:
+ *
+ * The above copyright notice and this permission notice shall be
+ * included in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+ * OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+ * HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+ * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * OTHER DEALINGS IN THE SOFTWARE.
+ */
 define("phyxdown/ionejs/1.0.0/geom/Matrix2D-debug", [], function(require, exports, module) {
     // constructor:
     /**
@@ -367,7 +367,7 @@ define("phyxdown/ionejs/1.0.0/geom/Matrix2D-debug", [], function(require, export
     // set at bottom of class definition.
     // public methods:
     /**
-	 * Sets the specified values on this instance. 
+	 * Sets the specified values on this instance.
 	 * @method setValues
 	 * @param {Number} [a=1] Specifies the a property for the new matrix.
 	 * @param {Number} [b=0] Specifies the b property for the new matrix.
@@ -376,7 +376,7 @@ define("phyxdown/ionejs/1.0.0/geom/Matrix2D-debug", [], function(require, export
 	 * @param {Number} [tx=0] Specifies the tx property for the new matrix.
 	 * @param {Number} [ty=0] Specifies the ty property for the new matrix.
 	 * @return {Matrix2D} This instance. Useful for chaining method calls.
-	*/
+	 */
     p.setValues = function(a, b, c, d, tx, ty) {
         // don't forget to update docs in the constructor if these change:
         this.a = a == null ? 1 : a;
@@ -469,7 +469,7 @@ define("phyxdown/ionejs/1.0.0/geom/Matrix2D-debug", [], function(require, export
     /**
 	 * Generates matrix properties from the specified display object transform properties, and appends them to this matrix.
 	 * For example, you can use this to generate a matrix from a display object:
-	 * 
+	 *
 	 * 	var mtx = new Matrix2D();
 	 * 	mtx.appendTransform(o.x, o.y, o.scaleX, o.scaleY, o.rotation);
 	 * @method appendTransform
@@ -512,7 +512,7 @@ define("phyxdown/ionejs/1.0.0/geom/Matrix2D-debug", [], function(require, export
     /**
 	 * Generates matrix properties from the specified display object transform properties, and prepends them to this matrix.
 	 * For example, you can use this to generate a matrix from a display object:
-	 * 
+	 *
 	 * 	var mtx = new Matrix2D();
 	 * 	mtx.prependTransform(o.x, o.y, o.scaleX, o.scaleY, o.rotation);
 	 * @method prependTransform
@@ -578,7 +578,7 @@ define("phyxdown/ionejs/1.0.0/geom/Matrix2D-debug", [], function(require, export
 	 * @param {Number} skewX The amount to skew horizontally in degrees.
 	 * @param {Number} skewY The amount to skew vertically in degrees.
 	 * @return {Matrix2D} This matrix. Useful for chaining method calls.
-	*/
+	 */
     p.skew = function(skewX, skewY) {
         skewX = skewX * Matrix2D.DEG_TO_RAD;
         skewY = skewY * Matrix2D.DEG_TO_RAD;
@@ -681,7 +681,7 @@ define("phyxdown/ionejs/1.0.0/geom/Matrix2D-debug", [], function(require, export
 	 * @method decompose
 	 * @param {Object} target The object to apply the transform properties to. If null, then a new object will be returned.
 	 * @return {Object} The target, or a new generic object with the transform properties applied.
-	*/
+	 */
     p.decompose = function(target) {
         // TODO: it would be nice to be able to solve for whether the matrix can be decomposed into only scale/rotation even when scale is negative
         if (target == null) {
@@ -712,7 +712,7 @@ define("phyxdown/ionejs/1.0.0/geom/Matrix2D-debug", [], function(require, export
 	 * @method copy
 	 * @param {Matrix2D} matrix The matrix to copy properties from.
 	 * @return {Matrix2D} This matrix. Useful for chaining method calls.
-	*/
+	 */
     p.copy = function(matrix) {
         return this.setValues(matrix.a, matrix.b, matrix.c, matrix.d, matrix.tx, matrix.ty);
     };

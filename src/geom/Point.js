@@ -1,5 +1,5 @@
-define(function(require, exports, module){
-	var Point = function(x, y){
+define(function(require, exports, module) {
+	var Point = function(x, y) {
 		this.x = x;
 		this.y = y;
 	}

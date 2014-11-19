@@ -1,36 +1,36 @@
 /*
-* Matrix2D
-* Modified by phyxdown to fit CMD.
-* Visit http://createjs.com/ for documentation, updates and examples.
-*
-* Copyright (c) 2010 gskinner.com, inc.
-*
-* Permission is hereby granted, free of charge, to any person
-* obtaining a copy of this software and associated documentation
-* files (the "Software"), to deal in the Software without
-* restriction, including without limitation the rights to use,
-* copy, modify, merge, publish, distribute, sublicense, and/or sell
-* copies of the Software, and to permit persons to whom the
-* Software is furnished to do so, subject to the following
-* conditions:
-*
-* The above copyright notice and this permission notice shall be
-* included in all copies or substantial portions of the Software.
-*
-* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
-* OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-* NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
-* HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-* WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-* FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-* OTHER DEALINGS IN THE SOFTWARE.
-*/
+ * Matrix2D
+ * Modified by phyxdown to fit CMD.
+ * Visit http://createjs.com/ for documentation, updates and examples.
+ *
+ * Copyright (c) 2010 gskinner.com, inc.
+ *
+ * Permission is hereby granted, free of charge, to any person
+ * obtaining a copy of this software and associated documentation
+ * files (the "Software"), to deal in the Software without
+ * restriction, including without limitation the rights to use,
+ * copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following
+ * conditions:
+ *
+ * The above copyright notice and this permission notice shall be
+ * included in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+ * OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+ * HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+ * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * OTHER DEALINGS IN THE SOFTWARE.
+ */
 
 
-define(function(require, exports, module){
+define(function(require, exports, module) {
 
-// constructor:
+	// constructor:
 	/**
 	 * Represents an affine transformation matrix, and provides tools for constructing and concatenating matrixes.
 	 * @class Matrix2D
@@ -43,40 +43,40 @@ define(function(require, exports, module){
 	 * @constructor
 	 **/
 	function Matrix2D(a, b, c, d, tx, ty) {
-		this.setValues(a,b,c,d,tx,ty);
-		
-	// public properties:
+		this.setValues(a, b, c, d, tx, ty);
+
+		// public properties:
 		// assigned in the setValues method.
 		/**
 		 * Position (0, 0) in a 3x3 affine transformation matrix.
 		 * @property a
 		 * @type Number
 		 **/
-	
+
 		/**
 		 * Position (0, 1) in a 3x3 affine transformation matrix.
 		 * @property b
 		 * @type Number
 		 **/
-	
+
 		/**
 		 * Position (1, 0) in a 3x3 affine transformation matrix.
 		 * @property c
 		 * @type Number
 		 **/
-	
+
 		/**
 		 * Position (1, 1) in a 3x3 affine transformation matrix.
 		 * @property d
 		 * @type Number
 		 **/
-	
+
 		/**
 		 * Position (2, 0) in a 3x3 affine transformation matrix.
 		 * @property tx
 		 * @type Number
 		 **/
-	
+
 		/**
 		 * Position (2, 1) in a 3x3 affine transformation matrix.
 		 * @property ty
@@ -86,7 +86,7 @@ define(function(require, exports, module){
 	var p = Matrix2D.prototype;
 
 
-// constants:
+	// constants:
 	/**
 	 * Multiplier for converting degrees to radians. Used internally by Matrix2D.
 	 * @property DEG_TO_RAD
@@ -95,10 +95,10 @@ define(function(require, exports, module){
 	 * @type Number
 	 * @readonly
 	 **/
-	Matrix2D.DEG_TO_RAD = Math.PI/180;
+	Matrix2D.DEG_TO_RAD = Math.PI / 180;
 
 
-// static public properties:
+	// static public properties:
 	/**
 	 * An identity matrix, representing a null transformation.
 	 * @property identity
@@ -107,11 +107,11 @@ define(function(require, exports, module){
 	 * @readonly
 	 **/
 	Matrix2D.identity = null; // set at bottom of class definition.
-	
 
-// public methods:
+
+	// public methods:
 	/**
-	 * Sets the specified values on this instance. 
+	 * Sets the specified values on this instance.
 	 * @method setValues
 	 * @param {Number} [a=1] Specifies the a property for the new matrix.
 	 * @param {Number} [b=0] Specifies the b property for the new matrix.
@@ -120,7 +120,7 @@ define(function(require, exports, module){
 	 * @param {Number} [tx=0] Specifies the tx property for the new matrix.
 	 * @param {Number} [ty=0] Specifies the ty property for the new matrix.
 	 * @return {Matrix2D} This instance. Useful for chaining method calls.
-	*/
+	 */
 	p.setValues = function(a, b, c, d, tx, ty) {
 		// don't forget to update docs in the constructor if these change:
 		this.a = (a == null) ? 1 : a;
@@ -149,13 +149,13 @@ define(function(require, exports, module){
 		if (a != 1 || b != 0 || c != 0 || d != 1) {
 			var a1 = this.a;
 			var c1 = this.c;
-			this.a  = a1*a+this.b*c;
-			this.b  = a1*b+this.b*d;
-			this.c  = c1*a+this.d*c;
-			this.d  = c1*b+this.d*d;
+			this.a = a1 * a + this.b * c;
+			this.b = a1 * b + this.b * d;
+			this.c = c1 * a + this.d * c;
+			this.d = c1 * b + this.d * d;
 		}
-		this.tx = tx1*a+this.ty*c+tx;
-		this.ty = tx1*b+this.ty*d+ty;
+		this.tx = tx1 * a + this.ty * c + tx;
+		this.ty = tx1 * b + this.ty * d + ty;
 		return this;
 	};
 
@@ -178,12 +178,12 @@ define(function(require, exports, module){
 		var c1 = this.c;
 		var d1 = this.d;
 
-		this.a  = a*a1+b*c1;
-		this.b  = a*b1+b*d1;
-		this.c  = c*a1+d*c1;
-		this.d  = c*b1+d*d1;
-		this.tx = tx*a1+ty*c1+this.tx;
-		this.ty = tx*b1+ty*d1+this.ty;
+		this.a = a * a1 + b * c1;
+		this.b = a * b1 + b * d1;
+		this.c = c * a1 + d * c1;
+		this.d = c * b1 + d * d1;
+		this.tx = tx * a1 + ty * c1 + this.tx;
+		this.ty = tx * b1 + ty * d1 + this.ty;
 		return this;
 	};
 
@@ -219,7 +219,7 @@ define(function(require, exports, module){
 	/**
 	 * Generates matrix properties from the specified display object transform properties, and appends them to this matrix.
 	 * For example, you can use this to generate a matrix from a display object:
-	 * 
+	 *
 	 * 	var mtx = new Matrix2D();
 	 * 	mtx.appendTransform(o.x, o.y, o.scaleX, o.scaleY, o.rotation);
 	 * @method appendTransform
@@ -235,8 +235,8 @@ define(function(require, exports, module){
 	 * @return {Matrix2D} This matrix. Useful for chaining method calls.
 	 **/
 	p.appendTransform = function(x, y, scaleX, scaleY, rotation, skewX, skewY, regX, regY) {
-		if (rotation%360) {
-			var r = rotation*Matrix2D.DEG_TO_RAD;
+		if (rotation % 360) {
+			var r = rotation * Matrix2D.DEG_TO_RAD;
 			var cos = Math.cos(r);
 			var sin = Math.sin(r);
 		} else {
@@ -246,16 +246,17 @@ define(function(require, exports, module){
 
 		if (regX || regY) {
 			// append the registration offset:
-			this.tx -= regX; this.ty -= regY;
+			this.tx -= regX;
+			this.ty -= regY;
 		}
 		if (skewX || skewY) {
 			// TODO: can this be combined into a single prepend operation?
 			skewX *= Matrix2D.DEG_TO_RAD;
 			skewY *= Matrix2D.DEG_TO_RAD;
-			this.append(cos*scaleX, sin*scaleX, -sin*scaleY, cos*scaleY, 0, 0);
+			this.append(cos * scaleX, sin * scaleX, -sin * scaleY, cos * scaleY, 0, 0);
 			this.append(Math.cos(skewY), Math.sin(skewY), -Math.sin(skewX), Math.cos(skewX), x, y);
 		} else {
-			this.append(cos*scaleX, sin*scaleX, -sin*scaleY, cos*scaleY, x, y);
+			this.append(cos * scaleX, sin * scaleX, -sin * scaleY, cos * scaleY, x, y);
 		}
 		return this;
 	};
@@ -263,7 +264,7 @@ define(function(require, exports, module){
 	/**
 	 * Generates matrix properties from the specified display object transform properties, and prepends them to this matrix.
 	 * For example, you can use this to generate a matrix from a display object:
-	 * 
+	 *
 	 * 	var mtx = new Matrix2D();
 	 * 	mtx.prependTransform(o.x, o.y, o.scaleX, o.scaleY, o.rotation);
 	 * @method prependTransform
@@ -279,8 +280,8 @@ define(function(require, exports, module){
 	 * @return {Matrix2D} This matrix. Useful for chaining method calls.
 	 **/
 	p.prependTransform = function(x, y, scaleX, scaleY, rotation, skewX, skewY, regX, regY) {
-		if (rotation%360) {
-			var r = rotation*Matrix2D.DEG_TO_RAD;
+		if (rotation % 360) {
+			var r = rotation * Matrix2D.DEG_TO_RAD;
 			var cos = Math.cos(r);
 			var sin = Math.sin(r);
 		} else {
@@ -293,15 +294,15 @@ define(function(require, exports, module){
 			skewX *= Matrix2D.DEG_TO_RAD;
 			skewY *= Matrix2D.DEG_TO_RAD;
 			this.prepend(Math.cos(skewY), Math.sin(skewY), -Math.sin(skewX), Math.cos(skewX), x, y);
-			this.prepend(cos*scaleX, sin*scaleX, -sin*scaleY, cos*scaleY, 0, 0);
+			this.prepend(cos * scaleX, sin * scaleX, -sin * scaleY, cos * scaleY, 0, 0);
 		} else {
-			this.prepend(cos*scaleX, sin*scaleX, -sin*scaleY, cos*scaleY, x, y);
+			this.prepend(cos * scaleX, sin * scaleX, -sin * scaleY, cos * scaleY, x, y);
 		}
 
 		if (regX || regY) {
 			// prepend the registration offset:
-			this.tx -= regX*this.a+regY*this.c; 
-			this.ty -= regX*this.b+regY*this.d;
+			this.tx -= regX * this.a + regY * this.c;
+			this.ty -= regX * this.b + regY * this.d;
 		}
 		return this;
 	};
@@ -320,12 +321,12 @@ define(function(require, exports, module){
 		var c1 = this.c;
 		var tx1 = this.tx;
 
-		this.a = a1*cos-this.b*sin;
-		this.b = a1*sin+this.b*cos;
-		this.c = c1*cos-this.d*sin;
-		this.d = c1*sin+this.d*cos;
-		this.tx = tx1*cos-this.ty*sin;
-		this.ty = tx1*sin+this.ty*cos;
+		this.a = a1 * cos - this.b * sin;
+		this.b = a1 * sin + this.b * cos;
+		this.c = c1 * cos - this.d * sin;
+		this.d = c1 * sin + this.d * cos;
+		this.tx = tx1 * cos - this.ty * sin;
+		this.ty = tx1 * sin + this.ty * cos;
 		return this;
 	};
 
@@ -335,10 +336,10 @@ define(function(require, exports, module){
 	 * @param {Number} skewX The amount to skew horizontally in degrees.
 	 * @param {Number} skewY The amount to skew vertically in degrees.
 	 * @return {Matrix2D} This matrix. Useful for chaining method calls.
-	*/
+	 */
 	p.skew = function(skewX, skewY) {
-		skewX = skewX*Matrix2D.DEG_TO_RAD;
-		skewY = skewY*Matrix2D.DEG_TO_RAD;
+		skewX = skewX * Matrix2D.DEG_TO_RAD;
+		skewY = skewY * Matrix2D.DEG_TO_RAD;
 		this.prepend(Math.cos(skewY), Math.sin(skewY), -Math.sin(skewX), Math.cos(skewX), 0, 0);
 		return this;
 	};
@@ -395,14 +396,14 @@ define(function(require, exports, module){
 		var c1 = this.c;
 		var d1 = this.d;
 		var tx1 = this.tx;
-		var n = a1*d1-b1*c1;
+		var n = a1 * d1 - b1 * c1;
 
-		this.a = d1/n;
-		this.b = -b1/n;
-		this.c = -c1/n;
-		this.d = a1/n;
-		this.tx = (c1*this.ty-d1*tx1)/n;
-		this.ty = -(a1*this.ty-b1*tx1)/n;
+		this.a = d1 / n;
+		this.b = -b1 / n;
+		this.c = -c1 / n;
+		this.d = a1 / n;
+		this.tx = (c1 * this.ty - d1 * tx1) / n;
+		this.ty = -(a1 * this.ty - b1 * tx1) / n;
 		return this;
 	};
 
@@ -414,7 +415,7 @@ define(function(require, exports, module){
 	p.isIdentity = function() {
 		return this.tx === 0 && this.ty === 0 && this.a === 1 && this.b === 0 && this.c === 0 && this.d === 1;
 	};
-	
+
 	/**
 	 * Returns true if this matrix is equal to the specified matrix (all property values are equal).
 	 * @method equals
@@ -434,9 +435,9 @@ define(function(require, exports, module){
 	 * @return {Point} This matrix. Useful for chaining method calls.
 	 **/
 	p.transformPoint = function(x, y, pt) {
-		pt = pt||{};
-		pt.x = x*this.a+y*this.c+this.tx;
-		pt.y = x*this.b+y*this.d+this.ty;
+		pt = pt || {};
+		pt.x = x * this.a + y * this.c + this.tx;
+		pt.y = x * this.b + y * this.d + this.ty;
 		return pt;
 	};
 
@@ -447,10 +448,12 @@ define(function(require, exports, module){
 	 * @method decompose
 	 * @param {Object} target The object to apply the transform properties to. If null, then a new object will be returned.
 	 * @return {Object} The target, or a new generic object with the transform properties applied.
-	*/
+	 */
 	p.decompose = function(target) {
 		// TODO: it would be nice to be able to solve for whether the matrix can be decomposed into only scale/rotation even when scale is negative
-		if (target == null) { target = {}; }
+		if (target == null) {
+			target = {};
+		}
 		target.x = this.tx;
 		target.y = this.ty;
 		target.scaleX = Math.sqrt(this.a * this.a + this.b * this.b);
@@ -459,26 +462,26 @@ define(function(require, exports, module){
 		var skewX = Math.atan2(-this.c, this.d);
 		var skewY = Math.atan2(this.b, this.a);
 
-		var delta = Math.abs(1-skewX/skewY);
+		var delta = Math.abs(1 - skewX / skewY);
 		if (delta < 0.00001) { // effectively identical, can use rotation:
-			target.rotation = skewY/Matrix2D.DEG_TO_RAD;
+			target.rotation = skewY / Matrix2D.DEG_TO_RAD;
 			if (this.a < 0 && this.d >= 0) {
 				target.rotation += (target.rotation <= 0) ? 180 : -180;
 			}
 			target.skewX = target.skewY = 0;
 		} else {
-			target.skewX = skewX/Matrix2D.DEG_TO_RAD;
-			target.skewY = skewY/Matrix2D.DEG_TO_RAD;
+			target.skewX = skewX / Matrix2D.DEG_TO_RAD;
+			target.skewY = skewY / Matrix2D.DEG_TO_RAD;
 		}
 		return target;
 	};
-	
+
 	/**
 	 * Copies all properties from the specified matrix to this matrix.
 	 * @method copy
 	 * @param {Matrix2D} matrix The matrix to copy properties from.
 	 * @return {Matrix2D} This matrix. Useful for chaining method calls.
-	*/
+	 */
 	p.copy = function(matrix) {
 		return this.setValues(matrix.a, matrix.b, matrix.c, matrix.d, matrix.tx, matrix.ty);
 	};
@@ -498,7 +501,7 @@ define(function(require, exports, module){
 	 * @return {String} a string representation of the instance.
 	 **/
 	p.toString = function() {
-		return "[Matrix2D (a="+this.a+" b="+this.b+" c="+this.c+" d="+this.d+" tx="+this.tx+" ty="+this.ty+")]";
+		return "[Matrix2D (a=" + this.a + " b=" + this.b + " c=" + this.c + " d=" + this.d + " tx=" + this.tx + " ty=" + this.ty + ")]";
 	};
 
 	// this has to be populated after the class is defined:

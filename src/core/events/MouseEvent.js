@@ -1,8 +1,8 @@
-define(function(require, exports, module){
+define(function(require, exports, module) {
 	var inherits = require('../../utils/inherits');
 	var Event = require('../Event');
 
-	var MouseEvent = function(options){
+	var MouseEvent = function(options) {
 		Event.apply(this, arguments);
 		this.local = options.local;
 		this.global = options.global;

@@ -1,11 +1,11 @@
-define(function(require, exports, module){
+define(function(require, exports, module) {
 
 	var inherits = require('../utils/inherits');
 	var One = require('./One');
 	var MouseEvent = require('./events/MouseEvent');
 	var Point = require('../geom/Point')
 
-	var Engine = function(options){
+	var Engine = function(options) {
 		this._stage = null;
 		this._canvas = null;
 	}
@@ -15,37 +15,37 @@ define(function(require, exports, module){
 	/**
 	 * @param  {core.Stage} stage
 	 */
-    p.init = function(stage, canvas) {
+	p.init = function(stage, canvas) {
 
-    	this._stage = stage;
-    	this._canvas = canvas;
+		this._stage = stage;
+		this._canvas = canvas;
 
 		var offsetTop = canvas.offsetTop;
 		var offsetLeft = canvas.offsetLeft;
 
-		var listener = function(e){
+		var listener = function(e) {
 			var global = new Point(e.pageX - offsetLeft, e.pageY - offsetTop);
-            var origin = stage.hit(global);
-            console.log(e.type);
-            if(!origin){
-                console.log("nothing hit.");
-                return;
-            }
-            var local = origin.globalToLocal(global);
-            origin.dispatchEvent(new MouseEvent({
-                type: e.type,
-                global: global,
-                local: local
-            }));
+			var origin = stage.hit(global);
+			console.log(e.type);
+			if (!origin) {
+				console.log("nothing hit.");
+				return;
+			}
+			var local = origin.globalToLocal(global);
+			origin.dispatchEvent(new MouseEvent({
+				type: e.type,
+				global: global,
+				local: local
+			}));
 		}
 
 		var types = ['mousedown', 'mouseup', 'click'];
-		for(var index in types){
+		for (var index in types) {
 			canvas.addEventListener(types[index], listener);
 		}
 	};
 
-	p.run = function(){
+	p.run = function() {
 		var canvas = this._canvas,
 			stage = this._stage,
 			context = canvas.getContext('2d');
