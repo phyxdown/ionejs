@@ -239,6 +239,12 @@ define(function(require, exports, module){
     	return null;
     }
 
+    /**
+     * testHit is useful when overrided, to test whether this one intersects the hit point.
+     * When _hitable is set to false, testHit does not work.
+     * @param  {geom.Point} point
+     * @return {boolean}
+     */
     p.testHit = function(point){
     	return false;
     }
