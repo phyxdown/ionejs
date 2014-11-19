@@ -207,13 +207,13 @@ define(function(require, exports, module){
     	return matrix;
     };
 
-    p._globalToLocal = function(point){
+    p.globalToLocal = function(point){
     	var am = this._getAbsoluteMatrix();
     	am.invert().append(1, 0, 0, 1, point.x, point.y);
     	return new Point(am.tx, am.ty);
     };
 
-    p._localToGlobal = function(point){
+    p.localToGlobal = function(point){
     	var am = this._getAbsoluteMatrix();
     	am.append(1, 0, 0, 1, point.x, point.y);
     	return new Point(am.tx, am.ty);
@@ -230,16 +230,16 @@ define(function(require, exports, module){
     p.hit = function(point){
     	var children = this._children;
     	for(var i = children.length-1; i>-1; i--){
-    		if(children[i].hit(point)) return;
+    		var descendant = children[i].hit(point);
+            if (descendant) return descendant;
     	}
     	if(this._hitable){
-    		if(this.testHit(this._globalToLocal(point))) return this;
+    		if(this.testHit(this.globalToLocal(point))) return this;
     	}
     	return null;
     }
 
     p.testHit = function(point){
-    	console.log('#point#', point);
     	return false;
     }
 
