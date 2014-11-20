@@ -6,7 +6,7 @@ define(function(require, exports, module) {
 
 	ionejs.instance = new Engine();
 	ionejs.One = require("./core/One");
-	ionejs.Stage = require("./core/Stage");
+	ionejs.Stage = require("./core/ones/Stage");
 	ionejs.Event = require("./core/Event");
 
 	module.exports = ionejs;

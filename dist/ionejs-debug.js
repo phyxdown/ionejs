@@ -1,9 +1,9 @@
-define("phyxdown/ionejs/1.0.0/ionejs-debug", [ "./core/Engine-debug", "./utils/inherits-debug", "./core/One-debug", "./geom/Matrix2D-debug", "./geom/Point-debug", "./core/events/MouseEvent-debug", "./core/Event-debug", "./core/Stage-debug" ], function(require, exports, module) {
+define("phyxdown/ionejs/1.0.0/ionejs-debug", [ "./core/Engine-debug", "./utils/inherits-debug", "./core/One-debug", "./geom/Matrix2D-debug", "./geom/Point-debug", "./core/events/MouseEvent-debug", "./core/Event-debug", "./core/ones/Stage-debug" ], function(require, exports, module) {
     var Engine = require("./core/Engine-debug");
     var ionejs = {};
     ionejs.instance = new Engine();
     ionejs.One = require("./core/One-debug");
-    ionejs.Stage = require("./core/Stage-debug");
+    ionejs.Stage = require("./core/ones/Stage-debug");
     ionejs.Event = require("./core/Event-debug");
     module.exports = ionejs;
 });
@@ -19,8 +19,8 @@ define("phyxdown/ionejs/1.0.0/core/Engine-debug", [ "phyxdown/ionejs/1.0.0/utils
     };
     var p = Engine.prototype;
     /**
-	 * @param  {core.Stage} stage
-	 */
+     * @param  {core.Stage} stage
+     */
     p.init = function(stage, canvas) {
         this._stage = stage;
         this._canvas = canvas;
@@ -71,16 +71,16 @@ define("phyxdown/ionejs/1.0.0/core/One-debug", [ "phyxdown/ionejs/1.0.0/geom/Mat
     var Matrix2D = require("phyxdown/ionejs/1.0.0/geom/Matrix2D-debug");
     var Point = require("phyxdown/ionejs/1.0.0/geom/Point-debug");
     /**
-	 * What is one?
-	 * I mean oberservable nested existing.
-	 * eh..
-	 * That is a pity.
-	 */
+     * What is one?
+     * I mean oberservable nested existing.
+     * eh..
+     * That is a pity.
+     */
     var One = function(options) {
         /**
-		 * Param check is expected.
-		 * The code line below is temporary.
-		 */
+         * Param check is expected.
+         * The code line below is temporary.
+         */
         options = options || {};
         var listeners = {};
         listeners["bubble"] = {};
@@ -104,30 +104,30 @@ define("phyxdown/ionejs/1.0.0/core/One-debug", [ "phyxdown/ionejs/1.0.0/geom/Mat
     };
     var p = One.prototype;
     /**
-	 * Add one at the end of the child list, as the tail or the top.
-	 * In rendering phase, the tail of the child list will be rendered over any other ones in same list.
-	 * @param {core.One} one
-	 */
+     * Add one at the end of the child list, as the tail or the top.
+     * In rendering phase, the tail of the child list will be rendered over any other ones in same list.
+     * @param {core.One} one
+     */
     p.addChild = function(one) {
         one.setParent(this);
         this._children.push(one);
     };
     /**
-	 * Insert one into the child list according to the index.
-	 * If index exceeds the length of the child list, one will be added as the tail.
-	 * @param  {core.One} one
-	 * @param  {number} index
-	 */
+     * Insert one into the child list according to the index.
+     * If index exceeds the length of the child list, one will be added as the tail.
+     * @param  {core.One} one
+     * @param  {number} index
+     */
     p.insertChild = function(one, index) {
         one.setParent(this);
         this._children.splice(index, 0, one);
     };
     /**
-	 * Remove one from the child list.
-	 * If the one is not in the child list, removing will not make sense.
-	 * As no cache nor map is applied, meaningless removing causes considerable performance demerit.
-	 * @param  {core.One} one
-	 */
+     * Remove one from the child list.
+     * If the one is not in the child list, removing will not make sense.
+     * As no cache nor map is applied, meaningless removing causes considerable performance demerit.
+     * @param  {core.One} one
+     */
     p.removeChild = function(one) {
         var children = this._children;
         for (var i = 0, l = children.length; i < l; i++) {
@@ -138,18 +138,18 @@ define("phyxdown/ionejs/1.0.0/core/One-debug", [ "phyxdown/ionejs/1.0.0/geom/Mat
         }
     };
     /**
-	 * Set parent.
-	 * @param {one.Core} one
-	 */
+     * Set parent.
+     * @param {one.Core} one
+     */
     p.setParent = function(one) {
         this._parent = one;
     };
     /**
-	 * Get ancestors.
-	 * Please read source code if you don't understand what is ancestors.
-	 * It's not long.
-	 * @return {Array}
-	 */
+     * Get ancestors.
+     * Please read source code if you don't understand what ancestors are.
+     * It's not long.
+     * @return {Array}
+     */
     p.getAncestors = function() {
         var arr = [];
         var cur = this;
@@ -160,13 +160,13 @@ define("phyxdown/ionejs/1.0.0/core/One-debug", [ "phyxdown/ionejs/1.0.0/geom/Mat
         return arr;
     };
     /**
-	 * Add event listener.
-	 * Duplicated adding would be ignored.
-	 * @param {string} type
-	 * @param {function} listener
-	 * @param {boolean} useCapture
-	 * @return {function} listener
-	 */
+     * Add event listener.
+     * Duplicated adding would be ignored.
+     * @param {string} type
+     * @param {function} listener
+     * @param {boolean} useCapture
+     * @return {function} listener
+     */
     p.addEventListener = function(type, listener, useCapture) {
         var phase = useCapture ? "capture" : "bubble";
         var arr = this._listeners[phase][type];
@@ -177,11 +177,11 @@ define("phyxdown/ionejs/1.0.0/core/One-debug", [ "phyxdown/ionejs/1.0.0/geom/Mat
         return listener;
     };
     /**
-	 * Remove event listener.
-	 * @param  {string} type
-	 * @param  {function} listener
-	 * @param  {boolean} useCapture
-	 */
+     * Remove event listener.
+     * @param  {string} type
+     * @param  {function} listener
+     * @param  {boolean} useCapture
+     */
     p.removeEventListener = function(type, listener, useCapture) {
         var phase = useCapture ? "capture" : "bubble";
         var arr = this._listeners[phase][type];
@@ -193,12 +193,12 @@ define("phyxdown/ionejs/1.0.0/core/One-debug", [ "phyxdown/ionejs/1.0.0/geom/Mat
         }
     };
     /**
-	 * Fire event.
-	 * Event dispatching in ionejs has three phases, which is similar to DOM.
-	 * Capture --> Target --> Bubble
-	 * See {core.Event} for more information.
-	 * @param  {core.Event} event
-	 */
+     * Fire event.
+     * Event dispatching in ionejs has three phases, which is similar to DOM.
+     * Capture --> Target --> Bubble
+     * See {core.Event} for more information.
+     * @param  {core.Event} event
+     */
     p.dispatchEvent = function(event) {
         event.origin = this;
         var arr = this.getAncestors();
@@ -254,13 +254,13 @@ define("phyxdown/ionejs/1.0.0/core/One-debug", [ "phyxdown/ionejs/1.0.0/geom/Mat
         return new Point(am.tx, am.ty);
     };
     /**
-	 * Get one from descendants that seems to intersect the local coordinates,
-	 * which means this one is rendered over other intersected ones.
-	 * Please read source code if you don't understand what is descendants.
-	 * It's not long.
-	 * @param  {geom.Point} point
-	 * @return {core.Object}
-	 */
+     * Get one from descendants that seems to intersect the local coordinates,
+     * which means this one is rendered over other intersected ones.
+     * Please read source code if you don't understand what descendants are.
+     * It's not long.
+     * @param  {geom.Point} point
+     * @return {core.Object}
+     */
     p.hit = function(point) {
         var children = this._children;
         for (var i = children.length - 1; i > -1; i--) {
@@ -273,11 +273,11 @@ define("phyxdown/ionejs/1.0.0/core/One-debug", [ "phyxdown/ionejs/1.0.0/geom/Mat
         return null;
     };
     /**
-	 * testHit is useful when overrided, to test whether this one intersects the hit point.
-	 * When _hitable is set to false, testHit does not work.
-	 * @param  {geom.Point} point
-	 * @return {boolean}
-	 */
+     * testHit is useful when overrided, to test whether this one intersects the hit point.
+     * When _hitable is set to false, testHit does not work.
+     * @param  {geom.Point} point
+     * @return {boolean}
+     */
     p.testHit = function(point) {
         return false;
     };
@@ -293,6 +293,11 @@ define("phyxdown/ionejs/1.0.0/core/One-debug", [ "phyxdown/ionejs/1.0.0/geom/Mat
         }
         context.restore();
     };
+    /**
+     * Abstract method
+     * Override it to draw something.
+     * @param  {Context} context This context is defined as local.
+     */
     p.draw = function(context) {
         context.fillStyle = "yellow";
         context.fillRect(0, 0, 30, 30);
@@ -331,52 +336,52 @@ define("phyxdown/ionejs/1.0.0/core/One-debug", [ "phyxdown/ionejs/1.0.0/geom/Mat
 define("phyxdown/ionejs/1.0.0/geom/Matrix2D-debug", [], function(require, exports, module) {
     // constructor:
     /**
-	 * Represents an affine transformation matrix, and provides tools for constructing and concatenating matrixes.
-	 * @class Matrix2D
-	 * @param {Number} [a=1] Specifies the a property for the new matrix.
-	 * @param {Number} [b=0] Specifies the b property for the new matrix.
-	 * @param {Number} [c=0] Specifies the c property for the new matrix.
-	 * @param {Number} [d=1] Specifies the d property for the new matrix.
-	 * @param {Number} [tx=0] Specifies the tx property for the new matrix.
-	 * @param {Number} [ty=0] Specifies the ty property for the new matrix.
-	 * @constructor
-	 **/
+     * Represents an affine transformation matrix, and provides tools for constructing and concatenating matrixes.
+     * @class Matrix2D
+     * @param {Number} [a=1] Specifies the a property for the new matrix.
+     * @param {Number} [b=0] Specifies the b property for the new matrix.
+     * @param {Number} [c=0] Specifies the c property for the new matrix.
+     * @param {Number} [d=1] Specifies the d property for the new matrix.
+     * @param {Number} [tx=0] Specifies the tx property for the new matrix.
+     * @param {Number} [ty=0] Specifies the ty property for the new matrix.
+     * @constructor
+     **/
     function Matrix2D(a, b, c, d, tx, ty) {
         this.setValues(a, b, c, d, tx, ty);
     }
     var p = Matrix2D.prototype;
     // constants:
     /**
-	 * Multiplier for converting degrees to radians. Used internally by Matrix2D.
-	 * @property DEG_TO_RAD
-	 * @static
-	 * @final
-	 * @type Number
-	 * @readonly
-	 **/
+     * Multiplier for converting degrees to radians. Used internally by Matrix2D.
+     * @property DEG_TO_RAD
+     * @static
+     * @final
+     * @type Number
+     * @readonly
+     **/
     Matrix2D.DEG_TO_RAD = Math.PI / 180;
     // static public properties:
     /**
-	 * An identity matrix, representing a null transformation.
-	 * @property identity
-	 * @static
-	 * @type Matrix2D
-	 * @readonly
-	 **/
+     * An identity matrix, representing a null transformation.
+     * @property identity
+     * @static
+     * @type Matrix2D
+     * @readonly
+     **/
     Matrix2D.identity = null;
     // set at bottom of class definition.
     // public methods:
     /**
-	 * Sets the specified values on this instance.
-	 * @method setValues
-	 * @param {Number} [a=1] Specifies the a property for the new matrix.
-	 * @param {Number} [b=0] Specifies the b property for the new matrix.
-	 * @param {Number} [c=0] Specifies the c property for the new matrix.
-	 * @param {Number} [d=1] Specifies the d property for the new matrix.
-	 * @param {Number} [tx=0] Specifies the tx property for the new matrix.
-	 * @param {Number} [ty=0] Specifies the ty property for the new matrix.
-	 * @return {Matrix2D} This instance. Useful for chaining method calls.
-	 */
+     * Sets the specified values on this instance.
+     * @method setValues
+     * @param {Number} [a=1] Specifies the a property for the new matrix.
+     * @param {Number} [b=0] Specifies the b property for the new matrix.
+     * @param {Number} [c=0] Specifies the c property for the new matrix.
+     * @param {Number} [d=1] Specifies the d property for the new matrix.
+     * @param {Number} [tx=0] Specifies the tx property for the new matrix.
+     * @param {Number} [ty=0] Specifies the ty property for the new matrix.
+     * @return {Matrix2D} This instance. Useful for chaining method calls.
+     */
     p.setValues = function(a, b, c, d, tx, ty) {
         // don't forget to update docs in the constructor if these change:
         this.a = a == null ? 1 : a;
@@ -388,17 +393,17 @@ define("phyxdown/ionejs/1.0.0/geom/Matrix2D-debug", [], function(require, export
         return this;
     };
     /**
-	 * Appends the specified matrix properties to this matrix. All parameters are required.
-	 * This is the equivalent of multiplying `(this matrix) * (specified matrix)`.
-	 * @method append
-	 * @param {Number} a
-	 * @param {Number} b
-	 * @param {Number} c
-	 * @param {Number} d
-	 * @param {Number} tx
-	 * @param {Number} ty
-	 * @return {Matrix2D} This matrix. Useful for chaining method calls.
-	 **/
+     * Appends the specified matrix properties to this matrix. All parameters are required.
+     * This is the equivalent of multiplying `(this matrix) * (specified matrix)`.
+     * @method append
+     * @param {Number} a
+     * @param {Number} b
+     * @param {Number} c
+     * @param {Number} d
+     * @param {Number} tx
+     * @param {Number} ty
+     * @return {Matrix2D} This matrix. Useful for chaining method calls.
+     **/
     p.append = function(a, b, c, d, tx, ty) {
         var tx1 = this.tx;
         if (a != 1 || b != 0 || c != 0 || d != 1) {
@@ -414,18 +419,18 @@ define("phyxdown/ionejs/1.0.0/geom/Matrix2D-debug", [], function(require, export
         return this;
     };
     /**
-	 * Prepends the specified matrix properties to this matrix.
-	 * This is the equivalent of multiplying `(specified matrix) * (this matrix)`.
-	 * All parameters are required.
-	 * @method prepend
-	 * @param {Number} a
-	 * @param {Number} b
-	 * @param {Number} c
-	 * @param {Number} d
-	 * @param {Number} tx
-	 * @param {Number} ty
-	 * @return {Matrix2D} This matrix. Useful for chaining method calls.
-	 **/
+     * Prepends the specified matrix properties to this matrix.
+     * This is the equivalent of multiplying `(specified matrix) * (this matrix)`.
+     * All parameters are required.
+     * @method prepend
+     * @param {Number} a
+     * @param {Number} b
+     * @param {Number} c
+     * @param {Number} d
+     * @param {Number} tx
+     * @param {Number} ty
+     * @return {Matrix2D} This matrix. Useful for chaining method calls.
+     **/
     p.prepend = function(a, b, c, d, tx, ty) {
         var a1 = this.a;
         var b1 = this.b;
@@ -440,50 +445,50 @@ define("phyxdown/ionejs/1.0.0/geom/Matrix2D-debug", [], function(require, export
         return this;
     };
     /**
-	 * Appends the specified matrix to this matrix.
-	 * This is the equivalent of multiplying `(this matrix) * (specified matrix)`.
-	 * For example, you could calculate the combined transformation for a child object using:
-	 * 	var o = myDisplayObject;
-	 * 	var mtx = o.getMatrix();
-	 * 	while (o = o.parent) {
-	 * 		// append each parent's transformation in turn:
-	 * 		o.appendMatrix(o.getMatrix());
-	 * 	}
-	 * @method appendMatrix
-	 * @param {Matrix2D} matrix
-	 * @return {Matrix2D} This matrix. Useful for chaining method calls.
-	 **/
+     * Appends the specified matrix to this matrix.
+     * This is the equivalent of multiplying `(this matrix) * (specified matrix)`.
+     * For example, you could calculate the combined transformation for a child object using:
+     *     var o = myDisplayObject;
+     *     var mtx = o.getMatrix();
+     *     while (o = o.parent) {
+     *         // append each parent's transformation in turn:
+     *         o.appendMatrix(o.getMatrix());
+     *     }
+     * @method appendMatrix
+     * @param {Matrix2D} matrix
+     * @return {Matrix2D} This matrix. Useful for chaining method calls.
+     **/
     p.appendMatrix = function(matrix) {
         return this.append(matrix.a, matrix.b, matrix.c, matrix.d, matrix.tx, matrix.ty);
     };
     /**
-	 * Prepends the specified matrix to this matrix.
-	 * This is the equivalent of multiplying `(specified matrix) * (this matrix)`.
-	 * @method prependMatrix
-	 * @param {Matrix2D} matrix
-	 * @return {Matrix2D} This matrix. Useful for chaining method calls.
-	 **/
+     * Prepends the specified matrix to this matrix.
+     * This is the equivalent of multiplying `(specified matrix) * (this matrix)`.
+     * @method prependMatrix
+     * @param {Matrix2D} matrix
+     * @return {Matrix2D} This matrix. Useful for chaining method calls.
+     **/
     p.prependMatrix = function(matrix) {
         return this.prepend(matrix.a, matrix.b, matrix.c, matrix.d, matrix.tx, matrix.ty);
     };
     /**
-	 * Generates matrix properties from the specified display object transform properties, and appends them to this matrix.
-	 * For example, you can use this to generate a matrix from a display object:
-	 *
-	 * 	var mtx = new Matrix2D();
-	 * 	mtx.appendTransform(o.x, o.y, o.scaleX, o.scaleY, o.rotation);
-	 * @method appendTransform
-	 * @param {Number} x
-	 * @param {Number} y
-	 * @param {Number} scaleX
-	 * @param {Number} scaleY
-	 * @param {Number} rotation
-	 * @param {Number} skewX
-	 * @param {Number} skewY
-	 * @param {Number} regX Optional.
-	 * @param {Number} regY Optional.
-	 * @return {Matrix2D} This matrix. Useful for chaining method calls.
-	 **/
+     * Generates matrix properties from the specified display object transform properties, and appends them to this matrix.
+     * For example, you can use this to generate a matrix from a display object:
+     *
+     *     var mtx = new Matrix2D();
+     *     mtx.appendTransform(o.x, o.y, o.scaleX, o.scaleY, o.rotation);
+     * @method appendTransform
+     * @param {Number} x
+     * @param {Number} y
+     * @param {Number} scaleX
+     * @param {Number} scaleY
+     * @param {Number} rotation
+     * @param {Number} skewX
+     * @param {Number} skewY
+     * @param {Number} regX Optional.
+     * @param {Number} regY Optional.
+     * @return {Matrix2D} This matrix. Useful for chaining method calls.
+     **/
     p.appendTransform = function(x, y, scaleX, scaleY, rotation, skewX, skewY, regX, regY) {
         if (rotation % 360) {
             var r = rotation * Matrix2D.DEG_TO_RAD;
@@ -510,23 +515,23 @@ define("phyxdown/ionejs/1.0.0/geom/Matrix2D-debug", [], function(require, export
         return this;
     };
     /**
-	 * Generates matrix properties from the specified display object transform properties, and prepends them to this matrix.
-	 * For example, you can use this to generate a matrix from a display object:
-	 *
-	 * 	var mtx = new Matrix2D();
-	 * 	mtx.prependTransform(o.x, o.y, o.scaleX, o.scaleY, o.rotation);
-	 * @method prependTransform
-	 * @param {Number} x
-	 * @param {Number} y
-	 * @param {Number} scaleX
-	 * @param {Number} scaleY
-	 * @param {Number} rotation
-	 * @param {Number} skewX
-	 * @param {Number} skewY
-	 * @param {Number} regX Optional.
-	 * @param {Number} regY Optional.
-	 * @return {Matrix2D} This matrix. Useful for chaining method calls.
-	 **/
+     * Generates matrix properties from the specified display object transform properties, and prepends them to this matrix.
+     * For example, you can use this to generate a matrix from a display object:
+     *
+     *     var mtx = new Matrix2D();
+     *     mtx.prependTransform(o.x, o.y, o.scaleX, o.scaleY, o.rotation);
+     * @method prependTransform
+     * @param {Number} x
+     * @param {Number} y
+     * @param {Number} scaleX
+     * @param {Number} scaleY
+     * @param {Number} rotation
+     * @param {Number} skewX
+     * @param {Number} skewY
+     * @param {Number} regX Optional.
+     * @param {Number} regY Optional.
+     * @return {Matrix2D} This matrix. Useful for chaining method calls.
+     **/
     p.prependTransform = function(x, y, scaleX, scaleY, rotation, skewX, skewY, regX, regY) {
         if (rotation % 360) {
             var r = rotation * Matrix2D.DEG_TO_RAD;
@@ -553,11 +558,11 @@ define("phyxdown/ionejs/1.0.0/geom/Matrix2D-debug", [], function(require, export
         return this;
     };
     /**
-	 * Applies a rotation transformation to the matrix.
-	 * @method rotate
-	 * @param {Number} angle The angle in radians. To use degrees, multiply by `Math.PI/180`.
-	 * @return {Matrix2D} This matrix. Useful for chaining method calls.
-	 **/
+     * Applies a rotation transformation to the matrix.
+     * @method rotate
+     * @param {Number} angle The angle in radians. To use degrees, multiply by `Math.PI/180`.
+     * @return {Matrix2D} This matrix. Useful for chaining method calls.
+     **/
     p.rotate = function(angle) {
         var cos = Math.cos(angle);
         var sin = Math.sin(angle);
@@ -573,12 +578,12 @@ define("phyxdown/ionejs/1.0.0/geom/Matrix2D-debug", [], function(require, export
         return this;
     };
     /**
-	 * Applies a skew transformation to the matrix.
-	 * @method skew
-	 * @param {Number} skewX The amount to skew horizontally in degrees.
-	 * @param {Number} skewY The amount to skew vertically in degrees.
-	 * @return {Matrix2D} This matrix. Useful for chaining method calls.
-	 */
+     * Applies a skew transformation to the matrix.
+     * @method skew
+     * @param {Number} skewX The amount to skew horizontally in degrees.
+     * @param {Number} skewY The amount to skew vertically in degrees.
+     * @return {Matrix2D} This matrix. Useful for chaining method calls.
+     */
     p.skew = function(skewX, skewY) {
         skewX = skewX * Matrix2D.DEG_TO_RAD;
         skewY = skewY * Matrix2D.DEG_TO_RAD;
@@ -586,12 +591,12 @@ define("phyxdown/ionejs/1.0.0/geom/Matrix2D-debug", [], function(require, export
         return this;
     };
     /**
-	 * Applies a scale transformation to the matrix.
-	 * @method scale
-	 * @param {Number} x The amount to scale horizontally
-	 * @param {Number} y The amount to scale vertically
-	 * @return {Matrix2D} This matrix. Useful for chaining method calls.
-	 **/
+     * Applies a scale transformation to the matrix.
+     * @method scale
+     * @param {Number} x The amount to scale horizontally
+     * @param {Number} y The amount to scale vertically
+     * @return {Matrix2D} This matrix. Useful for chaining method calls.
+     **/
     p.scale = function(x, y) {
         this.a *= x;
         this.d *= y;
@@ -602,32 +607,32 @@ define("phyxdown/ionejs/1.0.0/geom/Matrix2D-debug", [], function(require, export
         return this;
     };
     /**
-	 * Translates the matrix on the x and y axes.
-	 * @method translate
-	 * @param {Number} x
-	 * @param {Number} y
-	 * @return {Matrix2D} This matrix. Useful for chaining method calls.
-	 **/
+     * Translates the matrix on the x and y axes.
+     * @method translate
+     * @param {Number} x
+     * @param {Number} y
+     * @return {Matrix2D} This matrix. Useful for chaining method calls.
+     **/
     p.translate = function(x, y) {
         this.tx += x;
         this.ty += y;
         return this;
     };
     /**
-	 * Sets the properties of the matrix to those of an identity matrix (one that applies a null transformation).
-	 * @method identity
-	 * @return {Matrix2D} This matrix. Useful for chaining method calls.
-	 **/
+     * Sets the properties of the matrix to those of an identity matrix (one that applies a null transformation).
+     * @method identity
+     * @return {Matrix2D} This matrix. Useful for chaining method calls.
+     **/
     p.identity = function() {
         this.a = this.d = 1;
         this.b = this.c = this.tx = this.ty = 0;
         return this;
     };
     /**
-	 * Inverts the matrix, causing it to perform the opposite transformation.
-	 * @method invert
-	 * @return {Matrix2D} This matrix. Useful for chaining method calls.
-	 **/
+     * Inverts the matrix, causing it to perform the opposite transformation.
+     * @method invert
+     * @return {Matrix2D} This matrix. Useful for chaining method calls.
+     **/
     p.invert = function() {
         var a1 = this.a;
         var b1 = this.b;
@@ -644,30 +649,30 @@ define("phyxdown/ionejs/1.0.0/geom/Matrix2D-debug", [], function(require, export
         return this;
     };
     /**
-	 * Returns true if the matrix is an identity matrix.
-	 * @method isIdentity
-	 * @return {Boolean}
-	 **/
+     * Returns true if the matrix is an identity matrix.
+     * @method isIdentity
+     * @return {Boolean}
+     **/
     p.isIdentity = function() {
         return this.tx === 0 && this.ty === 0 && this.a === 1 && this.b === 0 && this.c === 0 && this.d === 1;
     };
     /**
-	 * Returns true if this matrix is equal to the specified matrix (all property values are equal).
-	 * @method equals
-	 * @param {Matrix2D} matrix The matrix to compare.
-	 * @return {Boolean}
-	 **/
+     * Returns true if this matrix is equal to the specified matrix (all property values are equal).
+     * @method equals
+     * @param {Matrix2D} matrix The matrix to compare.
+     * @return {Boolean}
+     **/
     p.equals = function(matrix) {
         return this.tx === matrix.tx && this.ty === matrix.ty && this.a === matrix.a && this.b === matrix.b && this.c === matrix.c && this.d === matrix.d;
     };
     /**
-	 * Transforms a point according to this matrix.
-	 * @method transformPoint
-	 * @param {Number} x The x component of the point to transform.
-	 * @param {Number} y The y component of the point to transform.
-	 * @param {Point | Object} [pt] An object to copy the result into. If omitted a generic object with x/y properties will be returned.
-	 * @return {Point} This matrix. Useful for chaining method calls.
-	 **/
+     * Transforms a point according to this matrix.
+     * @method transformPoint
+     * @param {Number} x The x component of the point to transform.
+     * @param {Number} y The y component of the point to transform.
+     * @param {Point | Object} [pt] An object to copy the result into. If omitted a generic object with x/y properties will be returned.
+     * @return {Point} This matrix. Useful for chaining method calls.
+     **/
     p.transformPoint = function(x, y, pt) {
         pt = pt || {};
         pt.x = x * this.a + y * this.c + this.tx;
@@ -675,13 +680,13 @@ define("phyxdown/ionejs/1.0.0/geom/Matrix2D-debug", [], function(require, export
         return pt;
     };
     /**
-	 * Decomposes the matrix into transform properties (x, y, scaleX, scaleY, and rotation). Note that these values
-	 * may not match the transform properties you used to generate the matrix, though they will produce the same visual
-	 * results.
-	 * @method decompose
-	 * @param {Object} target The object to apply the transform properties to. If null, then a new object will be returned.
-	 * @return {Object} The target, or a new generic object with the transform properties applied.
-	 */
+     * Decomposes the matrix into transform properties (x, y, scaleX, scaleY, and rotation). Note that these values
+     * may not match the transform properties you used to generate the matrix, though they will produce the same visual
+     * results.
+     * @method decompose
+     * @param {Object} target The object to apply the transform properties to. If null, then a new object will be returned.
+     * @return {Object} The target, or a new generic object with the transform properties applied.
+     */
     p.decompose = function(target) {
         // TODO: it would be nice to be able to solve for whether the matrix can be decomposed into only scale/rotation even when scale is negative
         if (target == null) {
@@ -708,27 +713,27 @@ define("phyxdown/ionejs/1.0.0/geom/Matrix2D-debug", [], function(require, export
         return target;
     };
     /**
-	 * Copies all properties from the specified matrix to this matrix.
-	 * @method copy
-	 * @param {Matrix2D} matrix The matrix to copy properties from.
-	 * @return {Matrix2D} This matrix. Useful for chaining method calls.
-	 */
+     * Copies all properties from the specified matrix to this matrix.
+     * @method copy
+     * @param {Matrix2D} matrix The matrix to copy properties from.
+     * @return {Matrix2D} This matrix. Useful for chaining method calls.
+     */
     p.copy = function(matrix) {
         return this.setValues(matrix.a, matrix.b, matrix.c, matrix.d, matrix.tx, matrix.ty);
     };
     /**
-	 * Returns a clone of the Matrix2D instance.
-	 * @method clone
-	 * @return {Matrix2D} a clone of the Matrix2D instance.
-	 **/
+     * Returns a clone of the Matrix2D instance.
+     * @method clone
+     * @return {Matrix2D} a clone of the Matrix2D instance.
+     **/
     p.clone = function() {
         return new Matrix2D(this.a, this.b, this.c, this.d, this.tx, this.ty);
     };
     /**
-	 * Returns a string representation of this object.
-	 * @method toString
-	 * @return {String} a string representation of the instance.
-	 **/
+     * Returns a string representation of this object.
+     * @method toString
+     * @return {String} a string representation of the instance.
+     **/
     p.toString = function() {
         return "[Matrix2D (a=" + this.a + " b=" + this.b + " c=" + this.c + " d=" + this.d + " tx=" + this.tx + " ty=" + this.ty + ")]";
     };
@@ -783,7 +788,7 @@ define("phyxdown/ionejs/1.0.0/core/Event-debug", [], function(require, exports, 
     module.exports = Event;
 });
 
-define("phyxdown/ionejs/1.0.0/core/Stage-debug", [ "phyxdown/ionejs/1.0.0/utils/inherits-debug", "phyxdown/ionejs/1.0.0/core/One-debug", "phyxdown/ionejs/1.0.0/geom/Matrix2D-debug", "phyxdown/ionejs/1.0.0/geom/Point-debug" ], function(require, exports, module) {
+define("phyxdown/ionejs/1.0.0/core/ones/Stage-debug", [ "phyxdown/ionejs/1.0.0/utils/inherits-debug", "phyxdown/ionejs/1.0.0/core/One-debug", "phyxdown/ionejs/1.0.0/geom/Matrix2D-debug", "phyxdown/ionejs/1.0.0/geom/Point-debug" ], function(require, exports, module) {
     var inherits = require("phyxdown/ionejs/1.0.0/utils/inherits-debug");
     var One = require("phyxdown/ionejs/1.0.0/core/One-debug");
     var Stage = function(options) {

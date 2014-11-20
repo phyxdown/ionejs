@@ -1,7 +1,7 @@
 define(function(require, exports, module) {
 
-    var inherits = require('../utils/inherits');
-    var One = require('./One');
+    var inherits = require('../../utils/inherits');
+    var One = require('../One');
 
     var Stage = function(options) {
         options.parent = null;
