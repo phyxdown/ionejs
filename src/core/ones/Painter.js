@@ -5,23 +5,20 @@ define(function(require, exports, module) {
 
     var Painter = function(options) {
         One.apply(this, arguments);
-
         var me = this;
-        me._image = null;
 
         var image = new Image();
-        image.onload = function() {
-            me._image = image;
-        }
-        image.src = options.src;
+            image.src = options.src;
+
+        me._image = image;
     }
 
     var p = inherits(Painter, One);
 
     p.draw = function(context) {
-        var me = this,
-            image = me._image;
-
+        var me = this, 
+        	image = me._image;
+        	
         context.drawImage(image, 0, 0);
     }
 

@@ -1,9 +1,10 @@
-define("phyxdown/ionejs/1.0.0/ionejs-debug", [ "./core/Engine-debug", "./utils/inherits-debug", "./core/One-debug", "./geom/Matrix2D-debug", "./geom/Point-debug", "./core/events/MouseEvent-debug", "./core/Event-debug", "./core/ones/Stage-debug" ], function(require, exports, module) {
+define("phyxdown/ionejs/1.0.0/ionejs-debug", [ "./core/Engine-debug", "./utils/inherits-debug", "./core/One-debug", "./geom/Matrix2D-debug", "./geom/Point-debug", "./core/events/MouseEvent-debug", "./core/Event-debug", "./core/ones/Stage-debug", "./core/ones/Painter-debug" ], function(require, exports, module) {
     var Engine = require("./core/Engine-debug");
     var ionejs = {};
     ionejs.instance = new Engine();
     ionejs.One = require("./core/One-debug");
     ionejs.Stage = require("./core/ones/Stage-debug");
+    ionejs.Painter = require("./core/ones/Painter-debug");
     ionejs.Event = require("./core/Event-debug");
     module.exports = ionejs;
 });
@@ -284,7 +285,6 @@ define("phyxdown/ionejs/1.0.0/core/One-debug", [ "phyxdown/ionejs/1.0.0/geom/Mat
     p._draw = function(context) {
         context.save();
         var matrix = this._getRelativeMatrix();
-        console.log(matrix);
         context.transform(matrix.a, matrix.b, matrix.c, matrix.d, matrix.tx, matrix.ty);
         this._visible && this.draw(context);
         for (var i = 0, l = this._children.length; i < l; i++) {
@@ -799,4 +799,22 @@ define("phyxdown/ionejs/1.0.0/core/ones/Stage-debug", [ "phyxdown/ionejs/1.0.0/u
     };
     var p = inherits(Stage, One);
     module.exports = Stage;
+});
+
+define("phyxdown/ionejs/1.0.0/core/ones/Painter-debug", [ "phyxdown/ionejs/1.0.0/utils/inherits-debug", "phyxdown/ionejs/1.0.0/core/One-debug", "phyxdown/ionejs/1.0.0/geom/Matrix2D-debug", "phyxdown/ionejs/1.0.0/geom/Point-debug" ], function(require, exports, module) {
+    var inherits = require("phyxdown/ionejs/1.0.0/utils/inherits-debug");
+    var One = require("phyxdown/ionejs/1.0.0/core/One-debug");
+    var Painter = function(options) {
+        One.apply(this, arguments);
+        var me = this;
+        var image = new Image();
+        image.src = options.src;
+        me._image = image;
+    };
+    var p = inherits(Painter, One);
+    p.draw = function(context) {
+        var me = this, image = me._image;
+        context.drawImage(image, 0, 0);
+    };
+    module.exports = Painter;
 });
