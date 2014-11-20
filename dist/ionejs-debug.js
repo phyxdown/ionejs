@@ -25,6 +25,8 @@ define("phyxdown/ionejs/1.0.0/core/Engine-debug", [ "phyxdown/ionejs/1.0.0/utils
     p.init = function(stage, canvas) {
         this._stage = stage;
         this._canvas = canvas;
+        canvas.width = stage.width;
+        canvas.height = stage.height;
         var offsetTop = canvas.offsetTop;
         var offsetLeft = canvas.offsetLeft;
         var listener = function(e) {
@@ -49,7 +51,14 @@ define("phyxdown/ionejs/1.0.0/core/Engine-debug", [ "phyxdown/ionejs/1.0.0/utils
     };
     p.run = function() {
         var canvas = this._canvas, stage = this._stage, context = canvas.getContext("2d");
-        stage._draw(context);
+        var frame = function() {
+            //draw
+            stage._draw(context);
+            //update
+            //stage._update();
+            setTimeout(frame, 1e3 / 60);
+        };
+        frame();
     };
     module.exports = Engine;
 });
@@ -807,14 +816,25 @@ define("phyxdown/ionejs/1.0.0/core/ones/Painter-debug", [ "phyxdown/ionejs/1.0.0
     var Painter = function(options) {
         One.apply(this, arguments);
         var me = this;
-        var image = new Image();
-        image.src = options.src;
-        me._image = image;
+        options.src && me.set(options.src);
     };
     var p = inherits(Painter, One);
+    /**
+     * set _image.src
+     * ionejs does not report illegal src, but the browser does.
+     * @param {string} src
+     */
+    p.set = function(src) {
+        var me = this;
+        var image = new Image();
+        image.src = src;
+        me._image = image;
+    };
     p.draw = function(context) {
         var me = this, image = me._image;
-        context.drawImage(image, 0, 0);
+        try {
+            context.drawImage(image, 0, 0);
+        } catch (e) {}
     };
     module.exports = Painter;
 });

@@ -7,20 +7,30 @@ define(function(require, exports, module) {
         One.apply(this, arguments);
         var me = this;
 
-        var image = new Image();
-            image.src = options.src;
-
-        me._image = image;
-    }
+        options.src && me.set(options.src);
+    };
 
     var p = inherits(Painter, One);
+
+    /**
+     * set _image.src
+     * ionejs does not report illegal src, but the browser does.
+     * @param {string} src
+     */
+    p.set = function(src){
+    	var me = this;
+
+		var image = new Image();
+	    	image.src = src;
+	    me._image = image;
+    };
 
     p.draw = function(context) {
         var me = this, 
         	image = me._image;
-        	
-        context.drawImage(image, 0, 0);
-    }
+        try{ context.drawImage(image, 0, 0); }
+        catch(e){}
+    };
 
     module.exports = Painter;
 });

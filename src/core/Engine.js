@@ -16,10 +16,12 @@ define(function(require, exports, module) {
      * @param  {core.Stage} stage
      */
     p.init = function(stage, canvas) {
-
         this._stage = stage;
         this._canvas = canvas;
-
+        
+        canvas.width = stage.width;
+        canvas.height = stage.height;
+        
         var offsetTop = canvas.offsetTop;
         var offsetLeft = canvas.offsetLeft;
 
@@ -50,7 +52,15 @@ define(function(require, exports, module) {
             stage = this._stage,
             context = canvas.getContext('2d');
 
-        stage._draw(context);
+        var frame = function(){
+            //draw
+            stage._draw(context);
+            //update
+            //stage._update();
+            setTimeout(frame, 1000/60);
+        }
+
+        frame();
     };
 
     module.exports = Engine;
