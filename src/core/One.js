@@ -22,12 +22,20 @@ define(function(require, exports, module) {
 
         this._listeners = listeners;
 
-
+        //Duplicated names are permitted.
+        this._name = options.name || null;
+        //Docs expected. 
+        //One.addChild, One.insertChild and One.removeChild need to be modified.
+        this._childMap = {};
+        //Docs expected
         this._parent = options.parent || null;
+        //Docs expected
         this._children = [];
-
+        //Docs expected
         this._active = true;
+        //Docs expected
         this._visible = true;
+        //Docs expected
         this._hitable = false;
 
         this.x = options.x;

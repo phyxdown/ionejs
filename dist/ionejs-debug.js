@@ -1,12 +1,37 @@
-define("phyxdown/ionejs/1.0.0/ionejs-debug", [ "./core/Engine-debug", "./utils/inherits-debug", "./core/One-debug", "./geom/Matrix2D-debug", "./geom/Point-debug", "./core/events/MouseEvent-debug", "./core/Event-debug", "./core/ones/Stage-debug", "./core/ones/Painter-debug" ], function(require, exports, module) {
-    var Engine = require("./core/Engine-debug");
+define("phyxdown/ionejs/1.0.0/ionejs-debug", [ "./core/Engine-debug", "./utils/inherits-debug", "./core/One-debug", "./geom/Matrix2D-debug", "./geom/Point-debug", "./core/events/MouseEvent-debug", "./core/Event-debug", "./core/ones/Stage-debug", "./core/ones/Painter-debug", "./helpers/Creator-debug" ], function(require, exports, module) {
+    //init ionejs namespace
     var ionejs = {};
+    //ionejs.core
+    var Engine = require("./core/Engine-debug");
+    var Event = require("./core/Event-debug");
+    var One = require("./core/One-debug");
+    var Stage = require("./core/ones/Stage-debug");
+    var Painter = require("./core/ones/Painter-debug");
+    //ionejs.helpers
+    var Creator = require("./helpers/Creator-debug");
+    //ionejs.utils
+    var inherits = require("./utils/inherits-debug");
+    //init creator
+    var creator = new Creator();
+    //register ones
+    creator.set("One", One);
+    creator.set("Stage", Stage);
+    creator.set("Painter", Painter);
+    //API
+    ionejs.inherits = inherits;
+    ionejs.create = function(config) {
+        return creator.parse(config);
+    };
+    ionejs.register = function(alias, constructor) {
+        return creator.set(alias, constructor);
+    };
+    //Abstract Constructors
+    ionejs.One = One;
+    ionejs.Stage = Stage;
+    ionejs.Painter = Painter;
+    ionejs.Event = Event;
+    //instance
     ionejs.instance = new Engine();
-    ionejs.Event = require("./core/Event-debug");
-    ionejs.inherits = require("./utils/inherits-debug");
-    ionejs.One = require("./core/One-debug");
-    ionejs.Stage = require("./core/ones/Stage-debug");
-    ionejs.Painter = require("./core/ones/Painter-debug");
     module.exports = ionejs;
 });
 
@@ -829,4 +854,31 @@ define("phyxdown/ionejs/1.0.0/core/ones/Painter-debug", [ "phyxdown/ionejs/1.0.0
         } catch (e) {}
     };
     module.exports = Painter;
+});
+
+define("phyxdown/ionejs/1.0.0/helpers/Creator-debug", [], function(require, exports, module) {
+    var Creator = function() {
+        this._genesis = {};
+    };
+    var p = Creator.prototype;
+    p.set = function(alias, constructor) {
+        this._genesis[alias] = constructor;
+        return constructor;
+    };
+    p.parse = function(config) {
+        var me = this;
+        var _parse = function(config) {
+            var constructor = me._genesis[config.alias];
+            var options = config.options;
+            var children = config.children;
+            var one = new constructor(options);
+            for (var i = 0, l = children.length; i < l; i++) {
+                var child = _parse(children[i]);
+                one.addChild(child);
+            }
+            return one;
+        };
+        return _parse(config);
+    };
+    module.exports = Creator;
 });

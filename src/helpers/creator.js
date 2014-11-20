@@ -8,12 +8,13 @@ define(function(require, exports, module){
 
 	p.set = function(alias, constructor){
 		this._genesis[alias] = constructor;
+		return constructor;
 	};
 
 	p.parse = function(config){
-
+		var me = this;
 		var _parse = function(config){
-			var constructor = this._genesis[config.alias]
+			var constructor = me._genesis[config.alias]
 			var options = config.options;
 			var children = config.children;
 			var one = new constructor(options);
