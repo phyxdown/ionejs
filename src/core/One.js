@@ -91,7 +91,7 @@ define(function(require, exports, module) {
 
     /**
      * Get ancestors.
-     * Please read source code if you don't understand what is ancestors.
+     * Please read source code if you don't understand what ancestors are.
      * It's not long.
      * @return {Array}
      */
@@ -221,7 +221,7 @@ define(function(require, exports, module) {
     /**
      * Get one from descendants that seems to intersect the local coordinates,
      * which means this one is rendered over other intersected ones.
-     * Please read source code if you don't understand what is descendants.
+     * Please read source code if you don't understand what descendants are.
      * It's not long.
      * @param  {geom.Point} point
      * @return {core.Object}
