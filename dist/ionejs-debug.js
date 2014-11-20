@@ -2,10 +2,11 @@ define("phyxdown/ionejs/1.0.0/ionejs-debug", [ "./core/Engine-debug", "./utils/i
     var Engine = require("./core/Engine-debug");
     var ionejs = {};
     ionejs.instance = new Engine();
+    ionejs.Event = require("./core/Event-debug");
+    ionejs.inherits = require("./utils/inherits-debug");
     ionejs.One = require("./core/One-debug");
     ionejs.Stage = require("./core/ones/Stage-debug");
     ionejs.Painter = require("./core/ones/Painter-debug");
-    ionejs.Event = require("./core/Event-debug");
     module.exports = ionejs;
 });
 
@@ -32,11 +33,7 @@ define("phyxdown/ionejs/1.0.0/core/Engine-debug", [ "phyxdown/ionejs/1.0.0/utils
         var listener = function(e) {
             var global = new Point(e.pageX - offsetLeft, e.pageY - offsetTop);
             var origin = stage.hit(global);
-            console.log(e.type);
-            if (!origin) {
-                console.log("nothing hit.");
-                return;
-            }
+            if (!origin) return;
             var local = origin.globalToLocal(global);
             origin.dispatchEvent(new MouseEvent({
                 type: e.type,
@@ -235,9 +232,7 @@ define("phyxdown/ionejs/1.0.0/core/One-debug", [ "phyxdown/ionejs/1.0.0/geom/Mat
                 arr[i](event);
                 if (event._immediatePropagationStopped) break;
             }
-        } catch (e) {
-            console.log("#ionejs#", e);
-        }
+        } catch (e) {}
     };
     p._getRelativeMatrix = function() {
         var matrix = new Matrix2D();
@@ -307,10 +302,7 @@ define("phyxdown/ionejs/1.0.0/core/One-debug", [ "phyxdown/ionejs/1.0.0/geom/Mat
      * Override it to draw something.
      * @param  {Context} context This context is defined as local.
      */
-    p.draw = function(context) {
-        context.fillStyle = "yellow";
-        context.fillRect(0, 0, 30, 30);
-    };
+    p.draw = function(context) {};
     module.exports = One;
 });
 

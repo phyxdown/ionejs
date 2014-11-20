@@ -5,10 +5,14 @@ define(function(require, exports, module) {
     var ionejs = {};
 
     ionejs.instance = new Engine();
+    
+    ionejs.Event = require("./core/Event");
+
+    ionejs.inherits = require("./utils/inherits");
+
     ionejs.One = require("./core/One");
     ionejs.Stage = require("./core/ones/Stage");
     ionejs.Painter = require("./core/ones/Painter");
-    ionejs.Event = require("./core/Event");
 
     module.exports = ionejs;
 

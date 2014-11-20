@@ -185,9 +185,7 @@ define(function(require, exports, module) {
                 arr[i](event);
                 if (event._immediatePropagationStopped) break;
             }
-        } catch (e) {
-            console.log("#ionejs#", e);
-        }
+        } catch (e) {}
     };
 
     p._getRelativeMatrix = function() {
@@ -266,10 +264,7 @@ define(function(require, exports, module) {
      * Override it to draw something.
      * @param  {Context} context This context is defined as local.
      */
-    p.draw = function(context) {
-        context.fillStyle = 'yellow';
-        context.fillRect(0, 0, 30, 30);
-    };
+    p.draw = function(context) {};
 
     module.exports = One;
 });

@@ -18,7 +18,7 @@ define(function(require, exports, module) {
     p.init = function(stage, canvas) {
         this._stage = stage;
         this._canvas = canvas;
-        
+
         canvas.width = stage.width;
         canvas.height = stage.height;
         
@@ -28,11 +28,8 @@ define(function(require, exports, module) {
         var listener = function(e) {
             var global = new Point(e.pageX - offsetLeft, e.pageY - offsetTop);
             var origin = stage.hit(global);
-            console.log(e.type);
-            if (!origin) {
-                console.log("nothing hit.");
+            if (!origin)
                 return;
-            }
             var local = origin.globalToLocal(global);
             origin.dispatchEvent(new MouseEvent({
                 type: e.type,
