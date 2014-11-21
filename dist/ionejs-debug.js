@@ -118,10 +118,21 @@ define("phyxdown/ionejs/1.0.0/core/One-debug", [ "phyxdown/ionejs/1.0.0/geom/Mat
         listeners["bubble"] = {};
         listeners["capture"] = {};
         this._listeners = listeners;
-        this._parent = options.parent || null;
+        /**
+         * Duplicated names and anonymity are both permitted.
+         * But this._name can't be changed after this is constructed.
+         * Basically, no properties with _ prefixed can be accessed directly.
+         * @option {string} name
+         */
+        this._name = options.name || null;
+        this._parent = null;
+        this._childMap = {};
         this._children = [];
+        //Docs expected
         this._active = true;
+        //Docs expected
         this._visible = true;
+        //Docs expected
         this._hitable = false;
         this.x = options.x;
         this.y = options.y;
@@ -135,17 +146,40 @@ define("phyxdown/ionejs/1.0.0/core/One-debug", [ "phyxdown/ionejs/1.0.0/geom/Mat
         this.alpha = options.alpha;
     };
     var p = One.prototype;
+    p._mapChild = function(one) {
+        if (one._name) {
+            var name = one._name;
+            var map = this._childMap;
+            if (!map[name]) {
+                map[name] = [ one ];
+            } else {
+                map[name].unshift(one);
+            }
+        }
+    };
+    p._unmapChild = function(one) {
+        if (one._name) {
+            var name = one._name;
+            var map = this._childMap;
+            if (!map[name]) return; else if (map[name].length == 1) delete map[name]; else {
+                for (var i = 0, l = map[name].length; i < l; i++) {
+                    if (map[name][i] === one) map[name].splice(i, 1);
+                }
+            }
+        }
+    };
     /**
-     * Add one at the end of the child list, as the tail or the top.
+     * Add one at the end of the child list(_children), as the tail or the top.
      * In rendering phase, the tail of the child list will be rendered over any other ones in same list.
      * @param {core.One} one
      */
     p.addChild = function(one) {
         one.setParent(this);
         this._children.push(one);
+        this._mapChild(one);
     };
     /**
-     * Insert one into the child list according to the index.
+     * Insert one into the child list(_children) according to the index.
      * If index exceeds the length of the child list, one will be added as the tail.
      * @param  {core.One} one
      * @param  {number} index
@@ -153,19 +187,21 @@ define("phyxdown/ionejs/1.0.0/core/One-debug", [ "phyxdown/ionejs/1.0.0/geom/Mat
     p.insertChild = function(one, index) {
         one.setParent(this);
         this._children.splice(index, 0, one);
+        this._mapChild(one);
     };
     /**
-     * Remove one from the child list.
+     * Remove one from the child list(_children)
      * If the one is not in the child list, removing will not make sense.
-     * As no cache nor map is applied, meaningless removing causes considerable performance demerit.
+     * As this process needs iteration, meaningless removing causes considerable performance demerit.
      * @param  {core.One} one
      */
     p.removeChild = function(one) {
         var children = this._children;
         for (var i = 0, l = children.length; i < l; i++) {
-            if (children[i] == one) {
+            if (children[i] === one) {
                 one.setParent(null);
                 children.splice(i, 1);
+                this._unmapChild(one);
             }
         }
     };
@@ -203,7 +239,7 @@ define("phyxdown/ionejs/1.0.0/core/One-debug", [ "phyxdown/ionejs/1.0.0/geom/Mat
         var phase = useCapture ? "capture" : "bubble";
         var arr = this._listeners[phase][type];
         for (var i = 0, l = arr ? arr.length : 0; i < l; i++) {
-            if (arr[i] == listener) return;
+            if (arr[i] === listener) return;
         }
         if (!arr) this._listeners[phase][type] = [ listener ]; else arr.push(listener);
         return listener;
@@ -218,7 +254,7 @@ define("phyxdown/ionejs/1.0.0/core/One-debug", [ "phyxdown/ionejs/1.0.0/geom/Mat
         var phase = useCapture ? "capture" : "bubble";
         var arr = this._listeners[phase][type];
         for (var i = 0, l = arr ? arr.length : 0; i < l; i++) {
-            if (arr[i] == listener) {
+            if (arr[i] === listener) {
                 if (l == 1) delete this._listeners[phase][type]; else arr.splice(i, 1);
                 break;
             }
@@ -273,11 +309,21 @@ define("phyxdown/ionejs/1.0.0/core/One-debug", [ "phyxdown/ionejs/1.0.0/geom/Mat
         matrix.appendMatrix(this._getRelativeMatrix());
         return matrix;
     };
+    /**
+     * convert global coordinates to local
+     * @param  {geom.Point} point 
+     * @return {geom.Point} 
+     */
     p.globalToLocal = function(point) {
         var am = this._getAbsoluteMatrix();
         am.invert().append(1, 0, 0, 1, point.x, point.y);
         return new Point(am.tx, am.ty);
     };
+    /**
+     * convert local coordinates to global
+     * @param  {geom.Point} point 
+     * @return {geom.Point} 
+     */
     p.localToGlobal = function(point) {
         var am = this._getAbsoluteMatrix();
         am.append(1, 0, 0, 1, point.x, point.y);
