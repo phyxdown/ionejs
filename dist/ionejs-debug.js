@@ -66,10 +66,19 @@ define("phyxdown/ionejs/1.0.0/core/Engine-debug", [ "phyxdown/ionejs/1.0.0/utils
                 local: local
             }));
         };
-        var types = [ "mousedown", "mouseup", "click" ];
-        for (var index in types) {
-            canvas.addEventListener(types[index], listener);
-        }
+        var me = this;
+        canvas.addEventListener("mousedown", function() {
+            me._down = true;
+            listener.apply(null, arguments);
+        });
+        canvas.addEventListener("mouseup", function() {
+            me._down = false;
+            listener.apply(null, arguments);
+        });
+        canvas.addEventListener("mousemove", function() {
+            me._down && listener.apply(null, arguments);
+        });
+        canvas.addEventListener("click", listener);
     };
     p.run = function() {
         var canvas = this._canvas, stage = this._stage, context = canvas.getContext("2d");
@@ -206,8 +215,35 @@ define("phyxdown/ionejs/1.0.0/core/One-debug", [ "phyxdown/ionejs/1.0.0/geom/Mat
         }
     };
     /**
+     * Name based query
+     * @param  {string} path      eg. "pricess.leg.skin"
+     * @param  {string} separator eg. "."
+     * @return {core.One}
+     */
+    p.query = function(path, separator) {
+        try {
+            var separator = separator || ".";
+            var names = path.split(separator);
+            var _query = function(one, names) {
+                if (names.length > 1) {
+                    return _query(one._childMap[names.shift()][0], names);
+                } else return one._childMap[names.shift()][0];
+            };
+            return _query(this, names) || null;
+        } catch (e) {
+            return null;
+        }
+    };
+    /**
+     * Get parent.
+     * @return {core.One} parent
+     */
+    p.getParent = function() {
+        return this._parent;
+    };
+    /**
      * Set parent.
-     * @param {one.Core} one
+     * @param {core.One} parent
      */
     p.setParent = function(one) {
         this._parent = one;
@@ -358,10 +394,10 @@ define("phyxdown/ionejs/1.0.0/core/One-debug", [ "phyxdown/ionejs/1.0.0/geom/Mat
         return false;
     };
     p._draw = function(context) {
+        this._visible && this.draw(context);
         context.save();
         var matrix = this._getRelativeMatrix();
         context.transform(matrix.a, matrix.b, matrix.c, matrix.d, matrix.tx, matrix.ty);
-        this._visible && this.draw(context);
         for (var i = 0, l = this._children.length; i < l; i++) {
             var child = this._children[i];
             child._draw(context);
@@ -825,10 +861,20 @@ define("phyxdown/ionejs/1.0.0/geom/Point-debug", [], function(require, exports, 
 define("phyxdown/ionejs/1.0.0/core/events/MouseEvent-debug", [ "phyxdown/ionejs/1.0.0/utils/inherits-debug", "phyxdown/ionejs/1.0.0/core/Event-debug" ], function(require, exports, module) {
     var inherits = require("phyxdown/ionejs/1.0.0/utils/inherits-debug");
     var Event = require("phyxdown/ionejs/1.0.0/core/Event-debug");
+    var lx = 0;
+    var ly = 0;
     var MouseEvent = function(options) {
         Event.apply(this, arguments);
-        this.local = options.local;
-        this.global = options.global;
+        var local = options.local;
+        var global = options.global;
+        this.x = local.x;
+        this.y = local.y;
+        if (options.type = "mousedown") {
+            this.dx = global.x - lx;
+            this.dy = global.y - ly;
+        }
+        lx = global.x;
+        ly = global.y;
     };
     var p = inherits(MouseEvent, Event);
     module.exports = MouseEvent;
@@ -896,7 +942,7 @@ define("phyxdown/ionejs/1.0.0/core/ones/Painter-debug", [ "phyxdown/ionejs/1.0.0
     p.draw = function(context) {
         var me = this, image = me._image;
         try {
-            context.drawImage(image, 0, 0);
+            context.drawImage(image, this.x, this.y);
         } catch (e) {}
     };
     module.exports = Painter;

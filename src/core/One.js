@@ -122,8 +122,40 @@ define(function(require, exports, module) {
     };
 
     /**
+     * Name based query
+     * @param  {string} path      eg. "pricess.leg.skin"
+     * @param  {string} separator eg. "."
+     * @return {core.One}
+     */
+    p.query = function(path, separator){
+        try{
+            var separator = separator || ".";
+            var names = path.split(separator);
+            var _query = function(one, names){
+                if(names.length > 1){
+                    return _query(one._childMap[names.shift()][0], names);
+                }
+                else
+                    return one._childMap[names.shift()][0];
+            }
+            return _query(this, names) || null;
+        }
+        catch(e) {
+            return null;
+        } 
+    };
+
+    /**
+     * Get parent.
+     * @return {core.One} parent
+     */
+    p.getParent = function() {
+        return this._parent;
+    };
+
+    /**
      * Set parent.
-     * @param {one.Core} one
+     * @param {core.One} parent
      */
     p.setParent = function(one) {
         this._parent = one;
@@ -298,10 +330,10 @@ define(function(require, exports, module) {
 
 
     p._draw = function(context) {
+        this._visible && this.draw(context);
         context.save();
         var matrix = this._getRelativeMatrix();
         context.transform(matrix.a, matrix.b, matrix.c, matrix.d, matrix.tx, matrix.ty);
-        this._visible && this.draw(context);
         for (var i = 0, l = this._children.length; i < l; i++) {
             var child = this._children[i];
             child._draw(context);

@@ -38,10 +38,22 @@ define(function(require, exports, module) {
             }));
         }
 
-        var types = ['mousedown', 'mouseup', 'click'];
-        for (var index in types) {
-            canvas.addEventListener(types[index], listener);
-        }
+        var me = this;
+        canvas.addEventListener('mousedown', function(){
+            me._down = true;
+            listener.apply(null, arguments);
+        });
+
+        canvas.addEventListener('mouseup', function(){
+            me._down = false;
+            listener.apply(null, arguments);
+        });
+
+        canvas.addEventListener('mousemove', function(){
+            me._down && listener.apply(null, arguments);
+        });
+
+        canvas.addEventListener('click', listener);
     };
 
     p.run = function() {
