@@ -1,4 +1,4 @@
-define("phyxdown/ionejs/1.0.0/ionejs-debug", [ "./core/Engine-debug", "./utils/inherits-debug", "./core/One-debug", "./geom/Matrix2D-debug", "./geom/Point-debug", "./core/events/MouseEvent-debug", "./core/Event-debug", "./core/ones/Stage-debug", "./core/ones/Painter-debug", "./helpers/Creator-debug" ], function(require, exports, module) {
+define("phyxdown/ionejs/1.0.0/ionejs-debug", [ "./core/Engine-debug", "./utils/inherits-debug", "./core/One-debug", "./geom/Matrix2D-debug", "./geom/Point-debug", "./core/events/MouseEvent-debug", "./core/Event-debug", "./core/ones/Stage-debug", "./core/ones/Painter-debug", "./core/hitTests/all-debug", "./core/hitTests/ifInCircle-debug", "./helpers/Creator-debug" ], function(require, exports, module) {
     //init ionejs namespace
     var ionejs = {};
     //ionejs.core
@@ -7,6 +7,10 @@ define("phyxdown/ionejs/1.0.0/ionejs-debug", [ "./core/Engine-debug", "./utils/i
     var One = require("./core/One-debug");
     var Stage = require("./core/ones/Stage-debug");
     var Painter = require("./core/ones/Painter-debug");
+    //ionejs.core.hitTests
+    var hitTests = require("./core/hitTests/all-debug");
+    //ionejs.geom
+    var Point = require("./geom/Point-debug");
     //ionejs.helpers
     var Creator = require("./helpers/Creator-debug");
     //ionejs.utils
@@ -30,6 +34,11 @@ define("phyxdown/ionejs/1.0.0/ionejs-debug", [ "./core/Engine-debug", "./utils/i
     ionejs.Stage = Stage;
     ionejs.Painter = Painter;
     ionejs.Event = Event;
+    ionejs.hitTests = hitTests;
+    //Helpful Classes
+    ionejs.Point = Point;
+    //Helpful Functions
+    ionejs.hitTests = hitTests;
     //instance
     ionejs.instance = new Engine();
     module.exports = ionejs;
@@ -877,6 +886,12 @@ define("phyxdown/ionejs/1.0.0/geom/Point-debug", [], function(require, exports, 
         this.x = x;
         this.y = y;
     };
+    var p = Point.prototype;
+    p.distance = function(point) {
+        var dx = point.x - this.x;
+        var dy = point.y - this.y;
+        return Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
+    };
     module.exports = Point;
 });
 
@@ -980,6 +995,18 @@ define("phyxdown/ionejs/1.0.0/core/ones/Painter-debug", [ "phyxdown/ionejs/1.0.0
         } catch (e) {}
     };
     module.exports = Painter;
+});
+
+define("phyxdown/ionejs/1.0.0/core/hitTests/all-debug", [ "phyxdown/ionejs/1.0.0/core/hitTests/ifInCircle-debug" ], function(require, exports, module) {
+    exports.ifInCircle = require("phyxdown/ionejs/1.0.0/core/hitTests/ifInCircle-debug");
+});
+
+define("phyxdown/ionejs/1.0.0/core/hitTests/ifInCircle-debug", [], function(require, exports, module) {
+    exports.getTester = function(center, radius) {
+        return function(point) {
+            return point.distance(center) <= radius;
+        };
+    };
 });
 
 define("phyxdown/ionejs/1.0.0/helpers/Creator-debug", [], function(require, exports, module) {

@@ -9,6 +9,12 @@ define(function(require, exports, module) {
     var Stage = require("./core/ones/Stage");
     var Painter = require("./core/ones/Painter");
 
+    //ionejs.core.hitTests
+    var hitTests = require("./core/hitTests/all");
+
+    //ionejs.geom
+    var Point = require("./geom/Point");
+
     //ionejs.helpers
     var Creator = require("./helpers/Creator");
 
@@ -37,6 +43,13 @@ define(function(require, exports, module) {
     ionejs.Stage = Stage;
     ionejs.Painter = Painter;
     ionejs.Event = Event;
+    ionejs.hitTests = hitTests;
+
+    //Helpful Classes
+    ionejs.Point = Point;
+    
+    //Helpful Functions
+    ionejs.hitTests = hitTests;
 
     //instance
     ionejs.instance = new Engine();
