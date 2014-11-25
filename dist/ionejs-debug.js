@@ -43,6 +43,7 @@ define("phyxdown/ionejs/1.0.0/core/Engine-debug", [ "phyxdown/ionejs/1.0.0/utils
     var Engine = function(options) {
         this._stage = null;
         this._canvas = null;
+        this._debug = true;
     };
     var p = Engine.prototype;
     /**
@@ -90,13 +91,25 @@ define("phyxdown/ionejs/1.0.0/core/Engine-debug", [ "phyxdown/ionejs/1.0.0/utils
         canvas.addEventListener("click", _onMouse);
     };
     p.run = function() {
-        var canvas = this._canvas, stage = this._stage, context = canvas.getContext("2d");
+        var me = this;
+        var canvas = me._canvas, stage = me._stage, context = canvas.getContext("2d");
+        var lt = Date.now();
         var frame = function() {
-            //draw
+            var t1 = Date.now();
             stage._draw(context);
-            //update
-            //stage._update();
-            setTimeout(frame, 1e3 / 60);
+            var t2 = Date.now();
+            var dt = t2 - t1;
+            setTimeout(frame, 16.6 - dt > 0 ? 16.6 - dt : 0);
+            //show debug info
+            var fps = 1e3 / (Date.now() - lt);
+            lt = Date.now();
+            if (me._debug) {
+                context.save();
+                context.fillStyle = "#000000";
+                context.font = "bold 28px Aerial";
+                context.fillText("FPS: " + (fps * 100 << 0) / 100, 30, 52);
+                context.restore();
+            }
         };
         frame();
     };
