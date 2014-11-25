@@ -51,16 +51,27 @@ define("phyxdown/ionejs/1.0.0/core/Engine-debug", [ "phyxdown/ionejs/1.0.0/utils
     p.init = function(stage, canvas) {
         this._stage = stage;
         this._canvas = canvas;
-        canvas.width = stage.width;
-        canvas.height = stage.height;
-        var offsetTop = canvas.offsetTop;
         var offsetLeft = canvas.offsetLeft;
-        var listener = function(e) {
+        var offsetTop = canvas.offsetTop;
+        /**
+         * Currently, the size of stage concerts the size window.
+         */
+        var _onResize = function() {
+            canvas.width = stage.width = window.innerWidth - (offsetLeft * 2 + 5);
+            canvas.height = stage.height = window.innerHeight - (offsetLeft * 2 + 5);
+        };
+        window.addEventListener("resize", _onResize);
+        _onResize();
+        /**
+         * Mouse Event is transfered with capsulation.
+         * See {core.events.MouseEvent} for details.
+         */
+        var _onMouse = function(e) {
             var global = new Point(e.pageX - offsetLeft, e.pageY - offsetTop);
-            var origin = stage.hit(global);
-            if (!origin) return;
-            var local = origin.globalToLocal(global);
-            origin.dispatchEvent(new MouseEvent({
+            var target = stage.hit(global);
+            if (!target) return;
+            var local = target.globalToLocal(global);
+            target.dispatchEvent(new MouseEvent({
                 type: e.type,
                 global: global,
                 local: local
@@ -68,17 +79,15 @@ define("phyxdown/ionejs/1.0.0/core/Engine-debug", [ "phyxdown/ionejs/1.0.0/utils
         };
         var me = this;
         canvas.addEventListener("mousedown", function() {
-            me._down = true;
-            listener.apply(null, arguments);
+            _onMouse.apply(null, arguments);
         });
-        canvas.addEventListener("mouseup", function() {
-            me._down = false;
-            listener.apply(null, arguments);
+        document.addEventListener("mouseup", function() {
+            _onMouse.apply(null, arguments);
         });
-        canvas.addEventListener("mousemove", function() {
-            me._down && listener.apply(null, arguments);
+        document.addEventListener("mousemove", function() {
+            _onMouse.apply(null, arguments);
         });
-        canvas.addEventListener("click", listener);
+        canvas.addEventListener("click", _onMouse);
     };
     p.run = function() {
         var canvas = this._canvas, stage = this._stage, context = canvas.getContext("2d");
@@ -304,7 +313,7 @@ define("phyxdown/ionejs/1.0.0/core/One-debug", [ "phyxdown/ionejs/1.0.0/geom/Mat
      * @param  {core.Event} event
      */
     p.dispatchEvent = function(event) {
-        event.origin = this;
+        event.target = this;
         var arr = this.getAncestors();
         event.phase = Event.CAPTURING_PHASE;
         for (var i = arr.length - 1; i >= 0; i--) {
@@ -321,7 +330,7 @@ define("phyxdown/ionejs/1.0.0/core/One-debug", [ "phyxdown/ionejs/1.0.0/geom/Mat
         }
     };
     p._dispatchEvent = function(event) {
-        event.current = this;
+        event.currentTarget = this;
         try {
             var phase = event.phase === Event.CAPTURING_PHASE ? "capture" : "bubble";
             var arr = this._listeners[phase][event.type].slice();
@@ -869,10 +878,8 @@ define("phyxdown/ionejs/1.0.0/core/events/MouseEvent-debug", [ "phyxdown/ionejs/
         var global = options.global;
         this.x = local.x;
         this.y = local.y;
-        if (options.type = "mousedown") {
-            this.dx = global.x - lx;
-            this.dy = global.y - ly;
-        }
+        this.dx = global.x - lx;
+        this.dy = global.y - ly;
         lx = global.x;
         ly = global.y;
     };
@@ -883,8 +890,8 @@ define("phyxdown/ionejs/1.0.0/core/events/MouseEvent-debug", [ "phyxdown/ionejs/
 define("phyxdown/ionejs/1.0.0/core/Event-debug", [], function(require, exports, module) {
     var Event = function(options) {
         this.type = options.type;
-        this.origin = null;
-        this.current = null;
+        this.target = null;
+        this.currentTarget = null;
         this.phase = null;
         this._immediatePropagationStoped = false;
         this._propagationStoped = false;
@@ -912,10 +919,24 @@ define("phyxdown/ionejs/1.0.0/core/ones/Stage-debug", [ "phyxdown/ionejs/1.0.0/u
     var Stage = function(options) {
         options.parent = null;
         One.apply(this, arguments);
-        this.width = options.width;
-        this.height = options.height;
+        this._hitable = true;
+        this.width = 0;
+        this.height = 0;
     };
     var p = inherits(Stage, One);
+    p.testHit = function(point) {
+        var x = point.x, y = point.y;
+        if (x > 0 && x < this.width && y > 0 && y < this.height) {
+            return true;
+        }
+        return false;
+    };
+    p.draw = function(context) {
+        try {
+            context.fillStyle = "#ffffff";
+            context.fillRect(0, 0, this.width, this.height);
+        } catch (e) {}
+    };
     module.exports = Stage;
 });
 

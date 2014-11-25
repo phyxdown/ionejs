@@ -4,9 +4,9 @@ define(function(require, exports, module) {
 
         this.type = options.type;
 
-        this.origin = null;
+        this.target = null;
 
-        this.current = null;
+        this.currentTarget = null;
 
         this.phase = null;
 

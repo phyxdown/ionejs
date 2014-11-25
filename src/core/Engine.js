@@ -18,42 +18,51 @@ define(function(require, exports, module) {
     p.init = function(stage, canvas) {
         this._stage = stage;
         this._canvas = canvas;
-
-        canvas.width = stage.width;
-        canvas.height = stage.height;
-        
-        var offsetTop = canvas.offsetTop;
         var offsetLeft = canvas.offsetLeft;
+        var offsetTop = canvas.offsetTop;
 
-        var listener = function(e) {
+        /**
+         * Currently, the size of stage concerts the size window.
+         */
+        var _onResize = function(){
+            canvas.width = stage.width = window.innerWidth - (offsetLeft*2+5);
+            canvas.height = stage.height = window.innerHeight - (offsetLeft*2+5);
+        };
+
+        window.addEventListener('resize', _onResize);
+        _onResize();
+
+        /**
+         * Mouse Event is transfered with capsulation.
+         * See {core.events.MouseEvent} for details.
+         */
+        var _onMouse = function(e) {
             var global = new Point(e.pageX - offsetLeft, e.pageY - offsetTop);
-            var origin = stage.hit(global);
-            if (!origin)
+            var target = stage.hit(global);
+            if (!target)
                 return;
-            var local = origin.globalToLocal(global);
-            origin.dispatchEvent(new MouseEvent({
+            var local = target.globalToLocal(global);
+            target.dispatchEvent(new MouseEvent({
                 type: e.type,
                 global: global,
                 local: local
             }));
-        }
+        };
 
         var me = this;
         canvas.addEventListener('mousedown', function(){
-            me._down = true;
-            listener.apply(null, arguments);
+            _onMouse.apply(null, arguments);
         });
 
-        canvas.addEventListener('mouseup', function(){
-            me._down = false;
-            listener.apply(null, arguments);
+        document.addEventListener('mouseup', function(){
+            _onMouse.apply(null, arguments);
         });
 
-        canvas.addEventListener('mousemove', function(){
-            me._down && listener.apply(null, arguments);
+        document.addEventListener('mousemove', function(){
+            _onMouse.apply(null, arguments);
         });
 
-        canvas.addEventListener('click', listener);
+        canvas.addEventListener('click', _onMouse);
     };
 
     p.run = function() {

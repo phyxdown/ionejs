@@ -11,10 +11,8 @@ define(function(require, exports, module) {
         var global = options.global;
         this.x = local.x;
         this.y = local.y;
-        if(options.type = "mousedown"){
-        	this.dx = global.x - lx;
-        	this.dy = global.y - ly;
-        }
+    	this.dx = global.x - lx;
+    	this.dy = global.y - ly;
         lx = global.x;
         ly = global.y;
     }

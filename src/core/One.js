@@ -227,7 +227,7 @@ define(function(require, exports, module) {
      * @param  {core.Event} event
      */
     p.dispatchEvent = function(event) {
-        event.origin = this;
+        event.target = this;
 
         var arr = this.getAncestors();
 
@@ -249,7 +249,7 @@ define(function(require, exports, module) {
     };
 
     p._dispatchEvent = function(event) {
-        event.current = this;
+        event.currentTarget = this;
         try {
             var phase = event.phase === Event.CAPTURING_PHASE ? "capture" : "bubble";
             var arr = this._listeners[phase][event.type].slice();
