@@ -425,10 +425,10 @@ define("phyxdown/ionejs/1.0.0/core/One-debug", [ "phyxdown/ionejs/1.0.0/geom/Mat
         return false;
     };
     p._draw = function(context) {
-        this._visible && this.draw(context);
         context.save();
         var matrix = this._getRelativeMatrix();
         context.transform(matrix.a, matrix.b, matrix.c, matrix.d, matrix.tx, matrix.ty);
+        this._visible && this.draw(context);
         for (var i = 0, l = this._children.length; i < l; i++) {
             var child = this._children[i];
             child._draw(context);
@@ -991,7 +991,7 @@ define("phyxdown/ionejs/1.0.0/core/ones/Painter-debug", [ "phyxdown/ionejs/1.0.0
     p.draw = function(context) {
         var me = this, image = me._image;
         try {
-            context.drawImage(image, this.x, this.y);
+            context.drawImage(image, 0, 0);
         } catch (e) {}
     };
     module.exports = Painter;

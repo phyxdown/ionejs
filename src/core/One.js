@@ -330,10 +330,10 @@ define(function(require, exports, module) {
 
 
     p._draw = function(context) {
-        this._visible && this.draw(context);
         context.save();
         var matrix = this._getRelativeMatrix();
         context.transform(matrix.a, matrix.b, matrix.c, matrix.d, matrix.tx, matrix.ty);
+        this._visible && this.draw(context);
         for (var i = 0, l = this._children.length; i < l; i++) {
             var child = this._children[i];
             child._draw(context);
