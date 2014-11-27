@@ -14,6 +14,7 @@ define(function(require, exports, module) {
 
     //ionejs.geom
     var Point = require("./geom/Point");
+    var Matrix2D = require("./geom/Matrix2D");
 
     //ionejs.helpers
     var Creator = require("./helpers/Creator");
@@ -47,6 +48,7 @@ define(function(require, exports, module) {
 
     //Helpful Classes
     ionejs.Point = Point;
+    ionejs.Matrix2D = Matrix2D;
     
     //Helpful Functions
     ionejs.hitTests = hitTests;

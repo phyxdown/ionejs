@@ -284,7 +284,7 @@ define(function(require, exports, module) {
     p.globalToLocal = function(point) {
         var am = this._getAbsoluteMatrix();
         am.invert().append(1, 0, 0, 1, point.x, point.y);
-        return new Point(am.tx, am.ty);
+        return new Point(am.x, am.y);
     };
 
     /**
@@ -295,7 +295,7 @@ define(function(require, exports, module) {
     p.localToGlobal = function(point) {
         var am = this._getAbsoluteMatrix();
         am.append(1, 0, 0, 1, point.x, point.y);
-        return new Point(am.tx, am.ty);
+        return new Point(am.x, am.y);
     };
 
     /**
@@ -332,7 +332,7 @@ define(function(require, exports, module) {
     p._draw = function(context) {
         context.save();
         var matrix = this._getRelativeMatrix();
-        context.transform(matrix.a, matrix.b, matrix.c, matrix.d, matrix.tx, matrix.ty);
+        context.transform(matrix.a, matrix.b, matrix.c, matrix.d, matrix.x, matrix.y);
         this._visible && this.draw(context);
         for (var i = 0, l = this._children.length; i < l; i++) {
             var child = this._children[i];
