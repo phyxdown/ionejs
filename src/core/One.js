@@ -262,7 +262,7 @@ define(function(require, exports, module) {
 
     p._getRelativeMatrix = function() {
         var matrix = new Matrix2D();
-        return matrix.identity().appendTransform(this.x, this.y, this.scaleX, this.scaleY, this.rotation, this.skewX, this.skewY, this.regX, this.regY);
+        return matrix.identity().transform(this.x, this.y, this.scaleX, this.scaleY, this.rotation, this.skewX, this.skewY, this.regX, this.regY);
     };
 
     p._getAbsoluteMatrix = function() {
@@ -270,9 +270,9 @@ define(function(require, exports, module) {
         var matrix = new Matrix2D();
         matrix.identity();
         for (var i = ancestors.length - 1; i > -1; i--) {
-            matrix.appendMatrix(ancestors[i]._getRelativeMatrix());
+            matrix.prependMatrix(ancestors[i]._getRelativeMatrix());
         }
-        matrix.appendMatrix(this._getRelativeMatrix());
+        matrix.prependMatrix(this._getRelativeMatrix());
         return matrix;
     };
 
@@ -282,8 +282,9 @@ define(function(require, exports, module) {
      * @return {geom.Point} 
      */
     p.globalToLocal = function(point) {
+        //modifying
         var am = this._getAbsoluteMatrix();
-        am.invert().append(1, 0, 0, 1, point.x, point.y);
+        am.invert().prepend(1, 0, 0, 1, point.x, point.y);
         return new Point(am.x, am.y);
     };
 
@@ -294,7 +295,7 @@ define(function(require, exports, module) {
      */
     p.localToGlobal = function(point) {
         var am = this._getAbsoluteMatrix();
-        am.append(1, 0, 0, 1, point.x, point.y);
+        am.prepend(1, 0, 0, 1, point.x, point.y);
         return new Point(am.x, am.y);
     };
 
