@@ -386,7 +386,7 @@ define("phyxdown/ionejs/1.0.0/core/One-debug", [ "phyxdown/ionejs/1.0.0/geom/Mat
     p.globalToLocal = function(point) {
         //modifying
         var am = this._getAbsoluteMatrix();
-        am.invert().prepend(1, 0, 0, 1, point.x, point.y);
+        am.invert().append(1, 0, 0, 1, point.x, point.y);
         return new Point(am.x, am.y);
     };
     /**
@@ -396,7 +396,7 @@ define("phyxdown/ionejs/1.0.0/core/One-debug", [ "phyxdown/ionejs/1.0.0/geom/Mat
      */
     p.localToGlobal = function(point) {
         var am = this._getAbsoluteMatrix();
-        am.prepend(1, 0, 0, 1, point.x, point.y);
+        am.append(1, 0, 0, 1, point.x, point.y);
         return new Point(am.x, am.y);
     };
     /**

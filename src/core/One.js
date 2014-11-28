@@ -284,7 +284,7 @@ define(function(require, exports, module) {
     p.globalToLocal = function(point) {
         //modifying
         var am = this._getAbsoluteMatrix();
-        am.invert().prepend(1, 0, 0, 1, point.x, point.y);
+        am.invert().append(1, 0, 0, 1, point.x, point.y);
         return new Point(am.x, am.y);
     };
 
@@ -295,7 +295,7 @@ define(function(require, exports, module) {
      */
     p.localToGlobal = function(point) {
         var am = this._getAbsoluteMatrix();
-        am.prepend(1, 0, 0, 1, point.x, point.y);
+        am.append(1, 0, 0, 1, point.x, point.y);
         return new Point(am.x, am.y);
     };
 
