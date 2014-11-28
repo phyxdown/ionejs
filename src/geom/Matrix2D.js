@@ -1,5 +1,9 @@
 define(function(require, exports, module) {
-
+    /**
+     * Undrawable context or mathematical context is expected.
+     * This class should not be exposed.
+     * But currently....
+     */
     function Matrix2D(a, b, c, d, x, y) {
         this.setValues(a, b, c, d, x, y);
     }
@@ -90,6 +94,7 @@ define(function(require, exports, module) {
         skewY *= Math.PI / 180;
         var cos = Math.cos, sin = Math.sin;
         this.prepend(1, 0, 0, 1, regX, regY);
+        this.prepend(scaleX, 0, 0, scaleY, 0, 0);
         this.prepend(cos(rotation), sin(rotation), -sin(rotation), cos(rotation), 0, 0);
         this.prepend(1, 0, 0, 1, x, y);
         return this;
