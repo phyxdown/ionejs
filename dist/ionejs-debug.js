@@ -483,6 +483,10 @@ define("phyxdown/ionejs/1.0.0/core/Matrix-debug", [ "phyxdown/ionejs/1.0.0/geom/
         this.prepend(1, 0, 0, 1, x, y);
         return this;
     };
+    p.translate = function() {};
+    p.rotate = function() {};
+    p.skew = function() {};
+    p.scale = function() {};
     module.exports = Matrix;
 });
 

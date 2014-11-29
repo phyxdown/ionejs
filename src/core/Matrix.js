@@ -39,7 +39,15 @@ define(function(require, exports, module) {
         this.prepend(cos(skewY), sin(skewY), -sin(skewX), cos(skewX), 0, 0);
         this.prepend(1, 0, 0, 1, x, y);
         return this;
-    };
+    }
+
+    p.translate = function(){};
+
+    p.rotate = function(){};
+
+    p.skew = function(){};
+
+    p.scale = function(){};
 
     module.exports = Matrix;
 });
