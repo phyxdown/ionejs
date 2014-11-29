@@ -378,10 +378,7 @@ define("phyxdown/ionejs/1.0.0/core/One-debug", [ "phyxdown/ionejs/1.0.0/geom/Poi
      * @return {geom.Point}
      */
     p.globalToLocal = function(point) {
-        //modifying
-        var am = this.getAbsoluteMatrix();
-        am.invert().append(1, 0, 0, 1, point.x, point.y);
-        return new Point(am.x, am.y);
+        return point.retransform(this.getAbsoluteMatrix());
     };
     /**
      * convert local coordinates to global
@@ -389,9 +386,7 @@ define("phyxdown/ionejs/1.0.0/core/One-debug", [ "phyxdown/ionejs/1.0.0/geom/Poi
      * @return {geom.Point}
      */
     p.localToGlobal = function(point) {
-        var am = this.getAbsoluteMatrixi();
-        am.append(1, 0, 0, 1, point.x, point.y);
-        return new Point(am.x, am.y);
+        return point.transform(this.getAbsoluteMatrix());
     };
     /**
      * Get one from descendants that seems to intersect the local coordinates,
@@ -451,6 +446,17 @@ define("phyxdown/ionejs/1.0.0/geom/Point-debug", [], function(require, exports, 
         var dx = point.x - this.x;
         var dy = point.y - this.y;
         return Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
+    };
+    p.transform = function(matrix) {
+        var r = matrix.append(1, 0, 0, 1, this.x, this.y);
+        return new Point(r.x, r.y);
+    };
+    p.retransform = function(matrix) {
+        var r = matrix.invert().append(1, 0, 0, 1, this.x, this.y);
+        return new Point(r.x, r.y);
+    };
+    p.clone = function() {
+        return new Point(this.x, this.y);
     };
     module.exports = Point;
 });

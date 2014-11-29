@@ -273,10 +273,7 @@ define(function(require, exports, module) {
      * @return {geom.Point}
      */
     p.globalToLocal = function(point) {
-        //modifying
-        var am = this.getAbsoluteMatrix();
-        am.invert().append(1, 0, 0, 1, point.x, point.y);
-        return new Point(am.x, am.y);
+        return point.retransform(this.getAbsoluteMatrix());
     };
 
     /**
@@ -285,9 +282,7 @@ define(function(require, exports, module) {
      * @return {geom.Point}
      */
     p.localToGlobal = function(point) {
-        var am = this.getAbsoluteMatrixi();
-        am.append(1, 0, 0, 1, point.x, point.y);
-        return new Point(am.x, am.y);
+        return point.transform(this.getAbsoluteMatrix());
     };
 
     /**
