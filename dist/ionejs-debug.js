@@ -1,4 +1,4 @@
-define("phyxdown/ionejs/1.0.0/ionejs-debug", [ "./core/Engine-debug", "./utils/inherits-debug", "./core/One-debug", "./geom/Matrix2D-debug", "./geom/Point-debug", "./core/events/MouseEvent-debug", "./core/Event-debug", "./core/ones/Stage-debug", "./core/ones/Painter-debug", "./core/hitTests/all-debug", "./core/hitTests/ifInCircle-debug", "./helpers/Creator-debug" ], function(require, exports, module) {
+define("phyxdown/ionejs/1.0.0/ionejs-debug", [ "./core/Engine-debug", "./utils/inherits-debug", "./core/One-debug", "./geom/Point-debug", "./core/Matrix-debug", "./geom/Matrix2D-debug", "./core/events/MouseEvent-debug", "./core/Event-debug", "./core/ones/Stage-debug", "./core/ones/Painter-debug", "./core/hitTests/all-debug", "./core/hitTests/ifInCircle-debug", "./helpers/Creator-debug" ], function(require, exports, module) {
     //init ionejs namespace
     var ionejs = {};
     //ionejs.core
@@ -46,7 +46,7 @@ define("phyxdown/ionejs/1.0.0/ionejs-debug", [ "./core/Engine-debug", "./utils/i
     module.exports = ionejs;
 });
 
-define("phyxdown/ionejs/1.0.0/core/Engine-debug", [ "phyxdown/ionejs/1.0.0/utils/inherits-debug", "phyxdown/ionejs/1.0.0/core/One-debug", "phyxdown/ionejs/1.0.0/geom/Matrix2D-debug", "phyxdown/ionejs/1.0.0/geom/Point-debug", "phyxdown/ionejs/1.0.0/core/events/MouseEvent-debug", "phyxdown/ionejs/1.0.0/core/Event-debug" ], function(require, exports, module) {
+define("phyxdown/ionejs/1.0.0/core/Engine-debug", [ "phyxdown/ionejs/1.0.0/utils/inherits-debug", "phyxdown/ionejs/1.0.0/core/One-debug", "phyxdown/ionejs/1.0.0/geom/Point-debug", "phyxdown/ionejs/1.0.0/core/Matrix-debug", "phyxdown/ionejs/1.0.0/geom/Matrix2D-debug", "phyxdown/ionejs/1.0.0/core/events/MouseEvent-debug", "phyxdown/ionejs/1.0.0/core/Event-debug" ], function(require, exports, module) {
     var inherits = require("phyxdown/ionejs/1.0.0/utils/inherits-debug");
     var One = require("phyxdown/ionejs/1.0.0/core/One-debug");
     var MouseEvent = require("phyxdown/ionejs/1.0.0/core/events/MouseEvent-debug");
@@ -141,9 +141,9 @@ define("phyxdown/ionejs/1.0.0/utils/inherits-debug", [], function(require, expor
     };
 });
 
-define("phyxdown/ionejs/1.0.0/core/One-debug", [ "phyxdown/ionejs/1.0.0/geom/Matrix2D-debug", "phyxdown/ionejs/1.0.0/geom/Point-debug" ], function(require, exports, module) {
-    var Matrix2D = require("phyxdown/ionejs/1.0.0/geom/Matrix2D-debug");
+define("phyxdown/ionejs/1.0.0/core/One-debug", [ "phyxdown/ionejs/1.0.0/geom/Point-debug", "phyxdown/ionejs/1.0.0/core/Matrix-debug", "phyxdown/ionejs/1.0.0/geom/Matrix2D-debug", "phyxdown/ionejs/1.0.0/utils/inherits-debug" ], function(require, exports, module) {
     var Point = require("phyxdown/ionejs/1.0.0/geom/Point-debug");
+    var Matrix = require("phyxdown/ionejs/1.0.0/core/Matrix-debug");
     /**
      * What is one?
      * I mean oberservable nested existing.
@@ -364,38 +364,32 @@ define("phyxdown/ionejs/1.0.0/core/One-debug", [ "phyxdown/ionejs/1.0.0/geom/Mat
             }
         } catch (e) {}
     };
-    p._getRelativeMatrix = function() {
-        var matrix = new Matrix2D();
-        return matrix.identity().transform(this.x, this.y, this.scaleX, this.scaleY, this.rotation, this.skewX, this.skewY, this.regX, this.regY);
-    };
-    p._getAbsoluteMatrix = function() {
+    p.getAbsoluteMatrix = function() {
         var ancestors = this.getAncestors();
-        var matrix = new Matrix2D();
-        matrix.identity();
+        var m = new Matrix();
         for (var i = ancestors.length - 1; i > -1; i--) {
-            matrix.prependMatrix(ancestors[i]._getRelativeMatrix());
+            m.transform(ancestors[i]);
         }
-        matrix.prependMatrix(this._getRelativeMatrix());
-        return matrix;
+        return m.transform(this);
     };
     /**
      * convert global coordinates to local
-     * @param  {geom.Point} point 
-     * @return {geom.Point} 
+     * @param  {geom.Point} point
+     * @return {geom.Point}
      */
     p.globalToLocal = function(point) {
         //modifying
-        var am = this._getAbsoluteMatrix();
+        var am = this.getAbsoluteMatrix();
         am.invert().append(1, 0, 0, 1, point.x, point.y);
         return new Point(am.x, am.y);
     };
     /**
      * convert local coordinates to global
-     * @param  {geom.Point} point 
-     * @return {geom.Point} 
+     * @param  {geom.Point} point
+     * @return {geom.Point}
      */
     p.localToGlobal = function(point) {
-        var am = this._getAbsoluteMatrix();
+        var am = this.getAbsoluteMatrixi();
         am.append(1, 0, 0, 1, point.x, point.y);
         return new Point(am.x, am.y);
     };
@@ -429,8 +423,8 @@ define("phyxdown/ionejs/1.0.0/core/One-debug", [ "phyxdown/ionejs/1.0.0/geom/Mat
     };
     p._draw = function(context) {
         context.save();
-        var matrix = this._getRelativeMatrix();
-        context.transform(matrix.a, matrix.b, matrix.c, matrix.d, matrix.x, matrix.y);
+        var am = new Matrix(this);
+        context.transform(am.a, am.b, am.c, am.d, am.x, am.y);
         this._visible && this.draw(context);
         for (var i = 0, l = this._children.length; i < l; i++) {
             var child = this._children[i];
@@ -445,6 +439,51 @@ define("phyxdown/ionejs/1.0.0/core/One-debug", [ "phyxdown/ionejs/1.0.0/geom/Mat
      */
     p.draw = function(context) {};
     module.exports = One;
+});
+
+define("phyxdown/ionejs/1.0.0/geom/Point-debug", [], function(require, exports, module) {
+    var Point = function(x, y) {
+        this.x = x;
+        this.y = y;
+    };
+    var p = Point.prototype;
+    p.distance = function(point) {
+        var dx = point.x - this.x;
+        var dy = point.y - this.y;
+        return Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
+    };
+    module.exports = Point;
+});
+
+define("phyxdown/ionejs/1.0.0/core/Matrix-debug", [ "phyxdown/ionejs/1.0.0/geom/Matrix2D-debug", "phyxdown/ionejs/1.0.0/geom/Point-debug", "phyxdown/ionejs/1.0.0/utils/inherits-debug" ], function(require, exports, module) {
+    var Matrix2D = require("phyxdown/ionejs/1.0.0/geom/Matrix2D-debug");
+    var Point = require("phyxdown/ionejs/1.0.0/geom/Point-debug");
+    var inherits = require("phyxdown/ionejs/1.0.0/utils/inherits-debug");
+    var Matrix = function() {
+        if (arguments.length == 6) {
+            Matrix2D.apply(this, arguments);
+        } else if (arguments.length == 1) {
+            Matrix2D.apply(this, []);
+            this.transform(arguments[0]);
+        } else if (arguments.length == 0) {
+            Matrix2D.apply(this, []);
+        } else throw new Error("Illegal params for core.Matrix.");
+    };
+    var p = inherits(Matrix, Matrix2D);
+    p.transform = function(one) {
+        var x = one.x, y = one.y, scaleX = one.scaleX, scaleY = one.scaleY, rotation = one.rotation, skewX = one.skewX, skewY = one.skewY, regX = one.regX, regY = one.regY;
+        rotation *= Math.PI / 180;
+        skewX *= Math.PI / 180;
+        skewY *= Math.PI / 180;
+        var cos = Math.cos, sin = Math.sin;
+        this.prepend(1, 0, 0, 1, regX, regY);
+        this.prepend(scaleX, 0, 0, scaleY, 0, 0);
+        this.prepend(cos(rotation), sin(rotation), -sin(rotation), cos(rotation), 0, 0);
+        this.prepend(cos(skewY), sin(skewY), -sin(skewX), cos(skewX), 0, 0);
+        this.prepend(1, 0, 0, 1, x, y);
+        return this;
+    };
+    module.exports = Matrix;
 });
 
 define("phyxdown/ionejs/1.0.0/geom/Matrix2D-debug", [], function(require, exports, module) {
@@ -521,18 +560,6 @@ define("phyxdown/ionejs/1.0.0/geom/Matrix2D-debug", [], function(require, export
         this.y = (b1 * x1 - a1 * y1) / n;
         return this;
     };
-    p.transform = function(x, y, scaleX, scaleY, rotation, skewX, skewY, regX, regY) {
-        ignorify(arguments, [ 0, 0, 1, 1, 0, 0, 0, 0, 0 ]);
-        rotation *= Math.PI / 180;
-        skewX *= Math.PI / 180;
-        skewY *= Math.PI / 180;
-        var cos = Math.cos, sin = Math.sin;
-        this.prepend(1, 0, 0, 1, regX, regY);
-        this.prepend(scaleX, 0, 0, scaleY, 0, 0);
-        this.prepend(cos(rotation), sin(rotation), -sin(rotation), cos(rotation), 0, 0);
-        this.prepend(1, 0, 0, 1, x, y);
-        return this;
-    };
     p.equals = function(matrix) {
         return this.x === matrix.x && this.y === matrix.y && this.a === matrix.a && this.b === matrix.b && this.c === matrix.c && this.d === matrix.d;
     };
@@ -548,20 +575,6 @@ define("phyxdown/ionejs/1.0.0/geom/Matrix2D-debug", [], function(require, export
         return new Matrix2D(this.a, this.b, this.c, this.d, this.tx, this.ty);
     };
     module.exports = Matrix2D;
-});
-
-define("phyxdown/ionejs/1.0.0/geom/Point-debug", [], function(require, exports, module) {
-    var Point = function(x, y) {
-        this.x = x;
-        this.y = y;
-    };
-    var p = Point.prototype;
-    p.distance = function(point) {
-        var dx = point.x - this.x;
-        var dy = point.y - this.y;
-        return Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
-    };
-    module.exports = Point;
 });
 
 define("phyxdown/ionejs/1.0.0/core/events/MouseEvent-debug", [ "phyxdown/ionejs/1.0.0/utils/inherits-debug", "phyxdown/ionejs/1.0.0/core/Event-debug" ], function(require, exports, module) {
@@ -610,7 +623,7 @@ define("phyxdown/ionejs/1.0.0/core/Event-debug", [], function(require, exports, 
     module.exports = Event;
 });
 
-define("phyxdown/ionejs/1.0.0/core/ones/Stage-debug", [ "phyxdown/ionejs/1.0.0/utils/inherits-debug", "phyxdown/ionejs/1.0.0/core/One-debug", "phyxdown/ionejs/1.0.0/geom/Matrix2D-debug", "phyxdown/ionejs/1.0.0/geom/Point-debug" ], function(require, exports, module) {
+define("phyxdown/ionejs/1.0.0/core/ones/Stage-debug", [ "phyxdown/ionejs/1.0.0/utils/inherits-debug", "phyxdown/ionejs/1.0.0/core/One-debug", "phyxdown/ionejs/1.0.0/geom/Point-debug", "phyxdown/ionejs/1.0.0/core/Matrix-debug", "phyxdown/ionejs/1.0.0/geom/Matrix2D-debug" ], function(require, exports, module) {
     var inherits = require("phyxdown/ionejs/1.0.0/utils/inherits-debug");
     var One = require("phyxdown/ionejs/1.0.0/core/One-debug");
     var Stage = function(options) {
@@ -637,7 +650,7 @@ define("phyxdown/ionejs/1.0.0/core/ones/Stage-debug", [ "phyxdown/ionejs/1.0.0/u
     module.exports = Stage;
 });
 
-define("phyxdown/ionejs/1.0.0/core/ones/Painter-debug", [ "phyxdown/ionejs/1.0.0/utils/inherits-debug", "phyxdown/ionejs/1.0.0/core/One-debug", "phyxdown/ionejs/1.0.0/geom/Matrix2D-debug", "phyxdown/ionejs/1.0.0/geom/Point-debug" ], function(require, exports, module) {
+define("phyxdown/ionejs/1.0.0/core/ones/Painter-debug", [ "phyxdown/ionejs/1.0.0/utils/inherits-debug", "phyxdown/ionejs/1.0.0/core/One-debug", "phyxdown/ionejs/1.0.0/geom/Point-debug", "phyxdown/ionejs/1.0.0/core/Matrix-debug", "phyxdown/ionejs/1.0.0/geom/Matrix2D-debug" ], function(require, exports, module) {
     var inherits = require("phyxdown/ionejs/1.0.0/utils/inherits-debug");
     var One = require("phyxdown/ionejs/1.0.0/core/One-debug");
     var Painter = function(options) {

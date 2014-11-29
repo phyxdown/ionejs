@@ -1,7 +1,7 @@
 define(function(require, exports, module) {
 
-    var Matrix2D = require('../geom/Matrix2D');
     var Point = require('../geom/Point');
+    var Matrix = require('./Matrix');
 
     /**
      * What is one?
@@ -72,10 +72,10 @@ define(function(require, exports, module) {
             var name = one._name;
             var map = this._childMap;
             if (!map[name]) return;
-            else if(map[name].length == 1) delete map[name];
+            else if (map[name].length == 1) delete map[name];
             else {
-                for(var i = 0, l = map[name].length; i < l; i++){
-                    if(map[name][i] === one) map[name].splice(i, 1);
+                for (var i = 0, l = map[name].length; i < l; i++) {
+                    if (map[name][i] === one) map[name].splice(i, 1);
                 }
             }
         }
@@ -127,22 +127,20 @@ define(function(require, exports, module) {
      * @param  {string} separator eg. "."
      * @return {core.One}
      */
-    p.query = function(path, separator){
-        try{
+    p.query = function(path, separator) {
+        try {
             var separator = separator || ".";
             var names = path.split(separator);
-            var _query = function(one, names){
-                if(names.length > 1){
+            var _query = function(one, names) {
+                if (names.length > 1) {
                     return _query(one._childMap[names.shift()][0], names);
-                }
-                else
+                } else
                     return one._childMap[names.shift()][0];
             }
             return _query(this, names) || null;
-        }
-        catch(e) {
+        } catch (e) {
             return null;
-        } 
+        }
     };
 
     /**
@@ -260,41 +258,34 @@ define(function(require, exports, module) {
         } catch (e) {}
     };
 
-    p._getRelativeMatrix = function() {
-        var matrix = new Matrix2D();
-        return matrix.identity().transform(this.x, this.y, this.scaleX, this.scaleY, this.rotation, this.skewX, this.skewY, this.regX, this.regY);
-    };
-
-    p._getAbsoluteMatrix = function() {
+    p.getAbsoluteMatrix = function() {
         var ancestors = this.getAncestors();
-        var matrix = new Matrix2D();
-        matrix.identity();
+        var m = new Matrix();
         for (var i = ancestors.length - 1; i > -1; i--) {
-            matrix.prependMatrix(ancestors[i]._getRelativeMatrix());
+            m.transform(ancestors[i]);
         }
-        matrix.prependMatrix(this._getRelativeMatrix());
-        return matrix;
+        return m.transform(this);
     };
 
     /**
      * convert global coordinates to local
-     * @param  {geom.Point} point 
-     * @return {geom.Point} 
+     * @param  {geom.Point} point
+     * @return {geom.Point}
      */
     p.globalToLocal = function(point) {
         //modifying
-        var am = this._getAbsoluteMatrix();
+        var am = this.getAbsoluteMatrix();
         am.invert().append(1, 0, 0, 1, point.x, point.y);
         return new Point(am.x, am.y);
     };
 
     /**
      * convert local coordinates to global
-     * @param  {geom.Point} point 
-     * @return {geom.Point} 
+     * @param  {geom.Point} point
+     * @return {geom.Point}
      */
     p.localToGlobal = function(point) {
-        var am = this._getAbsoluteMatrix();
+        var am = this.getAbsoluteMatrixi();
         am.append(1, 0, 0, 1, point.x, point.y);
         return new Point(am.x, am.y);
     };
@@ -332,8 +323,8 @@ define(function(require, exports, module) {
 
     p._draw = function(context) {
         context.save();
-        var matrix = this._getRelativeMatrix();
-        context.transform(matrix.a, matrix.b, matrix.c, matrix.d, matrix.x, matrix.y);
+        var am = new Matrix(this);
+        context.transform(am.a, am.b, am.c, am.d, am.x, am.y);
         this._visible && this.draw(context);
         for (var i = 0, l = this._children.length; i < l; i++) {
             var child = this._children[i];
