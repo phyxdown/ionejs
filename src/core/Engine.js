@@ -96,5 +96,10 @@ define(function(require, exports, module) {
         frame();
     };
 
+    p.dnd = function(){
+        var dndCtrl = require("./ctrls/DNDCtrl");
+        return new dndCtrl.init(this._stage);
+    };
+
     module.exports = Engine;
 });

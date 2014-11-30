@@ -14,12 +14,16 @@ define(function(require, exports, module) {
 
     p.transform = function(matrix){
         var r = matrix.append(1,0,0,1,this.x, this.y);
-        return new Point(r.x, r.y);
+        this.x = r.x;
+        this.y = r.y;
+        return this;
     };
 
     p.retransform = function(matrix){
         var r = matrix.invert().append(1,0,0,1,this.x, this.y);
-        return new Point(r.x, r.y);
+        this.x = r.x;
+        this.y = r.y;
+        return this;
     };
 
     p.clone = function(){

@@ -40,6 +40,8 @@ define(function(require, exports, module) {
         this._visible = true;
         //Docs expected
         this._hitable = false;
+        //Docs expected
+        this._dragable = false;
 
         this.x = options.x;
         this.y = options.y;
@@ -248,14 +250,22 @@ define(function(require, exports, module) {
 
     p._dispatchEvent = function(event) {
         event.currentTarget = this;
+        var phase, arr;
+        /**
+         * The code below is ambiguous, explicit logic may be expected.
+         */
         try {
-            var phase = event.phase === Event.CAPTURING_PHASE ? "capture" : "bubble";
-            var arr = this._listeners[phase][event.type].slice();
-            for (i = 0, len = arr.length; i < len; i++) {
+            phase = event.phase === Event.CAPTURING_PHASE ? "capture" : "bubble";
+            arr = this._listeners[phase][event.type].slice();
+        } catch (e) { return }
+
+        for (var i = 0, len = arr.length; i < len; i++) {
+            try {
                 arr[i](event);
                 if (event._immediatePropagationStopped) break;
-            }
-        } catch (e) {}
+            } catch (e) {console.log(e)}
+        }
+        
     };
 
     p.getAbsoluteMatrix = function() {
@@ -273,7 +283,7 @@ define(function(require, exports, module) {
      * @return {geom.Point}
      */
     p.globalToLocal = function(point) {
-        return point.retransform(this.getAbsoluteMatrix());
+        return point.clone().retransform(this.getAbsoluteMatrix());
     };
 
     /**
@@ -282,7 +292,7 @@ define(function(require, exports, module) {
      * @return {geom.Point}
      */
     p.localToGlobal = function(point) {
-        return point.transform(this.getAbsoluteMatrix());
+        return point.clone().transform(this.getAbsoluteMatrix());
     };
 
     /**

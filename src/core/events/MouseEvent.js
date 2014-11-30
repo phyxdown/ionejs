@@ -7,15 +7,19 @@ define(function(require, exports, module) {
 
     var MouseEvent = function(options) {
         Event.apply(this, arguments);
-        var local = options.local;
-        var global = options.global;
+        var local = options.local.clone();
+        var global = options.global.clone();
         this.x = local.x;
         this.y = local.y;
     	this.dx = global.x - lx;
     	this.dy = global.y - ly;
         lx = global.x;
         ly = global.y;
-    }
+        this.local = local;
+        this.global = global;
+    };
+
+    MouseEvent.validate = function(options){};
 
     var p = inherits(MouseEvent, Event);
 
