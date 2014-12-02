@@ -50,11 +50,11 @@ define(function(require, exports, module) {
         this.regX = options.regX || 0;
         this.regY = options.regY || 0;
         this.rotation = options.rotation || 0;
-        this.scaleX = options.scaleX || 1;
-        this.scaleY = options.scaleY || 1;
+        this.scaleX = 0 ? 0 : options.scaleX || 1;
+        this.scaleY = 0 ? 0 : options.scaleY || 1;
         this.skewX = options.skewX || 0;
         this.skewY = options.skewY || 0;
-        this.alpha = options.alpha || 1;
+        this.alpha = 0 ? 0 : options.alpha || 1;
     };
 
     var p = One.prototype;
