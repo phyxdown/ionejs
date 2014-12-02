@@ -17,18 +17,18 @@ define(function(require, exports, module) {
      * ionejs does not report illegal src, but the browser does.
      * @param {string} src
      */
-    p.set = function(src){
-    	var me = this;
+    p.set = function(src) {
+        var me = this;
 
-		var image = new Image();
-	    	image.src = src;
-	    me._image = image;
+        var image = new Image();
+        image.src = src;
+        me._image = image;
     };
 
     p.draw = function(context) {
-        var me = this, 
-        	image = me._image;
-            context.drawImage(image, 0, 0);
+        var me = this,
+            image = me._image;
+        context.drawImage(image, 0, 0);
     };
 
     module.exports = Painter;

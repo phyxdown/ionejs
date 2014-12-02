@@ -14,19 +14,19 @@ define(function(require, exports, module) {
     var p = inherits(Stage, One);
 
     p.testHit = function(point) {
-        var x = point.x, y = point.y;
-        if(x > 0 && x < this.width && y > 0 && y < this.height){
+        var x = point.x,
+            y = point.y;
+        if (x > 0 && x < this.width && y > 0 && y < this.height) {
             return true;
         }
         return false;
     };
 
     p.draw = function(context) {
-        try{
+        try {
             context.fillStyle = '#ffffff';
             context.fillRect(0, 0, this.width, this.height);
-        }
-        catch(e){}
+        } catch (e) {}
     };
 
     module.exports = Stage;

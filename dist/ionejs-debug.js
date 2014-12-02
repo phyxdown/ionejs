@@ -1,4 +1,4 @@
-define("phyxdown/ionejs/1.0.0/ionejs-debug", [ "./core/Engine-debug", "./utils/inherits-debug", "./core/One-debug", "./geom/Point-debug", "./core/Matrix-debug", "./geom/Matrix2D-debug", "./core/events/MouseEvent-debug", "./core/Event-debug", "./core/ctrls/DropCtrl-debug", "./core/events/DropEvent-debug", "./core/ctrls/MoveCtrl-debug", "./core/ones/Stage-debug", "./core/ones/Painter-debug", "./core/hitTests/all-debug", "./core/hitTests/ifInCircle-debug", "./helpers/Creator-debug" ], function(require, exports, module) {
+define("phyxdown/ionejs/1.0.0/ionejs-debug", [ "./core/Engine-debug", "./utils/inherits-debug", "./core/One-debug", "./geom/Point-debug", "./core/Matrix-debug", "./geom/Matrix2D-debug", "./core/events/MouseEvent-debug", "./core/Event-debug", "./core/ctrls/DropCtrl-debug", "./core/events/DropEvent-debug", "./core/ones/Phantom-debug", "./core/ctrls/MoveCtrl-debug", "./core/ones/Stage-debug", "./core/ones/Painter-debug", "./core/hitTests/all-debug", "./core/hitTests/ifInCircle-debug", "./helpers/Creator-debug" ], function(require, exports, module) {
     //init ionejs namespace
     var ionejs = {};
     //ionejs.core
@@ -46,7 +46,7 @@ define("phyxdown/ionejs/1.0.0/ionejs-debug", [ "./core/Engine-debug", "./utils/i
     module.exports = ionejs;
 });
 
-define("phyxdown/ionejs/1.0.0/core/Engine-debug", [ "phyxdown/ionejs/1.0.0/utils/inherits-debug", "phyxdown/ionejs/1.0.0/core/One-debug", "phyxdown/ionejs/1.0.0/geom/Point-debug", "phyxdown/ionejs/1.0.0/core/Matrix-debug", "phyxdown/ionejs/1.0.0/geom/Matrix2D-debug", "phyxdown/ionejs/1.0.0/core/events/MouseEvent-debug", "phyxdown/ionejs/1.0.0/core/Event-debug", "phyxdown/ionejs/1.0.0/core/ctrls/DropCtrl-debug", "phyxdown/ionejs/1.0.0/core/events/DropEvent-debug", "phyxdown/ionejs/1.0.0/core/ctrls/MoveCtrl-debug" ], function(require, exports, module) {
+define("phyxdown/ionejs/1.0.0/core/Engine-debug", [ "phyxdown/ionejs/1.0.0/utils/inherits-debug", "phyxdown/ionejs/1.0.0/core/One-debug", "phyxdown/ionejs/1.0.0/geom/Point-debug", "phyxdown/ionejs/1.0.0/core/Matrix-debug", "phyxdown/ionejs/1.0.0/geom/Matrix2D-debug", "phyxdown/ionejs/1.0.0/core/events/MouseEvent-debug", "phyxdown/ionejs/1.0.0/core/Event-debug", "phyxdown/ionejs/1.0.0/core/ctrls/DropCtrl-debug", "phyxdown/ionejs/1.0.0/core/events/DropEvent-debug", "phyxdown/ionejs/1.0.0/core/ones/Phantom-debug", "phyxdown/ionejs/1.0.0/core/ctrls/MoveCtrl-debug" ], function(require, exports, module) {
     var inherits = require("phyxdown/ionejs/1.0.0/utils/inherits-debug");
     var One = require("phyxdown/ionejs/1.0.0/core/One-debug");
     var MouseEvent = require("phyxdown/ionejs/1.0.0/core/events/MouseEvent-debug");
@@ -127,11 +127,11 @@ define("phyxdown/ionejs/1.0.0/core/Engine-debug", [ "phyxdown/ionejs/1.0.0/utils
     };
     p.dropable = function() {
         var ctrl = require("phyxdown/ionejs/1.0.0/core/ctrls/DropCtrl-debug");
-        return new ctrl.init(this._stage);
+        return ctrl.init(this._stage);
     };
     p.moveable = function() {
         var ctrl = require("phyxdown/ionejs/1.0.0/core/ctrls/MoveCtrl-debug");
-        return new ctrl.init(this._stage);
+        return ctrl.init(this._stage);
     };
     module.exports = Engine;
 });
@@ -189,16 +189,16 @@ define("phyxdown/ionejs/1.0.0/core/One-debug", [ "phyxdown/ionejs/1.0.0/geom/Poi
         this._moveable = false;
         //Docs expected
         this._dropable = false;
-        this.x = options.x;
-        this.y = options.y;
-        this.regX = options.regX;
-        this.regY = options.regY;
-        this.rotation = options.rotation;
-        this.scaleX = options.scaleX;
-        this.scaleY = options.scaleY;
-        this.skewX = options.skewX;
-        this.skewY = options.skewY;
-        this.alpha = options.alpha;
+        this.x = options.x || 0;
+        this.y = options.y || 0;
+        this.regX = options.regX || 0;
+        this.regY = options.regY || 0;
+        this.rotation = options.rotation || 0;
+        this.scaleX = options.scaleX || 1;
+        this.scaleY = options.scaleY || 1;
+        this.skewX = options.skewX || 0;
+        this.skewY = options.skewY || 0;
+        this.alpha = options.alpha || 1;
     };
     var p = One.prototype;
     p._mapChild = function(one) {
@@ -387,6 +387,13 @@ define("phyxdown/ionejs/1.0.0/core/One-debug", [ "phyxdown/ionejs/1.0.0/geom/Poi
             }
         }
     };
+    p.overlay = function(one, keys) {
+        var keys = keys || [ "x", "y", "scaleX", "scaleY", "rotation", "skewX", "skewY", "regX", "regY", "alpha" ];
+        var me = this;
+        keys.forEach(function(key, i) {
+            me[key] = one[key];
+        });
+    };
     p.getAbsoluteMatrix = function() {
         var ancestors = this.getAncestors();
         var m = new Matrix();
@@ -494,7 +501,6 @@ define("phyxdown/ionejs/1.0.0/core/One-debug", [ "phyxdown/ionejs/1.0.0/geom/Poi
             break;
 
           case "dropable":
-            console.log(this, "dropable");
             this._hitable = true;
             this._moveable = false;
             this._dropable = true;
@@ -711,19 +717,29 @@ define("phyxdown/ionejs/1.0.0/core/Event-debug", [], function(require, exports, 
     module.exports = Event;
 });
 
-define("phyxdown/ionejs/1.0.0/core/ctrls/DropCtrl-debug", [ "phyxdown/ionejs/1.0.0/core/events/DropEvent-debug", "phyxdown/ionejs/1.0.0/utils/inherits-debug", "phyxdown/ionejs/1.0.0/core/Event-debug" ], function(require, exports, module) {
+define("phyxdown/ionejs/1.0.0/core/ctrls/DropCtrl-debug", [ "phyxdown/ionejs/1.0.0/core/events/DropEvent-debug", "phyxdown/ionejs/1.0.0/utils/inherits-debug", "phyxdown/ionejs/1.0.0/core/Event-debug", "phyxdown/ionejs/1.0.0/core/ones/Phantom-debug", "phyxdown/ionejs/1.0.0/core/One-debug", "phyxdown/ionejs/1.0.0/geom/Point-debug", "phyxdown/ionejs/1.0.0/core/Matrix-debug", "phyxdown/ionejs/1.0.0/geom/Matrix2D-debug" ], function(require, exports, module) {
     var DropEvent = require("phyxdown/ionejs/1.0.0/core/events/DropEvent-debug");
+    var Phantom = require("phyxdown/ionejs/1.0.0/core/ones/Phantom-debug");
     var DropCtrl = function() {
         this.down = false;
         this.dropSource = null;
+        this.phantom = new Phantom();
+        this.phantom.set(null);
+        this.phantom.alpha = .4;
     };
     var p = DropCtrl.prototype;
     p.init = function(stage) {
         var me = this;
+        stage.addChild(me.phantom);
         stage.addEventListener("mousedown", function(e) {
-            if (e.target._dropable) me.dropSource = e.target;
+            me.down = true;
+            if (e.target._dropable) {
+                me.dropSource = e.target;
+                me.phantom.set(e.target);
+            }
         });
         stage.addEventListener("mouseup", function(e) {
+            me.down = false;
             var dropTarget = e.target;
             me.dropSource && dropTarget && dropTarget !== me.dropSource && dropTarget.dispatchEvent(new DropEvent({
                 type: DropEvent.DROP,
@@ -732,6 +748,16 @@ define("phyxdown/ionejs/1.0.0/core/ctrls/DropCtrl-debug", [ "phyxdown/ionejs/1.0
                 dropSource: me.dropSource
             }));
             me.dropSource = null;
+            me.phantom.set(null);
+        });
+        stage.addEventListener("mousemove", function(e) {
+            if (!me.dropSource) return;
+            if (!me.down) {
+                me.dropSource = null;
+                return;
+            }
+            me.phantom.x += e.dx;
+            me.phantom.y += e.dy;
         });
     };
     return new DropCtrl();
@@ -778,6 +804,28 @@ define("phyxdown/ionejs/1.0.0/core/events/DropEvent-debug", [ "phyxdown/ionejs/1
     DropEvent.validate = function(options) {};
     var p = inherits(DropEvent, Event);
     module.exports = DropEvent;
+});
+
+define("phyxdown/ionejs/1.0.0/core/ones/Phantom-debug", [ "phyxdown/ionejs/1.0.0/utils/inherits-debug", "phyxdown/ionejs/1.0.0/core/One-debug", "phyxdown/ionejs/1.0.0/geom/Point-debug", "phyxdown/ionejs/1.0.0/core/Matrix-debug", "phyxdown/ionejs/1.0.0/geom/Matrix2D-debug" ], function(require, exports, module) {
+    var inherits = require("phyxdown/ionejs/1.0.0/utils/inherits-debug");
+    var One = require("phyxdown/ionejs/1.0.0/core/One-debug");
+    var Phantom = function(options) {
+        One.apply(this, arguments);
+    };
+    var p = inherits(Phantom, One);
+    p.set = function(one) {
+        if (one instanceof One || one == null) {
+            this._origin = one;
+            one && this.overlay(one.getParent(), [ "x", "y", "scaleX", "scaleX", "rotation", "skewX", "skewY", "regX", "regY" ]);
+        } else {
+            console.log("#phantom.set#", "illegal params.");
+        }
+    };
+    p.draw = function(context) {
+        var me = this;
+        if (me._origin) me._origin._draw(context);
+    };
+    module.exports = Phantom;
 });
 
 define("phyxdown/ionejs/1.0.0/core/ctrls/MoveCtrl-debug", [], function(require, exports, module) {

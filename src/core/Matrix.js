@@ -41,13 +41,13 @@ define(function(require, exports, module) {
         return this;
     }
 
-    p.translate = function(){};
+    p.translate = function() {};
 
-    p.rotate = function(){};
+    p.rotate = function() {};
 
-    p.skew = function(){};
+    p.skew = function() {};
 
-    p.scale = function(){};
+    p.scale = function() {};
 
     module.exports = Matrix;
 });

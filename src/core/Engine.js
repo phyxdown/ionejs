@@ -25,9 +25,9 @@ define(function(require, exports, module) {
         /**
          * Currently, the size of stage concerts the size window.
          */
-        var _onResize = function(){
-            canvas.width = stage.width = window.innerWidth - (offsetLeft*2+5);
-            canvas.height = stage.height = window.innerHeight - (offsetLeft*2+5);
+        var _onResize = function() {
+            canvas.width = stage.width = window.innerWidth - (offsetLeft * 2 + 5);
+            canvas.height = stage.height = window.innerHeight - (offsetLeft * 2 + 5);
         };
 
         window.addEventListener('resize', _onResize);
@@ -51,15 +51,15 @@ define(function(require, exports, module) {
         };
 
         var me = this;
-        canvas.addEventListener('mousedown', function(){
+        canvas.addEventListener('mousedown', function() {
             _onMouse.apply(null, arguments);
         });
 
-        document.addEventListener('mouseup', function(){
+        document.addEventListener('mouseup', function() {
             _onMouse.apply(null, arguments);
         });
 
-        document.addEventListener('mousemove', function(){
+        document.addEventListener('mousemove', function() {
             _onMouse.apply(null, arguments);
         });
 
@@ -73,7 +73,7 @@ define(function(require, exports, module) {
             context = canvas.getContext('2d');
 
         var lt = Date.now();
-        var frame = function(){
+        var frame = function() {
             var t1 = Date.now();
             stage._draw(context);
             stage._update();
@@ -83,13 +83,13 @@ define(function(require, exports, module) {
 
 
             //show debug info
-            var fps = 1000/(Date.now() - lt);
-                lt = Date.now();
-            if(me._debug){
+            var fps = 1000 / (Date.now() - lt);
+            lt = Date.now();
+            if (me._debug) {
                 context.save();
                 context.fillStyle = '#000000';
                 context.font = 'bold 28px Aerial';
-                context.fillText('FPS: '+ (((fps*100)<<0)/100), 30,52);
+                context.fillText('FPS: ' + (((fps * 100) << 0) / 100), 30, 52);
                 context.restore();
             };
         }
@@ -97,14 +97,14 @@ define(function(require, exports, module) {
         frame();
     };
 
-    p.dropable = function(){
+    p.dropable = function() {
         var ctrl = require("./ctrls/DropCtrl");
-        return new ctrl.init(this._stage);
+        return ctrl.init(this._stage);
     };
 
-    p.moveable = function(){
+    p.moveable = function() {
         var ctrl = require("./ctrls/MoveCtrl");
-        return new ctrl.init(this._stage);
+        return ctrl.init(this._stage);
     };
 
     module.exports = Engine;

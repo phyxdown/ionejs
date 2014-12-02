@@ -45,16 +45,16 @@ define(function(require, exports, module) {
         //Docs expected
         this._dropable = false;
 
-        this.x = options.x;
-        this.y = options.y;
-        this.regX = options.regX;
-        this.regY = options.regY;
-        this.rotation = options.rotation;
-        this.scaleX = options.scaleX;
-        this.scaleY = options.scaleY;
-        this.skewX = options.skewX;
-        this.skewY = options.skewY;
-        this.alpha = options.alpha;
+        this.x = options.x || 0;
+        this.y = options.y || 0;
+        this.regX = options.regX || 0;
+        this.regY = options.regY || 0;
+        this.rotation = options.rotation || 0;
+        this.scaleX = options.scaleX || 1;
+        this.scaleY = options.scaleY || 1;
+        this.skewX = options.skewX || 0;
+        this.skewY = options.skewY || 0;
+        this.alpha = options.alpha || 1;
     };
 
     var p = One.prototype;
@@ -274,6 +274,14 @@ define(function(require, exports, module) {
 
     };
 
+    p.overlay = function(one, keys){
+        var keys = keys || ["x", "y", "scaleX", "scaleY", "rotation", "skewX", "skewY", "regX", "regY", "alpha"];
+        var me = this;
+        keys.forEach(function(key, i){
+            me[key] = one[key];
+        });
+    };
+
     p.getAbsoluteMatrix = function() {
         var ancestors = this.getAncestors();
         var m = new Matrix();
@@ -340,7 +348,9 @@ define(function(require, exports, module) {
         if (this._visible) {
             try {
                 this.draw(context);
-            } catch (e) { console.log(e, this) }
+            } catch (e) {
+                console.log(e, this)
+            }
         }
         for (var i = 0, l = this._children.length; i < l; i++) {
             var child = this._children[i];
@@ -360,7 +370,9 @@ define(function(require, exports, module) {
         if (this._active) {
             try {
                 this.update();
-            } catch (e) { console.log(e, this) }
+            } catch (e) {
+                console.log(e, this)
+            }
         }
         for (var i = 0, l = this._children.length; i < l; i++) {
             var child = this._children[i];
