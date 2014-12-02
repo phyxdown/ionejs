@@ -28,8 +28,7 @@ define(function(require, exports, module) {
     p.draw = function(context) {
         var me = this, 
         	image = me._image;
-        try{ context.drawImage(image, 0, 0); }
-        catch(e){}
+            context.drawImage(image, 0, 0);
     };
 
     module.exports = Painter;

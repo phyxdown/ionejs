@@ -76,6 +76,7 @@ define(function(require, exports, module) {
         var frame = function(){
             var t1 = Date.now();
             stage._draw(context);
+            stage._update();
             var t2 = Date.now();
             var dt = t2 - t1;
             setTimeout(frame, (16.6 - dt) > 0 ? (16.6 - dt) : 0);
@@ -96,9 +97,14 @@ define(function(require, exports, module) {
         frame();
     };
 
-    p.dnd = function(){
-        var dndCtrl = require("./ctrls/DNDCtrl");
-        return new dndCtrl.init(this._stage);
+    p.dropable = function(){
+        var ctrl = require("./ctrls/DropCtrl");
+        return new ctrl.init(this._stage);
+    };
+
+    p.moveable = function(){
+        var ctrl = require("./ctrls/MoveCtrl");
+        return new ctrl.init(this._stage);
     };
 
     module.exports = Engine;

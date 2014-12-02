@@ -41,7 +41,9 @@ define(function(require, exports, module) {
         //Docs expected
         this._hitable = false;
         //Docs expected
-        this._dragable = false;
+        this._moveable = false;
+        //Docs expected
+        this._dropable = false;
 
         this.x = options.x;
         this.y = options.y;
@@ -257,15 +259,19 @@ define(function(require, exports, module) {
         try {
             phase = event.phase === Event.CAPTURING_PHASE ? "capture" : "bubble";
             arr = this._listeners[phase][event.type].slice();
-        } catch (e) { return }
+        } catch (e) {
+            return
+        }
 
         for (var i = 0, len = arr.length; i < len; i++) {
             try {
                 arr[i](event);
                 if (event._immediatePropagationStopped) break;
-            } catch (e) {console.log(e)}
+            } catch (e) {
+                console.log(e)
+            }
         }
-        
+
     };
 
     p.getAbsoluteMatrix = function() {
@@ -330,7 +336,12 @@ define(function(require, exports, module) {
         context.save();
         var am = new Matrix(this);
         context.transform(am.a, am.b, am.c, am.d, am.x, am.y);
-        this._visible && this.draw(context);
+        context.globalAlpha *= this.alpha;
+        if (this._visible) {
+            try {
+                this.draw(context);
+            } catch (e) { console.log(e, this) }
+        }
         for (var i = 0, l = this._children.length; i < l; i++) {
             var child = this._children[i];
             child._draw(context);
@@ -344,6 +355,45 @@ define(function(require, exports, module) {
      * @param  {Context} context This context is defined as local.
      */
     p.draw = function(context) {};
+
+    p._update = function() {
+        if (this._active) {
+            try {
+                this.update();
+            } catch (e) { console.log(e, this) }
+        }
+        for (var i = 0, l = this._children.length; i < l; i++) {
+            var child = this._children[i];
+            child._update();
+        }
+    };
+
+    /**
+     * Abstract method
+     * Override it to update something.
+     */
+    p.update = function() {};
+
+    /**
+     * swtich mode of One
+     * @param  {string} mode
+     */
+    p.mode = function(mode) {
+        switch (mode) {
+            case "moveable":
+                this._hitable = true;
+                this._moveable = true;
+                this._dropable = false;
+                break;
+            case "dropable":
+                this._hitable = true;
+                this._moveable = false;
+                this._dropable = true;
+                break;
+            default:
+                break;
+        }
+    };
 
     module.exports = One;
 });
