@@ -12,8 +12,6 @@ define(function(require, exports, module) {
     p.set = function(one) {
         if (one instanceof One || one == null) {
             this._origin = one;
-            one && this.overlay(one.getParent(), 
-                ["x", "y", "scaleX", "scaleX", "rotation", "skewX", "skewY", "regX", "regY"]);
         } else {
             console.log("#phantom.set#", "illegal params.");
         }

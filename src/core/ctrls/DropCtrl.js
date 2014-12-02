@@ -20,8 +20,11 @@ define(function(require, exports, module) {
         stage.addEventListener('mousedown', function(e) {
             me.down = true;
             if (e.target._dropable) {
-                me.dropSource = e.target;
-                me.phantom.set(e.target);
+                var dropSource = e.target;
+                me.phantom.set(dropSource);
+                me.phantom.overlay(dropSource.getParent(), 
+                	   ["x", "y", "scaleX", "scaleX", "rotation", "skewX", "skewY", "regX", "regY"]);
+                me.dropSource = dropSource;
             }
         });
 

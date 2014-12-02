@@ -734,8 +734,10 @@ define("phyxdown/ionejs/1.0.0/core/ctrls/DropCtrl-debug", [ "phyxdown/ionejs/1.0
         stage.addEventListener("mousedown", function(e) {
             me.down = true;
             if (e.target._dropable) {
-                me.dropSource = e.target;
-                me.phantom.set(e.target);
+                var dropSource = e.target;
+                me.phantom.set(dropSource);
+                me.phantom.overlay(dropSource.getParent(), [ "x", "y", "scaleX", "scaleX", "rotation", "skewX", "skewY", "regX", "regY" ]);
+                me.dropSource = dropSource;
             }
         });
         stage.addEventListener("mouseup", function(e) {
@@ -816,7 +818,6 @@ define("phyxdown/ionejs/1.0.0/core/ones/Phantom-debug", [ "phyxdown/ionejs/1.0.0
     p.set = function(one) {
         if (one instanceof One || one == null) {
             this._origin = one;
-            one && this.overlay(one.getParent(), [ "x", "y", "scaleX", "scaleX", "rotation", "skewX", "skewY", "regX", "regY" ]);
         } else {
             console.log("#phantom.set#", "illegal params.");
         }
