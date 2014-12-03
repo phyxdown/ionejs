@@ -15,7 +15,6 @@ define(function(require, exports, module) {
 
     p.init = function(stage) {
         var me = this;
-        stage.addChild(me.phantom);
 
         stage.addEventListener('mousedown', function(e) {
             me.down = true;
@@ -25,9 +24,14 @@ define(function(require, exports, module) {
                 me.phantom.overlay(dropSource.getParent(), 
                 	   ["x", "y", "scaleX", "scaleX", "rotation", "skewX", "skewY", "regX", "regY"]);
                 me.dropSource = dropSource;
+                stage.addChild(me.phantom);
             }
         });
 
+        /**
+         * Here is a bug.
+         * To fix it, call stage.hit again after phantom is removed.
+         */
         stage.addEventListener('mouseup', function(e) {
             me.down = false;
             var dropTarget = e.target;
@@ -38,6 +42,7 @@ define(function(require, exports, module) {
                 dropSource: me.dropSource
             }));
             me.dropSource = null;
+            stage.removeChild(me.phantom);
             me.phantom.set(null);
         });
 
@@ -45,6 +50,7 @@ define(function(require, exports, module) {
             if (!me.dropSource) return;
             if (!me.down) {
                 me.dropSource = null;
+                stage.removeChild(me.phantom);
                 return;
             }
             me.phantom.x += e.dx;
@@ -52,6 +58,6 @@ define(function(require, exports, module) {
         });
     }
 
-    return new DropCtrl();
+    module.exports = new DropCtrl();
 
 });

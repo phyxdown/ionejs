@@ -4,8 +4,8 @@ define(function(require, exports, module) {
     var One = require('../One');
 
     var Stage = function(options) {
-        options.parent = null;
         One.apply(this, arguments);
+        this.parent = null;
         this._hitable = true;
         this.width = 0;
         this.height = 0;

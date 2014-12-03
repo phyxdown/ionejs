@@ -32,6 +32,6 @@ define(function(require, exports, module) {
         });
     }
 
-    return new MoveCtrl();
+    module.exports = new MoveCtrl();
 
 });

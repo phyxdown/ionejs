@@ -50,11 +50,11 @@ define(function(require, exports, module) {
         this.regX = options.regX || 0;
         this.regY = options.regY || 0;
         this.rotation = options.rotation || 0;
-        this.scaleX = 0 ? 0 : options.scaleX || 1;
-        this.scaleY = 0 ? 0 : options.scaleY || 1;
+        this.scaleX = options.scaleX == 0 ? 0 : options.scaleX || 1;
+        this.scaleY = options.scaleY == 0 ? 0 : options.scaleY || 1;
         this.skewX = options.skewX || 0;
         this.skewY = options.skewY || 0;
-        this.alpha = 0 ? 0 : options.alpha || 1;
+        this.alpha = options.alpha == 0 ? 0 : options.alpha || 1;
     };
 
     var p = One.prototype;
@@ -389,9 +389,15 @@ define(function(require, exports, module) {
     /**
      * swtich mode of One
      * @param  {string} mode
+     * @return {core.One} this
      */
     p.mode = function(mode) {
         switch (mode) {
+            case "hitable" :
+                this._hitable = true;
+                this._moveable = false;
+                this._dropable = false;
+                break;
             case "moveable":
                 this._hitable = true;
                 this._moveable = true;
@@ -405,6 +411,7 @@ define(function(require, exports, module) {
             default:
                 break;
         }
+        return this;
     };
 
     module.exports = One;

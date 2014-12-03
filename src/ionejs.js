@@ -8,6 +8,8 @@ define(function(require, exports, module) {
     var One = require("./core/One");
     var Stage = require("./core/ones/Stage");
     var Painter = require("./core/ones/Painter");
+    var Cliper = require("./core/ones/Cliper");
+    var Writer = require("./core/ones/Writer");
 
     //ionejs.core.hitTests
     var hitTests = require("./core/hitTests/all");
@@ -29,6 +31,8 @@ define(function(require, exports, module) {
     creator.set('One', One);
     creator.set('Stage', Stage);
     creator.set('Painter', Painter);
+    creator.set('Cliper', Cliper);
+    creator.set('Writer', Writer);
 
     //API
     ionejs.inherits = inherits;
@@ -43,6 +47,7 @@ define(function(require, exports, module) {
     ionejs.One = One;
     ionejs.Stage = Stage;
     ionejs.Painter = Painter;
+    ionejs.Writer = Writer;
     ionejs.Event = Event;
     ionejs.hitTests = hitTests;
 
