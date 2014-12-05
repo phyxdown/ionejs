@@ -126,6 +126,14 @@ define(function(require, exports, module) {
     };
 
     /**
+     * Get children.
+     * @return {Array} children
+     */
+    p.getChildren = function() {
+        return this._children;
+    };
+
+    /**
      * Name based query
      * @param  {string} path      eg. "pricess.leg.skin"
      * @param  {string} separator eg. "."
@@ -161,6 +169,20 @@ define(function(require, exports, module) {
      */
     p.setParent = function(one) {
         this._parent = one;
+    };
+
+    /**
+     * Get stage.
+     * The methed assumes that stage is the root of display hierachy.
+     * @return {one.Stage}
+     */
+    p.getStage = function() {
+        var arr = [];
+        var cur = this;
+        while (cur._parent) {
+            cur = cur._parent;
+        }
+        return cur;
     };
 
     /**
@@ -260,7 +282,7 @@ define(function(require, exports, module) {
             phase = event.phase === Event.CAPTURING_PHASE ? "capture" : "bubble";
             arr = this._listeners[phase][event.type].slice();
         } catch (e) {
-            return
+            return;
         }
 
         for (var i = 0, len = arr.length; i < len; i++) {
@@ -268,7 +290,7 @@ define(function(require, exports, module) {
                 arr[i](event);
                 if (event._immediatePropagationStopped) break;
             } catch (e) {
-                console.log(e)
+                console.log(e, arr[i]);
             }
         }
 

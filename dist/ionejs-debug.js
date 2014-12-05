@@ -94,8 +94,9 @@ define("phyxdown/ionejs/1.0.0/core/Engine-debug", [ "phyxdown/ionejs/1.0.0/utils
                 local: local
             }));
         };
-        var me = this;
-        canvas.addEventListener("mousedown", function() {
+        var me = this, lp;
+        canvas.addEventListener("mousedown", function(e) {
+            lp = new Point(e.x, e.y);
             _onMouse.apply(null, arguments);
         });
         document.addEventListener("mouseup", function() {
@@ -104,7 +105,9 @@ define("phyxdown/ionejs/1.0.0/core/Engine-debug", [ "phyxdown/ionejs/1.0.0/utils
         document.addEventListener("mousemove", function() {
             _onMouse.apply(null, arguments);
         });
-        canvas.addEventListener("click", _onMouse);
+        canvas.addEventListener("click", function(e) {
+            if (lp.distance(new Point(e.x, e.y)) < 13) _onMouse.apply(null, arguments);
+        });
     };
     p.run = function() {
         var me = this;
@@ -266,6 +269,13 @@ define("phyxdown/ionejs/1.0.0/core/One-debug", [ "phyxdown/ionejs/1.0.0/geom/Poi
         }
     };
     /**
+     * Get children.
+     * @return {Array} children
+     */
+    p.getChildren = function() {
+        return this._children;
+    };
+    /**
      * Name based query
      * @param  {string} path      eg. "pricess.leg.skin"
      * @param  {string} separator eg. "."
@@ -298,6 +308,19 @@ define("phyxdown/ionejs/1.0.0/core/One-debug", [ "phyxdown/ionejs/1.0.0/geom/Poi
      */
     p.setParent = function(one) {
         this._parent = one;
+    };
+    /**
+     * Get stage.
+     * The methed assumes that stage is the root of display hierachy.
+     * @return {one.Stage}
+     */
+    p.getStage = function() {
+        var arr = [];
+        var cur = this;
+        while (cur._parent) {
+            cur = cur._parent;
+        }
+        return cur;
     };
     /**
      * Get ancestors.
@@ -388,7 +411,7 @@ define("phyxdown/ionejs/1.0.0/core/One-debug", [ "phyxdown/ionejs/1.0.0/geom/Poi
                 arr[i](event);
                 if (event._immediatePropagationStopped) break;
             } catch (e) {
-                console.log(e);
+                console.log(e, arr[i]);
             }
         }
     };
@@ -957,6 +980,7 @@ define("phyxdown/ionejs/1.0.0/core/ones/Writer-debug", [ "phyxdown/ionejs/1.0.0/
     var Writer = function(options) {
         One.apply(this, arguments);
         this.text = "text";
+        this.prefix = "";
     };
     var p = inherits(Writer, One);
     /**
@@ -980,7 +1004,7 @@ define("phyxdown/ionejs/1.0.0/core/ones/Writer-debug", [ "phyxdown/ionejs/1.0.0/
         context.textAlign = me.align || "start";
         context.textBaseline = me.baseline || "top";
         context.fillStyle = me.style || "#000000";
-        context.fillText(me.text || "", 0, 0);
+        context.fillText(me.prefix + me.text || "", 0, 0);
     };
     module.exports = Writer;
 });

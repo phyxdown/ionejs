@@ -50,8 +50,10 @@ define(function(require, exports, module) {
             }));
         };
 
-        var me = this;
-        canvas.addEventListener('mousedown', function() {
+        var me = this,
+            lp;
+        canvas.addEventListener('mousedown', function(e) {
+            lp = new Point(e.x, e.y);
             _onMouse.apply(null, arguments);
         });
 
@@ -63,7 +65,10 @@ define(function(require, exports, module) {
             _onMouse.apply(null, arguments);
         });
 
-        canvas.addEventListener('click', _onMouse);
+        canvas.addEventListener('click', function(e) {
+            if (lp.distance(new Point(e.x, e.y)) < 13 /*Why 13? YKI.*/ )
+                _onMouse.apply(null, arguments);
+        });
     };
 
     p.run = function() {
