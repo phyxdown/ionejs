@@ -11,7 +11,7 @@ define(function(require, exports, module) {
         this.phase = null;
 
         this._immediatePropagationStoped = false;
-        this._propagationStoped = false;
+        this._propagationStopped = false;
     };
 
     Event.CAPTURING_PHASE = 1;
@@ -21,16 +21,16 @@ define(function(require, exports, module) {
     var p = Event.prototype;
 
     p.isPropagationStopped = function() {
-        return this._propagationStoped;
+        return this._propagationStopped;
     };
 
     p.stopImmediatePropagation = function() {
         this._immediatePropagationStoped = true;
-        this._propagationStoped = true;
+        this._propagationStopped = true;
     };
 
     p.stopPropagation = function() {
-        this._propagationStoped = true;
+        this._propagationStopped = true;
     };
 
     module.exports = Event;
