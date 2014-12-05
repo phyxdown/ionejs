@@ -10,7 +10,7 @@ define(function(require, exports, module) {
 
         this.phase = null;
 
-        this._immediatePropagationStoped = false;
+        this._immediatePropagationStopped = false;
         this._propagationStopped = false;
     };
 
@@ -25,7 +25,7 @@ define(function(require, exports, module) {
     };
 
     p.stopImmediatePropagation = function() {
-        this._immediatePropagationStoped = true;
+        this._immediatePropagationStopped = true;
         this._propagationStopped = true;
     };
 
