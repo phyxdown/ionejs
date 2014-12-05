@@ -2,6 +2,7 @@ define(function(require, exports, module) {
 
     var Point = require('../geom/Point');
     var Matrix = require('./Matrix');
+    var Event = require("./Event");
 
     /**
      * What is one?
@@ -261,7 +262,7 @@ define(function(require, exports, module) {
             if (event._propagationStopped) return;
         }
 
-        event.phase = Event.TARGET_PHASE;
+        event.phase = Event.AT_TARGET;
         this._dispatchEvent(event);
         if (event._propagationStopped) return;
 

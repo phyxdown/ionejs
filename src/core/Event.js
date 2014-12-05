@@ -15,8 +15,8 @@ define(function(require, exports, module) {
     };
 
     Event.CAPTURING_PHASE = 1;
-    Event.BUBBLING_PHASE = 2;
-    Event.TARGET_PHASE = 3;
+    Event.AT_TARGET = 2;
+    Event.BUBBLING_PHASE = 3;
 
     var p = Event.prototype;
 

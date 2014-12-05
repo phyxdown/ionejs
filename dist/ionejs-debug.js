@@ -385,7 +385,7 @@ define("phyxdown/ionejs/1.0.0/core/One-debug", [ "phyxdown/ionejs/1.0.0/geom/Poi
             arr[i]._dispatchEvent(event);
             if (event._propagationStopped) return;
         }
-        event.phase = Event.TARGET_PHASE;
+        event.phase = Event.AT_TARGET;
         this._dispatchEvent(event);
         if (event._propagationStopped) return;
         event.phase = Event.BUBBLING_PHASE;
@@ -737,8 +737,8 @@ define("phyxdown/ionejs/1.0.0/core/Event-debug", [], function(require, exports, 
         this._propagationStoped = false;
     };
     Event.CAPTURING_PHASE = 1;
-    Event.BUBBLING_PHASE = 2;
-    Event.TARGET_PHASE = 3;
+    Event.AT_TARGET = 2;
+    Event.BUBBLING_PHASE = 3;
     var p = Event.prototype;
     p.isPropagationStopped = function() {
         return this._propagationStoped;
