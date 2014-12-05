@@ -1,4 +1,4 @@
-define("phyxdown/ionejs/1.0.0/ionejs-debug", [ "./core/Engine-debug", "./utils/inherits-debug", "./core/One-debug", "./geom/Point-debug", "./core/Matrix-debug", "./geom/Matrix2D-debug", "./core/Event-debug", "./core/events/MouseEvent-debug", "./core/ctrls/DropCtrl-debug", "./core/events/DropEvent-debug", "./core/ones/Phantom-debug", "./core/ctrls/MoveCtrl-debug", "./core/ones/Stage-debug", "./core/ones/Painter-debug", "./core/ones/Cliper-debug", "./core/ones/Writer-debug", "./core/hitTests/all-debug", "./core/hitTests/ifInCircle-debug", "./helpers/Creator-debug" ], function(require, exports, module) {
+define("phyxdown/ionejs/1.0.0/ionejs-debug", [ "./core/Engine-debug", "./utils/inherits-debug", "./core/One-debug", "./geom/Point-debug", "./core/Matrix-debug", "./geom/Matrix2D-debug", "./core/Event-debug", "./core/events/MouseEvent-debug", "./core/ctrls/DropCtrl-debug", "./core/events/DropEvent-debug", "./core/ones/Phantom-debug", "./core/ctrls/MoveCtrl-debug", "./core/ones/Stage-debug", "./core/ones/Painter-debug", "./core/ones/Cliper-debug", "./core/ones/Writer-debug", "./core/hitTests/all-debug", "./core/hitTests/ifInCircle-debug", "./core/hitTests/ifInRect-debug", "./helpers/Creator-debug" ], function(require, exports, module) {
     //init ionejs namespace
     var ionejs = {};
     //ionejs.core
@@ -711,22 +711,22 @@ define("phyxdown/ionejs/1.0.0/core/Event-debug", [], function(require, exports, 
         this.target = null;
         this.currentTarget = null;
         this.phase = null;
-        this._immediatePropagationStoped = false;
-        this._propagationStoped = false;
+        this._immediatePropagationStopped = false;
+        this._propagationStopped = false;
     };
     Event.CAPTURING_PHASE = 1;
     Event.AT_TARGET = 2;
     Event.BUBBLING_PHASE = 3;
     var p = Event.prototype;
     p.isPropagationStopped = function() {
-        return this._propagationStoped;
+        return this._propagationStopped;
     };
     p.stopImmediatePropagation = function() {
-        this._immediatePropagationStoped = true;
-        this._propagationStoped = true;
+        this._immediatePropagationStopped = true;
+        this._propagationStopped = true;
     };
     p.stopPropagation = function() {
-        this._propagationStoped = true;
+        this._propagationStopped = true;
     };
     module.exports = Event;
 });
@@ -1010,14 +1010,23 @@ define("phyxdown/ionejs/1.0.0/core/ones/Writer-debug", [ "phyxdown/ionejs/1.0.0/
     module.exports = Writer;
 });
 
-define("phyxdown/ionejs/1.0.0/core/hitTests/all-debug", [ "phyxdown/ionejs/1.0.0/core/hitTests/ifInCircle-debug" ], function(require, exports, module) {
+define("phyxdown/ionejs/1.0.0/core/hitTests/all-debug", [ "phyxdown/ionejs/1.0.0/core/hitTests/ifInCircle-debug", "phyxdown/ionejs/1.0.0/core/hitTests/ifInRect-debug" ], function(require, exports, module) {
     exports.ifInCircle = require("phyxdown/ionejs/1.0.0/core/hitTests/ifInCircle-debug");
+    exports.ifInRect = require("phyxdown/ionejs/1.0.0/core/hitTests/ifInRect-debug");
 });
 
 define("phyxdown/ionejs/1.0.0/core/hitTests/ifInCircle-debug", [], function(require, exports, module) {
     exports.getTester = function(center, radius) {
         return function(point) {
             return point.distance(center) <= radius;
+        };
+    };
+});
+
+define("phyxdown/ionejs/1.0.0/core/hitTests/ifInRect-debug", [], function(require, exports, module) {
+    exports.getTester = function(x, y, width, height) {
+        return function(point) {
+            return point.x >= x && point.x <= x + width && point.y >= y && point.y <= y + height;
         };
     };
 });
