@@ -79,6 +79,7 @@ define("phyxdown/ionejs/1.0.0/core/Engine-debug", [ "phyxdown/ionejs/1.0.0/utils
         };
         window.addEventListener("resize", _onResize);
         _onResize();
+        var _lastTarget;
         /**
          * Mouse Event is transfered with capsulation.
          * See {core.events.MouseEvent} for details.
@@ -87,6 +88,19 @@ define("phyxdown/ionejs/1.0.0/core/Engine-debug", [ "phyxdown/ionejs/1.0.0/utils
             var global = new Point(e.pageX - offsetLeft, e.pageY - offsetTop);
             var target = stage.hit(global);
             if (!target) return;
+            /**
+             * Dispatch event "mouseout"
+             * The code below is ambiguous, explicit logic is expected.
+             */
+            if (_lastTarget && _lastTarget !== target) {
+                var local = _lastTarget.globalToLocal(global);
+                _lastTarget && _lastTarget.dispatchEvent(new MouseEvent({
+                    type: "mouseout",
+                    global: global,
+                    local: local
+                }));
+            }
+            _lastTarget = target;
             var local = target.globalToLocal(global);
             target.dispatchEvent(new MouseEvent({
                 type: e.type,
@@ -426,10 +440,11 @@ define("phyxdown/ionejs/1.0.0/core/One-debug", [ "phyxdown/ionejs/1.0.0/geom/Poi
     p.getAbsoluteMatrix = function() {
         var ancestors = this.getAncestors();
         var m = new Matrix();
-        for (var i = ancestors.length - 1; i > -1; i--) {
+        m.transform(this);
+        for (var i = 0, l = ancestors.length; i < l; i++) {
             m.transform(ancestors[i]);
         }
-        return m.transform(this);
+        return m;
     };
     /**
      * convert global coordinates to local

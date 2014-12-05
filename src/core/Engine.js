@@ -33,6 +33,9 @@ define(function(require, exports, module) {
         window.addEventListener('resize', _onResize);
         _onResize();
 
+
+        var _lastTarget;
+
         /**
          * Mouse Event is transfered with capsulation.
          * See {core.events.MouseEvent} for details.
@@ -42,6 +45,20 @@ define(function(require, exports, module) {
             var target = stage.hit(global);
             if (!target)
                 return;
+            /**
+             * Dispatch event "mouseout"
+             * The code below is ambiguous, explicit logic is expected.
+             */
+            if (_lastTarget && _lastTarget !== target) {
+                var local = _lastTarget.globalToLocal(global);
+                _lastTarget && _lastTarget.dispatchEvent(new MouseEvent({
+                    type: "mouseout",
+                    global: global,
+                    local: local
+                }));
+            }
+            _lastTarget = target;
+
             var local = target.globalToLocal(global);
             target.dispatchEvent(new MouseEvent({
                 type: e.type,
