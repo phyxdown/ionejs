@@ -308,10 +308,11 @@ define(function(require, exports, module) {
     p.getAbsoluteMatrix = function() {
         var ancestors = this.getAncestors();
         var m = new Matrix();
-        for (var i = ancestors.length - 1; i > -1; i--) {
+            m.transform(this);
+        for (var i = 0, l = ancestors.length; i < l; i++) {
             m.transform(ancestors[i]);
         }
-        return m.transform(this);
+        return m;
     };
 
     /**
