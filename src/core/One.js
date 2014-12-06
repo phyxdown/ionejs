@@ -135,6 +135,14 @@ define(function(require, exports, module) {
     };
 
     /**
+     * Get name.
+     * @return {string} name
+     */
+    p.getName = function() {
+        return this._name;
+    };
+
+    /**
      * Name based query
      * @param  {string} path      eg. "pricess.leg.skin"
      * @param  {string} separator eg. "."

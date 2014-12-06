@@ -291,6 +291,13 @@ define("phyxdown/ionejs/1.0.0/core/One-debug", [ "phyxdown/ionejs/1.0.0/geom/Poi
         return this._children;
     };
     /**
+     * Get name.
+     * @return {string} name
+     */
+    p.getName = function() {
+        return this._name;
+    };
+    /**
      * Name based query
      * @param  {string} path      eg. "pricess.leg.skin"
      * @param  {string} separator eg. "."
