@@ -95,7 +95,7 @@ define("phyxdown/ionejs/1.0.0/core/Engine-debug", [ "phyxdown/ionejs/1.0.0/utils
             if (_lastTarget && _lastTarget !== target) {
                 var local = _lastTarget.globalToLocal(global);
                 _lastTarget && _lastTarget.dispatchEvent(new MouseEvent({
-                    type: "mouseout",
+                    type: "mouseaway",
                     global: global,
                     local: local
                 }));
