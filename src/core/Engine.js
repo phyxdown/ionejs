@@ -52,7 +52,7 @@ define(function(require, exports, module) {
             if (_lastTarget && _lastTarget !== target) {
                 var local = _lastTarget.globalToLocal(global);
                 _lastTarget && _lastTarget.dispatchEvent(new MouseEvent({
-                    type: "mouseout",
+                    type: "mouseaway",
                     global: global,
                     local: local
                 }));
