@@ -21,8 +21,10 @@ define(function(require, exports, module) {
             if (e.target._dropable) {
                 var dropSource = e.target;
                 me.phantom.set(dropSource);
-                me.phantom.overlay(dropSource.getParent(), 
-                	   ["x", "y", "scaleX", "scaleX", "rotation", "skewX", "skewY", "regX", "regY"]);
+                // me.phantom.overlay(dropSource.getParent(), 
+                // 	   ["x", "y", "scaleX", "scaleX", "rotation", "skewX", "skewY", "regX", "regY"]);
+                me.phantom.mReset();
+                me.phantom.mTrz(dropSource.getParent().getAbsoluteMatrix());
                 me.dropSource = dropSource;
                 stage.addChild(me.phantom);
             }
@@ -53,8 +55,7 @@ define(function(require, exports, module) {
                 stage.removeChild(me.phantom);
                 return;
             }
-            me.phantom.x += e.dx;
-            me.phantom.y += e.dy;
+            me.phantom.mTsl(e.dx, e.dy);
         });
     }
 

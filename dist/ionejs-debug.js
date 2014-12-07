@@ -575,6 +575,10 @@ define("phyxdown/ionejs/1.0.0/core/One-debug", [ "phyxdown/ionejs/1.0.0/geom/Poi
             break;
 
           default:
+            this._hitable = false;
+            this._moveable = false;
+            this._dropable = false;
+            break;
             break;
         }
         return this;
@@ -804,7 +808,10 @@ define("phyxdown/ionejs/1.0.0/core/ctrls/DropCtrl-debug", [ "phyxdown/ionejs/1.0
             if (e.target._dropable) {
                 var dropSource = e.target;
                 me.phantom.set(dropSource);
-                me.phantom.overlay(dropSource.getParent(), [ "x", "y", "scaleX", "scaleX", "rotation", "skewX", "skewY", "regX", "regY" ]);
+                // me.phantom.overlay(dropSource.getParent(), 
+                // 	   ["x", "y", "scaleX", "scaleX", "rotation", "skewX", "skewY", "regX", "regY"]);
+                me.phantom.mReset();
+                me.phantom.mTrz(dropSource.getParent().getAbsoluteMatrix());
                 me.dropSource = dropSource;
                 stage.addChild(me.phantom);
             }
@@ -833,8 +840,7 @@ define("phyxdown/ionejs/1.0.0/core/ctrls/DropCtrl-debug", [ "phyxdown/ionejs/1.0
                 stage.removeChild(me.phantom);
                 return;
             }
-            me.phantom.x += e.dx;
-            me.phantom.y += e.dy;
+            me.phantom.mTsl(e.dx, e.dy);
         });
     };
     module.exports = new DropCtrl();
@@ -888,6 +894,7 @@ define("phyxdown/ionejs/1.0.0/core/ones/Phantom-debug", [ "phyxdown/ionejs/1.0.0
     var One = require("phyxdown/ionejs/1.0.0/core/One-debug");
     var Phantom = function(options) {
         One.apply(this, arguments);
+        this.mReset();
     };
     var p = inherits(Phantom, One);
     p.set = function(one) {
@@ -897,9 +904,28 @@ define("phyxdown/ionejs/1.0.0/core/ones/Phantom-debug", [ "phyxdown/ionejs/1.0.0
             console.log("#phantom.set#", "illegal params.");
         }
     };
+    p.mTrz = function(matrix) {
+        this.mM = matrix;
+    };
+    p.mTsl = function(x, y) {
+        this.mX += x;
+        this.mY += y;
+    };
+    p.mReset = function() {
+        this.mM = this.getAbsoluteMatrix();
+        this.mX = 0;
+        this.mY = 0;
+    };
     p.draw = function(context) {
         var me = this;
+        var m = me.mM;
+        var x = me.mX;
+        var y = me.mY;
+        context.save();
+        context.translate(x, y);
+        context.transform(m.a, m.b, m.c, m.d, m.x, m.y);
         if (me._origin) me._origin._draw(context);
+        context.restore();
     };
     module.exports = Phantom;
 });

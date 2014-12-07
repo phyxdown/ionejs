@@ -449,6 +449,10 @@ define(function(require, exports, module) {
                 this._dropable = true;
                 break;
             default:
+                this._hitable = false;
+                this._moveable = false;
+                this._dropable = false;
+                break;
                 break;
         }
         return this;
