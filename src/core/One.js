@@ -127,6 +127,14 @@ define(function(require, exports, module) {
     };
 
     /**
+     * Remove all children
+     */
+    p.removeAllChildren = function() {
+        this._childMap = {};
+        this._children = [];
+    };
+
+    /**
      * Get children.
      * @return {Array} children
      */

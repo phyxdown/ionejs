@@ -287,6 +287,13 @@ define("phyxdown/ionejs/1.0.0/core/One-debug", [ "phyxdown/ionejs/1.0.0/geom/Poi
         }
     };
     /**
+     * Remove all children
+     */
+    p.removeAllChildren = function() {
+        this._childMap = {};
+        this._children = [];
+    };
+    /**
      * Get children.
      * @return {Array} children
      */
