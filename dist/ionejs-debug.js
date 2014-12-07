@@ -34,6 +34,9 @@ define("phyxdown/ionejs/1.0.0/ionejs-debug", [ "./core/Engine-debug", "./utils/i
     ionejs.register = function(alias, constructor) {
         return creator.set(alias, constructor);
     };
+    ionejs.blur = function(object, p1, p2, param) {
+        object[p1] = object[p1] == object[p2] ? object[p1] : object[p1] * (1 - param) + object[p2] * param;
+    };
     //Abstract Constructors
     ionejs.One = One;
     ionejs.Stage = Stage;
@@ -918,6 +921,8 @@ define("phyxdown/ionejs/1.0.0/core/ctrls/MoveCtrl-debug", [], function(require, 
             }
             me.moveSource.x += e.dx;
             me.moveSource.y += e.dy;
+            me.moveSource.targetX = me.moveSource.x;
+            me.moveSource.targetY = me.moveSource.y;
         });
     };
     module.exports = new MoveCtrl();

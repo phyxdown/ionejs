@@ -29,6 +29,8 @@ define(function(require, exports, module) {
             }
             me.moveSource.x += e.dx;
             me.moveSource.y += e.dy;
+            me.moveSource.targetX = me.moveSource.x;
+            me.moveSource.targetY = me.moveSource.y;
         });
     }
 
