@@ -24,8 +24,8 @@ define(function(require, exports, module) {
     };
 
     p.mTsl = function(x, y){
-        this.mX += x;
-        this.mY += y;
+        this.mX = x;
+        this.mY = y;
     };
 
     p.mReset = function(){

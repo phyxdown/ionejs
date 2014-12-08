@@ -13,6 +13,9 @@ define(function(require, exports, module) {
 
     var p = DropCtrl.prototype;
 
+    var _downX = 0;
+    var _downY = 0;
+
     p.init = function(stage) {
         var me = this;
 
@@ -21,11 +24,11 @@ define(function(require, exports, module) {
             if (e.target._dropable) {
                 var dropSource = e.target;
                 me.phantom.set(dropSource);
-                // me.phantom.overlay(dropSource.getParent(), 
-                // 	   ["x", "y", "scaleX", "scaleX", "rotation", "skewX", "skewY", "regX", "regY"]);
                 me.phantom.mReset();
                 me.phantom.mTrz(dropSource.getParent().getAbsoluteMatrix());
                 me.dropSource = dropSource;
+                _downX = e.global.x;
+                _downY = e.global.y;
                 stage.addChild(me.phantom);
             }
         });
@@ -55,7 +58,7 @@ define(function(require, exports, module) {
                 stage.removeChild(me.phantom);
                 return;
             }
-            me.phantom.mTsl(e.dx, e.dy);
+            me.phantom.mTsl(e.global.x - _downX, e.global.y - _downY);
         });
     }
 

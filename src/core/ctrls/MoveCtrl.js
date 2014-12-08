@@ -7,6 +7,9 @@ define(function(require, exports, module) {
 
     var p = MoveCtrl.prototype;
 
+    var _downX = 0;
+    var _downY = 0;
+
     p.init = function(stage){
         var me = this;
 
@@ -27,8 +30,8 @@ define(function(require, exports, module) {
                 me.moveSource = null;
                 return;
             }
-            me.moveSource.x += e.dx;
-            me.moveSource.y += e.dy;
+            me.moveSource.x = e.global.x - _downX;
+            me.moveSource.y = e.global.y - _downY;
             me.moveSource.targetX = me.moveSource.x;
             me.moveSource.targetY = me.moveSource.y;
         });

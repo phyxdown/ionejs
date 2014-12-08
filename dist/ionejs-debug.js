@@ -770,18 +770,12 @@ define("phyxdown/ionejs/1.0.0/core/Event-debug", [], function(require, exports, 
 define("phyxdown/ionejs/1.0.0/core/events/MouseEvent-debug", [ "phyxdown/ionejs/1.0.0/utils/inherits-debug", "phyxdown/ionejs/1.0.0/core/Event-debug" ], function(require, exports, module) {
     var inherits = require("phyxdown/ionejs/1.0.0/utils/inherits-debug");
     var Event = require("phyxdown/ionejs/1.0.0/core/Event-debug");
-    var lx = 0;
-    var ly = 0;
     var MouseEvent = function(options) {
         Event.apply(this, arguments);
         var local = options.local.clone();
         var global = options.global.clone();
         this.x = local.x;
         this.y = local.y;
-        this.dx = global.x - lx;
-        this.dy = global.y - ly;
-        lx = global.x;
-        ly = global.y;
         this.local = local;
         this.global = global;
     };
@@ -801,6 +795,8 @@ define("phyxdown/ionejs/1.0.0/core/ctrls/DropCtrl-debug", [ "phyxdown/ionejs/1.0
         this.phantom.alpha = .4;
     };
     var p = DropCtrl.prototype;
+    var _downX = 0;
+    var _downY = 0;
     p.init = function(stage) {
         var me = this;
         stage.addEventListener("mousedown", function(e) {
@@ -808,11 +804,11 @@ define("phyxdown/ionejs/1.0.0/core/ctrls/DropCtrl-debug", [ "phyxdown/ionejs/1.0
             if (e.target._dropable) {
                 var dropSource = e.target;
                 me.phantom.set(dropSource);
-                // me.phantom.overlay(dropSource.getParent(), 
-                // 	   ["x", "y", "scaleX", "scaleX", "rotation", "skewX", "skewY", "regX", "regY"]);
                 me.phantom.mReset();
                 me.phantom.mTrz(dropSource.getParent().getAbsoluteMatrix());
                 me.dropSource = dropSource;
+                _downX = e.global.x;
+                _downY = e.global.y;
                 stage.addChild(me.phantom);
             }
         });
@@ -840,7 +836,7 @@ define("phyxdown/ionejs/1.0.0/core/ctrls/DropCtrl-debug", [ "phyxdown/ionejs/1.0
                 stage.removeChild(me.phantom);
                 return;
             }
-            me.phantom.mTsl(e.dx, e.dy);
+            me.phantom.mTsl(e.global.x - _downX, e.global.y - _downY);
         });
     };
     module.exports = new DropCtrl();
@@ -908,8 +904,8 @@ define("phyxdown/ionejs/1.0.0/core/ones/Phantom-debug", [ "phyxdown/ionejs/1.0.0
         this.mM = matrix;
     };
     p.mTsl = function(x, y) {
-        this.mX += x;
-        this.mY += y;
+        this.mX = x;
+        this.mY = y;
     };
     p.mReset = function() {
         this.mM = this.getAbsoluteMatrix();
@@ -936,6 +932,8 @@ define("phyxdown/ionejs/1.0.0/core/ctrls/MoveCtrl-debug", [], function(require, 
         this.moveSource = null;
     };
     var p = MoveCtrl.prototype;
+    var _downX = 0;
+    var _downY = 0;
     p.init = function(stage) {
         var me = this;
         stage.addEventListener("mousedown", function(e) {
@@ -952,8 +950,8 @@ define("phyxdown/ionejs/1.0.0/core/ctrls/MoveCtrl-debug", [], function(require, 
                 me.moveSource = null;
                 return;
             }
-            me.moveSource.x += e.dx;
-            me.moveSource.y += e.dy;
+            me.moveSource.x = e.global.x - _downX;
+            me.moveSource.y = e.global.y - _downY;
             me.moveSource.targetX = me.moveSource.x;
             me.moveSource.targetY = me.moveSource.y;
         });
