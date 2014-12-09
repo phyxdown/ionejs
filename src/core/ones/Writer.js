@@ -7,9 +7,9 @@ define(function(require, exports, module) {
         One.apply(this, arguments);
         this.text = "text";
         this.prefix = "";
-        this.align = options.align;
-        this.baseline = options.baseline;
-        this.color = options.color;
+        this.align = options.align || "start";
+        this.baseline = options.baseline  || "top";
+        this.color = options.color || "#000000";
     };
 
     var p = inherits(Writer, One);
@@ -36,9 +36,9 @@ define(function(require, exports, module) {
     p.draw = function(context) {
         var me = this;
         context.font = me.font || "Bold 20px Arial";
-        context.textAlign = me.align || "start";
-        context.textBaseline = me.baseline || "top";
-        context.fillStyle = me.color || "#000000";
+        context.textAlign = me.align;
+        context.textBaseline = me.baseline;
+        context.fillStyle = me.color;
         context.fillText(me.prefix + me.text || "", 0, 0);
     };
 
