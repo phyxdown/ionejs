@@ -9,7 +9,7 @@ define(function(require, exports, module) {
         this.prefix = "";
         this.align = options.align;
         this.baseline = options.baseline;
-        this.color = options.fillStyle;
+        this.color = options.color;
     };
 
     var p = inherits(Writer, One);
