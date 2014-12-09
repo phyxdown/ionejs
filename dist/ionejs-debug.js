@@ -1062,7 +1062,7 @@ define("phyxdown/ionejs/1.0.0/core/ones/Writer-debug", [ "phyxdown/ionejs/1.0.0/
         context.font = me.font || "Bold 20px Arial";
         context.textAlign = me.align || "start";
         context.textBaseline = me.baseline || "top";
-        context.fillStyle = me.style || "#000000";
+        context.fillStyle = me.fillStyle || "#000000";
         context.fillText(me.prefix + me.text || "", 0, 0);
     };
     module.exports = Writer;
