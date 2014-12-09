@@ -5,8 +5,8 @@ define(function(require, exports, module) {
 
     var Writer = function(options) {
         One.apply(this, arguments);
-        this.text = "text";
-        this.prefix = "";
+        this.text = options.text || "text";
+        this.prefix = options.prefix || "";
         this.align = options.align || "start";
         this.baseline = options.baseline  || "top";
         this.color = options.color || "#000000";

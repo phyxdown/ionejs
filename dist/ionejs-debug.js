@@ -1038,8 +1038,8 @@ define("phyxdown/ionejs/1.0.0/core/ones/Writer-debug", [ "phyxdown/ionejs/1.0.0/
     var One = require("phyxdown/ionejs/1.0.0/core/One-debug");
     var Writer = function(options) {
         One.apply(this, arguments);
-        this.text = "text";
-        this.prefix = "";
+        this.text = options.text || "text";
+        this.prefix = options.prefix || "";
         this.align = options.align || "start";
         this.baseline = options.baseline || "top";
         this.color = options.color || "#000000";
