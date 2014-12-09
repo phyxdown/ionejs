@@ -42,9 +42,9 @@ define(function(require, exports, module) {
     ionejs.register = function(alias, constructor){
     	return creator.set(alias, constructor);
     };
-    ionejs.blur = function(object, p1, p2, param){
-        object[p1] = object[p1] == object[p2] ? 
-            object[p1] : object[p1]*(1-param) + object[p2]*param;
+    ionejs.blur = function(object1, p1, value, param){
+        object1[p1] = object1[p1] == value ? 
+            object1[p1] : object1[p1]*(1-param) + value*param;
     };
 
     //Abstract Constructors
