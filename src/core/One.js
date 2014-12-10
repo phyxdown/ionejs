@@ -127,6 +127,19 @@ define(function(require, exports, module) {
     };
 
     /**
+     * Remove one from the child list(_children) by index
+     * If index is larger than +children.length, removing will not make sense.
+     * @param  {core.One} one
+     */
+    p.removeChildByIndex = function(i) {
+        if (this._children.length <= i) return;
+        var child = this._children[i];
+        child.setParent(null);
+        children.splice(i, 1);
+        this._unmapChild(child);
+    };
+
+    /**
      * Remove all children
      */
     p.removeAllChildren = function() {
@@ -313,10 +326,10 @@ define(function(require, exports, module) {
 
     };
 
-    p.overlay = function(one, keys){
+    p.overlay = function(one, keys) {
         var keys = keys || ["x", "y", "scaleX", "scaleY", "rotation", "skewX", "skewY", "regX", "regY", "alpha"];
         var me = this;
-        keys.forEach(function(key, i){
+        keys.forEach(function(key, i) {
             me[key] = one[key];
         });
     };
@@ -324,7 +337,7 @@ define(function(require, exports, module) {
     p.getAbsoluteMatrix = function() {
         var ancestors = this.getAncestors();
         var m = new Matrix();
-            m.transform(this);
+        m.transform(this);
         for (var i = 0, l = ancestors.length; i < l; i++) {
             m.transform(ancestors[i]);
         }
@@ -433,7 +446,7 @@ define(function(require, exports, module) {
      */
     p.mode = function(mode) {
         switch (mode) {
-            case "hitable" :
+            case "hitable":
                 this._hitable = true;
                 this._moveable = false;
                 this._dropable = false;
