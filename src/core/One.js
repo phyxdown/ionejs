@@ -128,12 +128,13 @@ define(function(require, exports, module) {
 
     /**
      * Remove one from the child list(_children) by index
-     * If index is larger than +children.length, removing will not make sense.
+     * If index is larger than _children.length, removing will not make sense.
      * @param  {core.One} one
      */
     p.removeChildByIndex = function(i) {
-        if (this._children.length <= i) return;
-        var child = this._children[i];
+        var children = this._children;
+        if (children.length <= i) return;
+        var child = children[i];
         child.setParent(null);
         children.splice(i, 1);
         this._unmapChild(child);
