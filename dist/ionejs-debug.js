@@ -287,6 +287,19 @@ define("phyxdown/ionejs/1.0.0/core/One-debug", [ "phyxdown/ionejs/1.0.0/geom/Poi
         }
     };
     /**
+     * Remove one from the child list(_children) by index
+     * If index is larger than _children.length, removing will not make sense.
+     * @param  {core.One} one
+     */
+    p.removeChildByIndex = function(i) {
+        var children = this._children;
+        if (children.length <= i) return;
+        var child = children[i];
+        child.setParent(null);
+        children.splice(i, 1);
+        this._unmapChild(child);
+    };
+    /**
      * Remove all children
      */
     p.removeAllChildren = function() {
@@ -938,7 +951,11 @@ define("phyxdown/ionejs/1.0.0/core/ctrls/MoveCtrl-debug", [], function(require, 
         var me = this;
         stage.addEventListener("mousedown", function(e) {
             me.down = true;
-            if (e.target._moveable) me.moveSource = e.target;
+            if (e.target._moveable) {
+                me.moveSource = e.target;
+                _downX = e.global.x;
+                _downY = e.global.y;
+            }
         });
         stage.addEventListener("mouseup", function(e) {
             me.down = false;
@@ -950,10 +967,10 @@ define("phyxdown/ionejs/1.0.0/core/ctrls/MoveCtrl-debug", [], function(require, 
                 me.moveSource = null;
                 return;
             }
-            me.moveSource.x = e.global.x - _downX;
-            me.moveSource.y = e.global.y - _downY;
-            me.moveSource.targetX = me.moveSource.x;
-            me.moveSource.targetY = me.moveSource.y;
+            me.moveSource.x += e.global.x - _downX;
+            me.moveSource.y += e.global.y - _downY;
+            _downX = e.global.x;
+            _downY = e.global.y;
         });
     };
     module.exports = new MoveCtrl();

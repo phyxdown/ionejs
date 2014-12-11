@@ -15,8 +15,11 @@ define(function(require, exports, module) {
 
         stage.addEventListener('mousedown', function(e){
             me.down = true;
-            if(e.target._moveable)
+            if(e.target._moveable){
                 me.moveSource = e.target;
+                _downX = e.global.x;
+                _downY = e.global.y;
+            }
         });
 
         stage.addEventListener('mouseup', function(e){
@@ -30,10 +33,10 @@ define(function(require, exports, module) {
                 me.moveSource = null;
                 return;
             }
-            me.moveSource.x = e.global.x - _downX;
-            me.moveSource.y = e.global.y - _downY;
-            me.moveSource.targetX = me.moveSource.x;
-            me.moveSource.targetY = me.moveSource.y;
+            me.moveSource.x += e.global.x - _downX;
+            me.moveSource.y += e.global.y - _downY;
+            _downX = e.global.x;
+            _downY = e.global.y;
         });
     }
 
