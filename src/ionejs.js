@@ -11,9 +11,6 @@ define(function(require, exports, module) {
     var Cliper = require("./core/ones/Cliper");
     var Writer = require("./core/ones/Writer");
 
-    //ionejs.core.hitTests
-    var hitTests = require("./core/hitTests/all");
-
     //ionejs.geom
     var Point = require("./geom/Point");
     var Matrix2D = require("./geom/Matrix2D");
@@ -53,14 +50,10 @@ define(function(require, exports, module) {
     ionejs.Painter = Painter;
     ionejs.Writer = Writer;
     ionejs.Event = Event;
-    ionejs.hitTests = hitTests;
 
     //Helpful Classes
     ionejs.Point = Point;
     ionejs.Matrix2D = Matrix2D;
-    
-    //Helpful Functions
-    ionejs.hitTests = hitTests;
 
     //instance
     ionejs.instance = new Engine();
