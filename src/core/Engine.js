@@ -119,11 +119,20 @@ define(function(require, exports, module) {
         frame();
     };
 
+    /**
+     * Drop Ctrl, a controller that manages drag and drop.
+     * Use new One().mode("dropable") to invoke DND ctrl.
+     * This module is going to be remove from ionejs.core and implemented in ionejs-frame
+     * and realized in another way besides as a Controller.
+     */
     p.dropable = function() {
         var ctrl = require("./ctrls/DropCtrl");
         return ctrl.init(this._stage);
     };
 
+    /**
+     * Move Ctrl is also going to be removed.
+     */
     p.moveable = function() {
         var ctrl = require("./ctrls/MoveCtrl");
         return ctrl.init(this._stage);

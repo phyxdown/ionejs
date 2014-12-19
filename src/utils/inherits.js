@@ -1,3 +1,6 @@
+/**
+ * This method will be implemented in {core.Object}.
+ */
 define(function(require, exports, module) {
     module.exports = function(construct, superConstruct) {
         construct._super = superConstruct;
