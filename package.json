@@ -1,7 +1,7 @@
 {
   "family": "phyxdown",
   "name": "ionejs",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "The worst ever.",
   "homepage": "https://github.com/phyxdown/ionejs",
   "author": "phyxdown",
@@ -10,20 +10,11 @@
   ],
   "repository": {
     "type": "git",
-    "url": "http://github.com/PhyxDown/ionejs.git"
+    "url": "http://github.com/phyxdown/ionejs.git"
   },
   "bugs": {
     "url": ""
   },
   "keywords": [],
   "licenses": "MIT",
-  "spm": {
-    "output": [
-      "ionejs.js",
-      "ionejs.css"
-    ],
-    "alias": {},
-    "devAlias": {},
-    "engines": {}
-  }
 }
