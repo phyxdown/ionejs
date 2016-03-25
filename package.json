@@ -1,7 +1,8 @@
 {
   "family": "phyxdown",
   "name": "ionejs",
-  "version": "1.0.2",
+  "main": "src/ionejs.js",
+  "version": "1.0.3",
   "description": "The worst ever.",
   "homepage": "https://github.com/phyxdown/ionejs",
   "author": "phyxdown",
