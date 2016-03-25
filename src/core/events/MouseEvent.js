@@ -1,21 +1,18 @@
-define(function(require, exports, module) {
-    var inherits = require('../../utils/inherits');
-    var Event = require('../Event');
+var inherits = require('../../utils/inherits');
+var Event = require('../Event');
 
-    var MouseEvent = function(options) {
-        Event.apply(this, arguments);
-        var local = options.local.clone();
-        var global = options.global.clone();
-        this.x = local.x;
-        this.y = local.y;
-        this.local = local;
-        this.global = global;
-    };
+var MouseEvent = function(options) {
+    Event.apply(this, arguments);
+    var local = options.local.clone();
+    var global = options.global.clone();
+    this.x = local.x;
+    this.y = local.y;
+    this.local = local;
+    this.global = global;
+};
 
-    MouseEvent.validate = function(options){};
+MouseEvent.validate = function(options){};
 
-    var p = inherits(MouseEvent, Event);
+var p = inherits(MouseEvent, Event);
 
-    module.exports = MouseEvent;
-
-});
+module.exports = MouseEvent;
