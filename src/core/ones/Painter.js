@@ -15,12 +15,25 @@ var p = inherits(Painter, One);
  * ionejs does not report illegal src, but the browser does.
  * @param {string} src
  */
-p.set = function(src) {
+p.setSrc = function(src) {
     var me = this;
-
     var image = new Image();
     image.src = src;
     me._image = image;
+};
+
+p.setImage = function(image) {
+    me._image= image;
+};
+
+p.testHit = function(point) {
+	var me = this;
+	if (!me._image) return false;
+	else {
+		var width = me._image.width;
+		var height = me._image.height;
+    		return point.x > 0 && point.x < width && point.y > 0 && point.y < height;
+	}
 };
 
 p.draw = function(context) {
