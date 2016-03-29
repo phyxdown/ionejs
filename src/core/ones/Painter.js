@@ -4,8 +4,8 @@ var One = require('../One');
 var Painter = function(options) {
     One.apply(this, arguments);
     var me = this;
-
-    options.src && me.set(options.src);
+    options.src && me.setSrc(options.src);
+    options.image && me.setImage(options.image);
 };
 
 var p = inherits(Painter, One);
