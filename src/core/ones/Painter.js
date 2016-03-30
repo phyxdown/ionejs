@@ -27,7 +27,7 @@ p.loadif = function() {
 };
 
 p.update = function() {
-    loadif();
+    this.loadif();
 };
 
 p.draw = function(context) {
