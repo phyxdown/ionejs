@@ -24,8 +24,8 @@ p.init = function(stage, canvas) {
      * Currently, the size of stage concerts the size window.
      */
     var _onResize = function() {
-        canvas.width = stage.width = window.innerWidth - (offsetLeft * 2 + 5);
-        canvas.height = stage.height = window.innerHeight - (offsetLeft * 2 + 5);
+        canvas.width = stage._state.width = window.innerWidth - (offsetLeft * 2 + 5);
+        canvas.height = stage._state.height = window.innerHeight - (offsetLeft * 2 + 5);
     };
 
     window.addEventListener('resize', _onResize);
