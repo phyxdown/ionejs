@@ -418,6 +418,27 @@ p._draw = function(context) {
  */
 p.draw = function(context) {};
 
+p._init = function() {
+    try {
+        this.init();
+    } catch (e) {
+        console.log(e, this)
+    }
+    for (var i = 0, l = this._children.length; i < l; i++) {
+        var child = this._children[i];
+        child._init();
+    }
+};
+
+/**
+ * Abstract method
+ * Override it to do something before render.
+ * This is especially useful when you need to do something ones' tree-structure based, 
+ * which cannot be done in ons's consctructor.
+ */
+p.init = function() {};
+
+
 p._update = function() {
     if (this._active) {
         try {
