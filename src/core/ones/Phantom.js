@@ -18,25 +18,25 @@ p.set = function(one) {
 };
 
 p.mTrz = function(matrix){
-    this.mM = matrix;
+    this._state.mM = matrix;
 };
 
 p.mTsl = function(x, y){
-    this.mX = x;
-    this.mY = y;
+    this._state.mX = x;
+    this._state.mY = y;
 };
 
 p.mReset = function(){
-    this.mM = this.getAbsoluteMatrix();
-    this.mX = 0;
-    this.mY = 0;
+    this._state.mM = this.getAbsoluteMatrix();
+    this._state.mX = 0;
+    this._state.mY = 0;
 };
 
 p.draw = function(context) {
     var me = this;
-    var m = me.mM;
-    var x = me.mX;
-    var y = me.mY;
+    var m = me._state.mM;
+    var x = me._state.mX;
+    var y = me._state.mY;
     context.save();
     context.translate(x, y);
     context.transform(m.a, m.b, m.c, m.d, m.x, m.y);

@@ -3,28 +3,9 @@ var One = require('../One');
 
 var Painter = function(options) {
     One.apply(this, arguments);
-    var me = this;
-    options.src && me.setSrc(options.src);
-    options.image && me.setImage(options.image);
 };
 
 var p = inherits(Painter, One);
-
-/**
- * set _image.src
- * ionejs does not report illegal src, but the browser does.
- * @param {string} src
- */
-p.setSrc = function(src) {
-    var me = this;
-    var image = new Image();
-    image.src = src;
-    me._image = image;
-};
-
-p.setImage = function(image) {
-    me._image= image;
-};
 
 p.testHit = function(point) {
 	var me = this;
@@ -36,10 +17,21 @@ p.testHit = function(point) {
 	}
 };
 
+p.loadif = function() {
+    if (!this._state.image) {
+        this._state.image = new Image();
+        this._state.image.src = this._state.src;
+    }
+    else if (this._state.image.src != this._state.src)
+        this._state.image.src = this._state.src;
+};
+
+p.update = function() {
+    loadif();
+};
+
 p.draw = function(context) {
-    var me = this,
-        image = me._image;
-    context.drawImage(image, 0, 0);
+    context.drawImage(this._state.image, 0, 0);
 };
 
 module.exports = Painter;

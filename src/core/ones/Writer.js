@@ -1,13 +1,16 @@
 var inherits = require('../../utils/inherits');
 var One = require('../One');
+var _ = require('underscore');
 
 var Writer = function(options) {
+    _.defaults(options, {
+        text: "text",
+        prefix: "",
+        align: "start",
+        baseline: "top",
+        color: "#000000"
+    });
     One.apply(this, arguments);
-    this.text = options.text || "text";
-    this.prefix = options.prefix || "";
-    this.align = options.align || "start";
-    this.baseline = options.baseline  || "top";
-    this.color = options.color || "#000000";
 };
 
 var p = inherits(Writer, One);
@@ -32,12 +35,12 @@ var p = inherits(Writer, One);
  */
 
 p.draw = function(context) {
-    var me = this;
-    context.font = me.font || "Bold 20px Arial";
-    context.textAlign = me.align;
-    context.textBaseline = me.baseline;
-    context.fillStyle = me.color;
-    context.fillText(me.prefix + me.text || "", 0, 0);
+    var state = this._state;
+    context.font = state.font || "Bold 20px Arial";
+    context.textAlign = state.align;
+    context.textBaseline = state.baseline;
+    context.fillStyle = state.color;
+    context.fillText(state.prefix + state.text || "", 0, 0);
 };
 
 module.exports = Writer;

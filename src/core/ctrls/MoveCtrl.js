@@ -13,8 +13,8 @@ p.init = function(stage){
 
     stage.addEventListener('mousedown', function(e){
         me.down = true;
-        if(e.target._moveable){
-            me.moveSource = e.target;
+        if(e.target._state.moveable){
+            me.moveSource = e.target._state;
             _downX = e.global.x;
             _downY = e.global.y;
         }

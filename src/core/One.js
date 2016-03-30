@@ -3,22 +3,22 @@ var Matrix = require('./Matrix');
 var Event = require("./Event");
 var _ = require("underscore");
 
-var defaultOptions = {
-	active: true,
-	visible: true,
-	hitable: false,
-	moveable: false,
-	dropable: false,
-	x: 0,
-	y: 0,
-	regX: 0,
-	regY: 0,
-	rotation: 0,
-	scaleX: 1,
-	scaleY: 1,
-	skewX: 0,
-	skewY: 0,
-	alpha: 1
+var defaultState = {
+    active: true,
+    visible: true,
+    hitable: false,
+    moveable: false,
+    dropable: false,
+    x: 0,
+    y: 0,
+    regX: 0,
+    regY: 0,
+    rotation: 0,
+    scaleX: 1,
+    scaleY: 1,
+    skewX: 0,
+    skewY: 0,
+    alpha: 1
 };
 
 /**
@@ -32,8 +32,7 @@ var One = function(options) {
      * Param check is expected.
      * The code line below is temporary.
      */
-    options = options || {};
-    options = _.defaults(options, defaultOptions);
+    this._state = _.defaults(options || {}, defaultState);
 
     var listeners = {};
     listeners["bubble"] = {};
@@ -52,28 +51,6 @@ var One = function(options) {
     this._parent = null;
     this._childMap = {};
     this._children = [];
-
-    //Docs expected
-    this._active = options.active;
-    //Docs expected
-    this._visible = options.visible;
-    //Docs expected
-    this._hitable = options.hitable;
-    //Docs expected
-    this._moveable = options.moveable;
-    //Docs expected
-    this._dropable = options.dropable;
-
-    this.x = options.x;
-    this.y = options.y;
-    this.regX = options.regX;
-    this.regY = options.regY;
-    this.rotation = options.rotation;
-    this.scaleX = options.scaleX;
-    this.scaleY = options.scaleY;
-    this.skewX = options.skewX;
-    this.skewY = options.skewY;
-    this.alpha = options.alpha;
 };
 
 var p = One.prototype;
@@ -349,16 +326,16 @@ p.overlay = function(one, keys) {
     var keys = keys || ["x", "y", "scaleX", "scaleY", "rotation", "skewX", "skewY", "regX", "regY", "alpha"];
     var me = this;
     keys.forEach(function(key, i) {
-        me[key] = one[key];
+        me._state[key] = one._state[key];
     });
 };
 
 p.getAbsoluteMatrix = function() {
     var ancestors = this.getAncestors();
     var m = new Matrix();
-    m.transform(this);
+    m.transform(this._state);
     for (var i = 0, l = ancestors.length; i < l; i++) {
-        m.transform(ancestors[i]);
+        m.transform(ancestors[i]._state);
     }
     return m;
 };
@@ -395,7 +372,7 @@ p.hit = function(point) {
         var descendant = children[i].hit(point);
         if (descendant) return descendant;
     }
-    if (this._hitable) {
+    if (this._state.hitable) {
         if (this.testHit(this.globalToLocal(point))) return this;
     }
     return null;
@@ -414,10 +391,10 @@ p.testHit = function(point) {
 
 p._draw = function(context) {
     context.save();
-    var am = new Matrix(this);
+    var am = new Matrix(this._state);
     context.transform(am.a, am.b, am.c, am.d, am.x, am.y);
-    context.globalAlpha *= this.alpha;
-    if (this._visible) {
+    context.globalAlpha *= this._state.alpha;
+    if (this._state.visible) {
         try {
             this.draw(context);
         } catch (e) {
@@ -460,7 +437,7 @@ p.init = function() {};
 
 
 p._update = function() {
-    if (this._active) {
+    if (this._state.active) {
         try {
             this.update();
         } catch (e) {
@@ -487,26 +464,24 @@ p.update = function() {};
 p.mode = function(mode) {
     switch (mode) {
         case "hitable":
-            this._hitable = true;
-            this._moveable = false;
-            this._dropable = false;
+            this._state.hitable = true;
+            this._state.moveable = false;
+            this._state.dropable = false;
             break;
         case "moveable":
-            this._hitable = true;
-            this._moveable = true;
-            this._dropable = false;
+            this._state.hitable = true;
+            this._state.moveable = true;
+            this._state.dropable = false;
             break;
         case "dropable":
-            this._hitable = true;
-            this._moveable = false;
-            this._dropable = true;
+            this._state.hitable = true;
+            this._state.moveable = false;
+            this._state.dropable = true;
             break;
         default:
-            this._hitable = false;
-            this._moveable = false;
-            this._dropable = false;
-            break;
-            break;
+            this._state.hitable = false;
+            this._state.moveable = false;
+            this._state.dropable = false;
     }
     return this;
 };

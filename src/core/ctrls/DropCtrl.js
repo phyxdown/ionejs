@@ -19,7 +19,7 @@ p.init = function(stage) {
 
     stage.addEventListener('mousedown', function(e) {
         me.down = true;
-        if (e.target._dropable) {
+        if (e.target._state.dropable) {
             var dropSource = e.target;
             me.phantom.set(dropSource);
             me.phantom.mReset();
