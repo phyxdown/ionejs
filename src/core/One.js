@@ -32,7 +32,8 @@ var One = function(options) {
      * Param check is expected.
      * The code line below is temporary.
      */
-    this._state = _.defaults(options || {}, defaultState);
+    options = options || {};
+    this._state = _.defaults(options, defaultState);
 
     var listeners = {};
     listeners["bubble"] = {};
