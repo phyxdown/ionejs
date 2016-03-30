@@ -2,7 +2,7 @@
   "family": "phyxdown",
   "name": "ionejs",
   "main": "src/ionejs.js",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "The worst ever.",
   "homepage": "https://github.com/phyxdown/ionejs",
   "author": "phyxdown",
@@ -17,5 +17,8 @@
     "url": ""
   },
   "keywords": [],
-  "licenses": "MIT"
+  "licenses": "MIT",
+  "dependencies": {
+    "underscore": "^1.8.3"
+  }
 }

@@ -1,6 +1,25 @@
 var Point = require('../geom/Point');
 var Matrix = require('./Matrix');
 var Event = require("./Event");
+var _ = require("underscore");
+
+var defaultOptions = {
+	active: true,
+	visible: true,
+	hitable: false,
+	moveable: false,
+	dropable: false,
+	x: 0,
+	y: 0,
+	regX: 0,
+	regY: 0,
+	rotation: 0,
+	scaleX: 1,
+	scaleY: 1,
+	skewX: 0,
+	skewY: 0,
+	alpha: 1
+};
 
 /**
  * What is one?
@@ -13,7 +32,7 @@ var One = function(options) {
      * Param check is expected.
      * The code line below is temporary.
      */
-    options = options || {};
+    options = _.defaults(options, defaultOptions);
 
     var listeners = {};
     listeners["bubble"] = {};
@@ -34,26 +53,26 @@ var One = function(options) {
     this._children = [];
 
     //Docs expected
-    this._active = true;
+    this._active = options.active;
     //Docs expected
-    this._visible = true;
+    this._visible = options.visible;
     //Docs expected
-    this._hitable = false;
+    this._hitable = options.hitable;
     //Docs expected
-    this._moveable = false;
+    this._moveable = options.moveable;
     //Docs expected
-    this._dropable = false;
+    this._dropable = options.dropable;
 
-    this.x = options.x || 0;
-    this.y = options.y || 0;
-    this.regX = options.regX || 0;
-    this.regY = options.regY || 0;
-    this.rotation = options.rotation || 0;
-    this.scaleX = options.scaleX == 0 ? 0 : options.scaleX || 1;
-    this.scaleY = options.scaleY == 0 ? 0 : options.scaleY || 1;
-    this.skewX = options.skewX || 0;
-    this.skewY = options.skewY || 0;
-    this.alpha = options.alpha == 0 ? 0 : options.alpha || 1;
+    this.x = options.x;
+    this.y = options.y;
+    this.regX = options.regX;
+    this.regY = options.regY;
+    this.rotation = options.rotation;
+    this.scaleX = options.scaleX;
+    this.scaleY = options.scaleY;
+    this.skewX = options.skewX;
+    this.skewY = options.skewY;
+    this.alpha = options.alpha;
 };
 
 var p = One.prototype;
