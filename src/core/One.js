@@ -32,6 +32,7 @@ var One = function(options) {
      * Param check is expected.
      * The code line below is temporary.
      */
+    options = options || {};
     options = _.defaults(options, defaultOptions);
 
     var listeners = {};
