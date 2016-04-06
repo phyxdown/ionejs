@@ -19,13 +19,19 @@ p.init = function(stage, canvas) {
     this._canvas = canvas;
     var offsetLeft = canvas.offsetLeft;
     var offsetTop = canvas.offsetTop;
+    var p = canvas.offsetParent;
+    while(p) {
+	    offsetLeft += p.offsetLeft;
+	    offsetTop += p.offsetTop;
+	    p = p.offsetParent;
+    }
 
     /**
      * Currently, the size of stage concerts the size window.
      */
     var _onResize = function() {
-        canvas.width = stage._state.width = window.innerWidth - (offsetLeft * 2 + 5);
-        canvas.height = stage._state.height = window.innerHeight - (offsetLeft * 2 + 5);
+        canvas.width = stage._state.width = window.innerWidth - (offsetLeft + 5);
+        canvas.height = stage._state.height = window.innerHeight - (offsetLeft + 5);
     };
 
     window.addEventListener('resize', _onResize);
