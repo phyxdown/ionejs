@@ -50,10 +50,15 @@ p.init = function(stage, canvas) {
         if (_lastTarget && _lastTarget !== target) {
             var local = _lastTarget.globalToLocal(global);
             _lastTarget && _lastTarget.dispatchEvent(new MouseEvent({
-                type: "mouseaway",
+                type: "mouseout",
                 global: global,
                 local: local
             }));
+	    target && target.dispatchEvent(new MouseEvent({
+                type: "mousein",
+                global: global,
+                local: local
+	    }));
         }
         _lastTarget = target;
 
