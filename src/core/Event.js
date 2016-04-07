@@ -1,6 +1,8 @@
+var _ = require('underscore');
 var Event = function(options) {
 
     this.type = options.type;
+    this.data = _.omit(options, 'type');
 
     this.target = null;
 
