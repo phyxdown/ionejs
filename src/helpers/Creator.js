@@ -9,12 +9,13 @@ p.set = function(alias, constructor){
 	return constructor;
 };
 
-p.parse = function(config){
+p.parse = function(){
 	var me = this;
-	var _parse = function(config){
-		var constructor = me._genesis[config.alias]
-		var options = config.options;
-		var children = config.children;
+	var _parse = function(){
+		var config = arguments[0] || {};
+		var constructor = me._genesis[config.alias || me.defaultAlias]
+		var options = config.options || {};
+		var children = config.children || [];
 		var one = new constructor(options);
 		
 		for(var i = 0, l = children.length; i < l; i++){
@@ -24,7 +25,7 @@ p.parse = function(config){
 		return one;
 	}
 
-	return _parse(config);
+	return _parse.apply(this, arguments);
 
 };
 

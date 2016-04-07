@@ -24,6 +24,7 @@ var inherits = require("./utils/inherits");
 var creator = new Creator();
 
 //register ones
+creator.defaultAlias = 'One';
 creator.set('One', One);
 creator.set('Stage', Stage);
 creator.set('Painter', Painter);
