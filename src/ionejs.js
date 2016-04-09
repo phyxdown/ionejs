@@ -53,6 +53,7 @@ ionejs.Painter = Painter;
 ionejs.Writer = Writer;
 ionejs.Event = Event;
 ionejs.Phantom = Phantom;
+ionejs.Cliper = Cliper;
 
 //Helpful Classes
 ionejs.Point = Point;
