@@ -9,6 +9,7 @@ var Stage = require("./core/ones/Stage");
 var Painter = require("./core/ones/Painter");
 var Cliper = require("./core/ones/Cliper");
 var Writer = require("./core/ones/Writer");
+var Phantom = require("./core/ones/Phantom");
 
 //ionejs.geom
 var Point = require("./geom/Point");
@@ -30,6 +31,7 @@ creator.set('Stage', Stage);
 creator.set('Painter', Painter);
 creator.set('Cliper', Cliper);
 creator.set('Writer', Writer);
+creator.set('Phantom', Phantom);
 
 //API
 ionejs.inherits = inherits;
@@ -50,6 +52,7 @@ ionejs.Stage = Stage;
 ionejs.Painter = Painter;
 ionejs.Writer = Writer;
 ionejs.Event = Event;
+ionejs.Phantom = Phantom;
 
 //Helpful Classes
 ionejs.Point = Point;
