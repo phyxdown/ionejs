@@ -24,11 +24,7 @@ p.create = function(){
 		}
 		return one;
 	}
-
 	return _parse.apply(this, arguments);
-
 };
-
-p.
 
 module.exports = Creator;
