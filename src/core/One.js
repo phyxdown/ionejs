@@ -88,9 +88,11 @@ p._unmapChild = function(one) {
  * @param {core.One} one
  */
 p.addChild = function(one) {
+    one.beforeMount();
     one.setParent(this);
     this._children.push(one);
     this._mapChild(one);
+    one.afterMount();
 };
 
 /**
@@ -100,9 +102,11 @@ p.addChild = function(one) {
  * @param  {number} index
  */
 p.insertChild = function(one, index) {
+    one.beforeMount();
     one.setParent(this);
     this._children.splice(index, 0, one);
     this._mapChild(one);
+    one.afterMount();
 };
 
 /**
@@ -112,6 +116,7 @@ p.insertChild = function(one, index) {
  * @param  {core.One} one
  */
 p.removeChild = function(one) {
+    one.beforeUnmount();
     var children = this._children;
     for (var i = 0, l = children.length; i < l; i++) {
         if (children[i] === one) {
@@ -120,6 +125,7 @@ p.removeChild = function(one) {
             this._unmapChild(one);
         }
     }
+    one.afterUnmount();
 };
 
 /**
@@ -128,20 +134,24 @@ p.removeChild = function(one) {
  * @param  {core.One} one
  */
 p.removeChildByIndex = function(i) {
+    one.beforeUnmount();
     var children = this._children;
     if (children.length <= i) return;
     var child = children[i];
     child.setParent(null);
     children.splice(i, 1);
     this._unmapChild(child);
+    one.afterUnmount();
 };
 
 /**
  * Remove all children
  */
 p.removeAllChildren = function() {
+    for (var i = 0, l = children.length; i < l; i++) children[i].beforeUnmount();
     this._childMap = {};
     this._children = [];
+    for (var i = 0, l = children.length; i < l; i++) children[i].afterUnmount();
 };
 
 /**
@@ -415,27 +425,6 @@ p._draw = function(context) {
  * @param  {Context} context This context is defined as local.
  */
 p.draw = function(context) {};
-
-p._init = function() {
-    try {
-        this.init();
-    } catch (e) {
-        console.log(e, this)
-    }
-    for (var i = 0, l = this._children.length; i < l; i++) {
-        var child = this._children[i];
-        child._init();
-    }
-};
-
-/**
- * Abstract method
- * Override it to do something before render.
- * This is especially useful when you need to do something ones' tree-structure based, 
- * which cannot be done in ons's consctructor.
- */
-p.init = function() {};
-
 
 p._update = function() {
     if (this._state.active) {

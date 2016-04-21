@@ -103,8 +103,6 @@ p.run = function() {
         stage = me._stage,
         context = canvas.getContext('2d');
 
-    stage._init();
-
     var lt = Date.now();
     var frame = function() {
         var t1 = Date.now();

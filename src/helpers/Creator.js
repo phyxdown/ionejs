@@ -9,7 +9,7 @@ p.set = function(alias, constructor){
 	return constructor;
 };
 
-p.parse = function(){
+p.create = function(){
 	var me = this;
 	var _parse = function(){
 		var config = arguments[0] || {};
@@ -28,5 +28,7 @@ p.parse = function(){
 	return _parse.apply(this, arguments);
 
 };
+
+p.
 
 module.exports = Creator;
