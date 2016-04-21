@@ -399,6 +399,10 @@ p.testHit = function(point) {
     return false;
 };
 
+p.beforeMount = function() {};
+p.afterMount = function() {};
+p.beforeUnmount = function() {};
+p.afterUnmount = function() {};
 
 p._draw = function(context) {
     context.save();
