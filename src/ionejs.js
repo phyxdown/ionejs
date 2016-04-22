@@ -36,7 +36,7 @@ creator.set('Phantom', Phantom);
 //API
 ionejs.inherits = inherits;
 ionejs.create = function(config){
-	return creator.parse(config);
+	return creator.create(config);
 };
 ionejs.register = function(alias, constructor){
 	return creator.set(alias, constructor);
