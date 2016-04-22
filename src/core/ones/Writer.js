@@ -35,7 +35,7 @@ var p = inherits(Writer, One);
  */
 
 p.draw = function(context) {
-    var state = this._state;
+    var state = this.state;
     context.font = state.font || "Bold 20px Arial";
     context.textAlign = state.align;
     context.textBaseline = state.baseline;

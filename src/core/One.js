@@ -33,7 +33,7 @@ var One = function(options) {
      * The code line below is temporary.
      */
     options = options || {};
-    this._state = _.defaults(options, defaultState);
+    this.state = _.defaults(options, defaultState);
 
     var listeners = {};
     listeners["bubble"] = {};
@@ -337,16 +337,16 @@ p.overlay = function(one, keys) {
     var keys = keys || ["x", "y", "scaleX", "scaleY", "rotation", "skewX", "skewY", "regX", "regY", "alpha"];
     var me = this;
     keys.forEach(function(key, i) {
-        me._state[key] = one._state[key];
+        me.state[key] = one.state[key];
     });
 };
 
 p.getAbsoluteMatrix = function() {
     var ancestors = this.getAncestors();
     var m = new Matrix();
-    m.transform(this._state);
+    m.transform(this.state);
     for (var i = 0, l = ancestors.length; i < l; i++) {
-        m.transform(ancestors[i]._state);
+        m.transform(ancestors[i].state);
     }
     return m;
 };
@@ -383,7 +383,7 @@ p.hit = function(point) {
         var descendant = children[i].hit(point);
         if (descendant) return descendant;
     }
-    if (this._state.hitable) {
+    if (this.state.hitable) {
         if (this.testHit(this.globalToLocal(point))) return this;
     }
     return null;
@@ -406,10 +406,10 @@ p.afterUnmount = function() {};
 
 p._draw = function(context) {
     context.save();
-    var am = new Matrix(this._state);
+    var am = new Matrix(this.state);
     context.transform(am.a, am.b, am.c, am.d, am.x, am.y);
-    context.globalAlpha *= this._state.alpha;
-    if (this._state.visible) {
+    context.globalAlpha *= this.state.alpha;
+    if (this.state.visible) {
         try {
             this.draw(context);
         } catch (e) {
@@ -431,7 +431,7 @@ p._draw = function(context) {
 p.draw = function(context) {};
 
 p._update = function() {
-    if (this._state.active) {
+    if (this.state.active) {
         try {
             this.update();
         } catch (e) {
@@ -458,24 +458,24 @@ p.update = function() {};
 p.mode = function(mode) {
     switch (mode) {
         case "hitable":
-            this._state.hitable = true;
-            this._state.moveable = false;
-            this._state.dropable = false;
+            this.state.hitable = true;
+            this.state.moveable = false;
+            this.state.dropable = false;
             break;
         case "moveable":
-            this._state.hitable = true;
-            this._state.moveable = true;
-            this._state.dropable = false;
+            this.state.hitable = true;
+            this.state.moveable = true;
+            this.state.dropable = false;
             break;
         case "dropable":
-            this._state.hitable = true;
-            this._state.moveable = false;
-            this._state.dropable = true;
+            this.state.hitable = true;
+            this.state.moveable = false;
+            this.state.dropable = true;
             break;
         default:
-            this._state.hitable = false;
-            this._state.moveable = false;
-            this._state.dropable = false;
+            this.state.hitable = false;
+            this.state.moveable = false;
+            this.state.dropable = false;
     }
     return this;
 };

@@ -8,7 +8,7 @@ var Painter = function(options) {
 var p = inherits(Painter, One);
 
 p.testHit = function(point) {
-	var state = this._state;
+	var state = this.state;
 	if (!state.image) return false;
 	else {
 		var width = state.image.width;
@@ -18,7 +18,7 @@ p.testHit = function(point) {
 };
 
 p.loadif = function() {
-    var state = this._state;
+    var state = this.state;
     if (!state.image) {
         state.image = new Image();
         state.image.src = state.src;
@@ -32,7 +32,7 @@ p.update = function() {
 };
 
 p.draw = function(context) {
-    this._state.image && context.drawImage(this._state.image, 0, 0);
+    this.state.image && context.drawImage(this.state.image, 0, 0);
 };
 
 module.exports = Painter;

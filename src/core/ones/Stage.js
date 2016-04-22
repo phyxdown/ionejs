@@ -14,7 +14,7 @@ var Stage = function(options) {
 var p = inherits(Stage, One);
 
 p.testHit = function(point) {
-    var state = this._state;
+    var state = this.state;
     var x = point.x,
         y = point.y;
     if (x > 0 && x < state.width && y > 0 && y < state.height) {
@@ -24,7 +24,7 @@ p.testHit = function(point) {
 };
 
 p.draw = function(context) {
-    var state = this._state;
+    var state = this.state;
     try {
         context.fillStyle = '#ffffff';
         context.fillRect(0, 0, state.width, state.height);
