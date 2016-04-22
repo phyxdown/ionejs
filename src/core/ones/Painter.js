@@ -8,31 +8,32 @@ var Painter = function(options) {
 var p = inherits(Painter, One);
 
 p.testHit = function(point) {
-	var state = this.state;
-	if (!state.image) return false;
+	var I = this;
+	if (!I.image) return false;
 	else {
-		var width = state.image.width;
-		var height = state.image.height;
+		var width = I.image.width;
+		var height = I.image.height;
     		return point.x > 0 && point.x < width && point.y > 0 && point.y < height;
 	}
 };
 
 p.loadif = function() {
-    var state = this.state;
-    if (!state.image) {
-        state.image = new Image();
-        state.image.src = state.src;
+    var I = this;
+    var S = this.state;
+    if (!I.image) {
+        I.image = new Image();
+        I.image.src = S.src;
     }
-    else if (state.image.src != state.src)
-        state.image.src = state.src;
+    else if (I.image.src != S.src)
+        I.image.src = S.src;
 };
 
 p.update = function() {
-    this.loadif();
+    var I = this; I.loadif();
 };
 
 p.draw = function(context) {
-    this.state.image && context.drawImage(this.state.image, 0, 0);
+    var I = this; I.image && context.drawImage(I.image, 0, 0);
 };
 
 module.exports = Painter;

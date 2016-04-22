@@ -3,7 +3,6 @@ var One = require('../One');
 
 var Phantom = function(options) {
     One.apply(this, arguments);
-
     this.mReset();
 };
 
@@ -18,31 +17,30 @@ p.set = function(one) {
 };
 
 p.mTrz = function(matrix){
-    this.state.mM = matrix;
+    this.mM = matrix;
 };
 
 p.mTsl = function(x, y){
-    this.state.mX = x;
-    this.state.mY = y;
+    this.mX = x;
+    this.mY = y;
 };
 
 p.mReset = function(){
-    this.state.mM = this.getAbsoluteMatrix();
-    this.state.mX = 0;
-    this.state.mY = 0;
+    this.mM = this.getAbsoluteMatrix();
+    this.mX = 0;
+    this.mY = 0;
 };
 
 p.draw = function(context) {
-    var me = this;
-    var m = me.state.mM;
-    var x = me.state.mX;
-    var y = me.state.mY;
+    var m = this.mM;
+    var x = this.mX;
+    var y = this.mY;
     context.save();
     context.translate(x, y);
     context.transform(m.a, m.b, m.c, m.d, m.x, m.y);
 
-    if (me._origin)
-        me._origin._draw(context);
+    if (this._origin)
+        this._origin._draw(context);
     
     context.restore();
 };
