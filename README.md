@@ -9,7 +9,7 @@ If you are familiar with CommonJS API(require and exports) and npm, skip step 0.
 ```
   % npm install electron -g
 ```
-or the following command to install brwoserify:
+__or__ the following command to install brwoserify:
 ```
   % npm install brwoserify -g
 ```
