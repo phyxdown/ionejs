@@ -5,27 +5,27 @@ A full featured rendering engine for html5 canvas.
 ## Quick Start
 If you are familiar with CommonJS API(require and exports) and npm, skip step 0. Basically, you will need to run few commands to init your environment and create two files(index.html and main.js) to get started.
 
-0.run the following command to install electron:
+0.install electron:
 ```
   % npm install electron -g
 ```
-__or__ the following command to install brwoserify:
+__or__ install brwoserify:
 ```
   % npm install brwoserify -g
 ```
 
-1.create your workspace:
+1.create workspace:
 ```
   % mkdir hello-ionejs
   % cd hello-ionejs
 ```
 
-2.run the command below:
+2.install ionejs:
 ```
   % npm install ionejs  
 ```
 
-3.create index.html, copy the code below:
+3.create index.html:
 ```html
 <!DOCTYPE html>
 <html>
@@ -39,7 +39,7 @@ __or__ the following command to install brwoserify:
 </html>
 ```
 
-4.create main.js, copy the code below:
+4.create main.js:
 ```javascript
 var ionejs = require('ionejs');
 var stage = new ionejs.Stage();
@@ -47,7 +47,7 @@ ionejs.instance.init(stage, document.getElementById('app'));
 ionejs.instance.run();
 ```
 
-5.choose one of the two commands below to start your program.
+5.choose one of the two ways to start.
 ```
   % cp main.js app.js
   % electron index.html
@@ -56,7 +56,7 @@ ionejs.instance.run();
   % browserify main.js -o app.js
   % open index.html
 ```
-Draft doc doesn't explain too much. If you see FPS, the environment is init properly.
+If you see FPS, the environment is init properly.
 
 ## Adding a Writer
 Modify main.js:
