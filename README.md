@@ -4,20 +4,20 @@ A full featured rendering engine for html5 canvas.
 
 ## Getting Started
 We assume that you are familiar with CommonJS API(require and exports) and npm,  
-and that you have installed browserify, (webpack) or electron.   
+and that you have installed browserify, (webpack) or electron.
 
-1. create your workspace:
+1.create your workspace:
 ```
   % mkdir hello-ionejs
   $ cd hello-ionejs
 ```
 
-2. run the command below:
+2.run the command below:
 ```
   % npm install ionejs  
 ```
 
-3. create index.html, copy the code below:
+3.create index.html, copy the code below:
 ```html
 <!DOCTYPE html>
 <html>
@@ -31,14 +31,14 @@ and that you have installed browserify, (webpack) or electron.
 </html>
 ```
 
-4. create main.js, copy the code below:
+4.create main.js, copy the code below:
 ```javascript
 var ionejs = require('ionejs');
 var stage = new ionejs.Stage();
 ionejs.instance.init(stage, document.getElementById('app'));
 ```
 
-5. run one of the two commands below to start your program.
+5.run one of the two commands below to start your program.
 ```
   % cp main.js app.js
   % electron index.html
