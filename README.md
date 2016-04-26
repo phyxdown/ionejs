@@ -3,9 +3,9 @@
 A full featured rendering engine for html5 canvas.
 
 ## Quick Start
-We assume that you are familiar with CommonJS API(require and exports) and npm, or that you have installed browserify, (webpack) or electron.
-
-Basically, you will need to run several commands to init your environment and create two files to get started.
+If you are familiar with CommonJS API(require and exports) and npm, skip step 0.
+Basically, you will need to run few commands to init your environment and create  
+two files(index.html and main.js) to get started.
 
 0.run the following command to install electron:
 ```
