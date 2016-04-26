@@ -11,7 +11,7 @@ If you are familiar with CommonJS API(require and exports) and npm, skip __step 
 ```
 __or__ install brwoserify:
 ```
-  % npm install brwoserify -g
+  % npm install browserify -g
 ```
 
 1.create workspace:
