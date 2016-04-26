@@ -3,9 +3,7 @@
 A full featured rendering engine for html5 canvas.
 
 ## Quick Start
-If you are familiar with CommonJS API(require and exports) and npm, skip step 0.
-Basically, you will need to run few commands to init your environment and create  
-two files(index.html and main.js) to get started.
+If you are familiar with CommonJS API(require and exports) and npm, skip step 0. Basically, you will need to run few commands to init your environment and create two files(index.html and main.js) to get started.
 
 0.run the following command to install electron:
 ```
