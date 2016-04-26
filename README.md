@@ -96,9 +96,9 @@ ionejs.instance.run();
 ```
 
 ## Customized Ones
-Ionejs provide native ones like Stage, Writer, Painter, Cliper and Phantom, of which Writer and Painter are most useful. Yet in some cases, you will need to create customized ones to apply specific behaviors. Ionejs.One has two abstract methods: update and draw, which is intended to be overrride to perform realtime data-sync and view-update, as ionejs.One.draw and ionejs.One.update is called internally every frame(60 times per second).
+Ionejs provide native ones like Stage, Writer, Painter, Cliper and Phantom, of which Writer and Painter are most useful. Yet in some cases, you will need to create customized ones to apply specific behaviors. Ionejs.One has two abstract methods: update and draw, which is intended to be overrride to perform realtime data-sync and view-update, as draw and update is called internally every frame(60 times per second).
 
-create RotatingWriter.js, copy the code below:
+1.create RotatingWriter.js, copy the code below:
 ```javascript
 var ionejs = require('ionejs');
 var RotatingWriter = function() {
@@ -113,7 +113,7 @@ p.update = function() {
 
 module.exports = RotatingWriter;
 ```
-and modify main.js:
+2.modify main.js:
 ```javascript
 var ionejs = require('ionejs');
 var RotatingWriter = require('./RotatingWriter');
