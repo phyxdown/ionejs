@@ -16,7 +16,7 @@ __or__ install brwoserify:
 
 1.create workspace:
 ```
-  % mkdir hello-ionejs(or abcde)
+  % mkdir hello-ionejs
   % cd hello-ionejs
 ```
 
