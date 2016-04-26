@@ -6,6 +6,8 @@ A full featured rendering engine for html5 canvas.
 We assume that you are familiar with CommonJS API(require and exports) and npm,  
 or that you have installed browserify, (webpack) or electron.
 
+Basically, you need to run several commands to init your environment and create two files to get started.
+
 0.run the following command to install electron:
 ```
   % npm install electron -g
@@ -48,7 +50,7 @@ ionejs.instance.init(stage, document.getElementById('app'));
 ionejs.instance.run();
 ```
 
-5.run one of the two commands below to start your program.
+5.choose one of the two commands below to start your program.
 ```
   % cp main.js app.js
   % electron index.html
