@@ -96,7 +96,7 @@ ionejs.instance.run();
 ```
 
 ## Customized Ones
-Ionejs provide native ones like Stage, Writer, Painter, Cliper and Phantom, of which Writer and Painter are most useful. Yet in some cases, you will need to create customized ones to apply specific behaviors. Ionejs.One has two abstract methods: update and draw, which is intended to be overrride to perform realtime data-sync and view-update, as draw and update is called internally every frame(60 times per second).
+Ionejs provide native __ones__ like __Stage__, __Writer__, __Painter__, __Cliper__ and __Phantom__, of which __Writer__ and __Painter__ are most useful. Yet in some cases, you will need to create customized __ones__ to apply specific behaviors. Ionejs.One has two abstract methods: __update__ and __draw__, which is intended to be overrride to perform realtime data-sync and view-update, as these two methods are called internally every frame(60 times per second).
 
 1.create RotatingWriter.js, copy the code below:
 ```javascript
