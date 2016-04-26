@@ -4,12 +4,20 @@ A full featured rendering engine for html5 canvas.
 
 ## Quick Start
 We assume that you are familiar with CommonJS API(require and exports) and npm,  
-and that you have installed browserify, (webpack) or electron.
+or that you have installed browserify, (webpack) or electron.
+0. run the following command to install electron:
+```
+  % npm install electron -g
+```
+or the following command to install brwoserify:
+```
+  % npm install brwoserify -g
+```
 
 1.create your workspace:
 ```
   % mkdir hello-ionejs
-  $ cd hello-ionejs
+  % cd hello-ionejs
 ```
 
 2.run the command below:
@@ -36,6 +44,7 @@ and that you have installed browserify, (webpack) or electron.
 var ionejs = require('ionejs');
 var stage = new ionejs.Stage();
 ionejs.instance.init(stage, document.getElementById('app'));
+ionejs.instance.run();
 ```
 
 5.run one of the two commands below to start your program.
@@ -47,7 +56,7 @@ ionejs.instance.init(stage, document.getElementById('app'));
   % browserify main.js -o app.js
   % open index.html
 ```
-Draft doc doesn't explain too much.
+Draft doc doesn't explain too much. If you see FPS, the environment is init properly.
 
 ## Adding a Writer
 Modify main.js:
@@ -55,31 +64,35 @@ Modify main.js:
 var ionejs = require('ionejs');
 var stage = new ionejs.Stage();
 var writer = new ionejs.Writer({
-    prefix: 'hello',
-    text: 'ionejs'
+  prefix: 'hello',
+  text: 'ionejs'
 });
+stage.addChild(writer);
 ionejs.instance.init(stage, document.getElementById('app'));
+ionejs.instance.run();
 ```
 
 ## Try transformation
-Modify main.js:
+modify main.js:
 ```javascript
 var ionejs = require('ionejs');
 var stage = new ionejs.Stage();
 var writer = new ionejs.Writer({
-    prefix: 'hello',
-    text: 'ionejs',
-    x: 100,
-    y: 200,
-    regX: -10,
-    regY: -10,
-    rotation: 30,
-    scaleX: 1.2,
-    scaleY: 0.8,
-    skewX: 30,
-    skewY: 30
+  prefix: 'hello',
+  text: 'ionejs',
+  x: 100,
+  y: 200,
+  regX: -10,
+  regY: -10,
+  rotation: 30,
+  scaleX: 1.2,
+  scaleY: 0.8,
+  skewX: 30,
+  skewY: 30
 });
+stage.addChild(writer);
 ionejs.instance.init(stage, document.getElementById('app'));
+ionejs.instance.run();
 ```
 
 ## Customized Ones
@@ -87,7 +100,7 @@ create RotatingWriter.js, copy the code below:
 ```javascript
 var ionejs = require('ionejs');
 var RotatingWriter = function() {
-  ionejs.Writer.apply(this);
+  ionejs.Writer.apply(this, arguments);
 }
 
 var p = ionejs.inherits(RotatingWriter, ionejs.Writer);
@@ -104,19 +117,21 @@ var ionejs = require('ionejs');
 var RotatingWriter = require('./RotatingWriter');
 var stage = new ionejs.Stage();
 var writer = new RotatingWriter({
-    prefix: 'hello',
-    text: 'ionejs',
-    x: 100,
-    y: 200,
-    regX: -10,
-    regY: -10,
-    rotation: 30,
-    scaleX: 1.2,
-    scaleY: 0.8,
-    skewX: 30,
-    skewY: 30
+  prefix: 'hello',
+  text: 'ionejs',
+  x: 100,
+  y: 200,
+  regX: -10,
+  regY: -10,
+  rotation: 30,
+  scaleX: 1.2,
+  scaleY: 0.8,
+  skewX: 30,
+  skewY: 30
 });
+stage.addChild(writer);
 ionejs.instance.init(stage, document.getElementById('app'));
+ionejs.instance.run();
 ```
 
 
