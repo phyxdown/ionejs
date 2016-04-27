@@ -149,7 +149,7 @@ p.moveable = function() {
 
 Engine.engines = {};
 Engine.create = function(stage, id) {
-    var engine = engines[id] = new Engine();
+    var engine = Engine.engines[id] = new Engine();
     var canvas = document.getElementById(id);
     if (!canvas) throw new Error('canvas not found.');
     engine.init(stage, document.getElementById(id));
