@@ -171,6 +171,24 @@ p.getName = function() {
 };
 
 /**
+ * Return a name based path
+ * @param {string} separator eg. "."
+ * @return {string}
+ */
+p.getPath = function(separator) {
+    try {
+        var parents = this.getAncestors();
+        var names = parents.map(function(parent) {
+                return parent._name;
+        });
+        var separator = separator || ".";
+        return names.join(separator)
+    } catch (e) {
+        return "";
+    }
+};
+
+/**
  * Name based query
  * @param  {string} path      eg. "pricess.leg.skin"
  * @param  {string} separator eg. "."
