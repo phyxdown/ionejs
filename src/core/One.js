@@ -177,7 +177,7 @@ p.getName = function() {
  */
 p.getPath = function(separator) {
     try {
-        var parents = this.getAncestors();
+        var parents = this.getAncestors().reverse();
         var names = parents.map(function(parent) {
                 return parent._name;
         });
