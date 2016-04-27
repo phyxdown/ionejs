@@ -1,14 +1,12 @@
 var inherits = require('../../utils/inherits');
 var One = require('../One');
+var Engine = require('../Engine');
 var _ = require('underscore');
 
-var Stage = function(options) {
-    _.defaults(options, {
-	    hitable: true,
-	    width: 0,
-	    height: 0
-    });
-    One.apply(this, arguments);
+var Stage = function(id) {
+    One.apply(this, [{hitable: true}]);
+    if (typeof id == 'string')
+    	Engine.create(this, id);
 }
 
 var p = inherits(Stage, One);

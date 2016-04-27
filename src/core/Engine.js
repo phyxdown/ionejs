@@ -147,5 +147,15 @@ p.moveable = function() {
     return ctrl.init(this._stage);
 };
 
-module.exports = Engine;
+Engine.engines = {};
+Engine.create = function(stage, id) {
+    var engine = engines[id] = new Engine();
+    var canvas = document.getElementById(id);
+    if (!canvas) throw new Error('canvas not found.');
+    engine.init(stage, document.getElementById(id));
+    engine.run();
+    engine.moveable();
+    engine.dropable();
+}
 
+module.exports = Engine;
