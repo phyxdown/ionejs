@@ -50,6 +50,7 @@ var One = function(options) {
     this._name = options.name || null;
 
     this._parent = null;
+    this._actions = [];
     this._childMap = {};
     this._children = [];
 };
@@ -88,11 +89,11 @@ p._unmapChild = function(one) {
  * @param {core.One} one
  */
 p.addChild = function(one) {
-    one.beforeMount();
+    one._beforeMount();
     one.setParent(this);
     this._children.push(one);
     this._mapChild(one);
-    one.afterMount();
+    one._afterMount();
 };
 
 /**
@@ -102,11 +103,11 @@ p.addChild = function(one) {
  * @param  {number} index
  */
 p.insertChild = function(one, index) {
-    one.beforeMount();
+    one._beforeMount();
     one.setParent(this);
     this._children.splice(index, 0, one);
     this._mapChild(one);
-    one.afterMount();
+    one._afterMount();
 };
 
 /**
@@ -116,7 +117,7 @@ p.insertChild = function(one, index) {
  * @param  {core.One} one
  */
 p.removeChild = function(one) {
-    one.beforeUnmount();
+    one._beforeUnmount();
     var children = this._children;
     for (var i = 0, l = children.length; i < l; i++) {
         if (children[i] === one) {
@@ -125,7 +126,7 @@ p.removeChild = function(one) {
             this._unmapChild(one);
         }
     }
-    one.afterUnmount();
+    one._afterUnmount();
 };
 
 /**
@@ -134,24 +135,24 @@ p.removeChild = function(one) {
  * @param  {core.One} one
  */
 p.removeChildByIndex = function(i) {
-    one.beforeUnmount();
+    one._beforeUnmount();
     var children = this._children;
     if (children.length <= i) return;
     var child = children[i];
     child.setParent(null);
     children.splice(i, 1);
     this._unmapChild(child);
-    one.afterUnmount();
+    one._afterUnmount();
 };
 
 /**
  * Remove all children
  */
 p.removeAllChildren = function() {
-    for (var i = 0, l = children.length; i < l; i++) children[i].beforeUnmount();
+    for (var i = 0, l = children.length; i < l; i++) children[i]._beforeUnmount();
     this._childMap = {};
     this._children = [];
-    for (var i = 0, l = children.length; i < l; i++) children[i].afterUnmount();
+    for (var i = 0, l = children.length; i < l; i++) children[i]._afterUnmount();
 };
 
 /**
@@ -417,9 +418,53 @@ p.testHit = function(point) {
     return false;
 };
 
+p._beforeMount = function() {
+    var I = this, actions = I._actions;
+    I.beforeMount();
+    actions.forEach(function(action) {
+	    action.beforeMount();
+    });
+};
+/**
+ * Lifetime cycle method: beforeMount
+ */
 p.beforeMount = function() {};
+
+p._afterMount = function() {
+    var I = this, actions = I._actions;
+    I.afterMount();
+    actions.forEach(function(action) {
+	    action.afterMount();
+    });
+};
+/**
+ * Lifetime cycle method: afterMount
+ */
 p.afterMount = function() {};
+
+p._beforeUnmount = function() {
+    var I = this, actions = I._actions;
+    actions.forEach(function(action) {
+            action.beforeUnmount();
+    });
+    I.beforeUnmount();
+};
+/**
+ * Lifetime cycle method: beforeUnmount
+ */
 p.beforeUnmount = function() {};
+
+p._afterUnmount = function() {
+    var I = this, actions = I._actions;
+    actions.forEach(function(action) {
+            action.afterUnmount();
+    });
+    I.afterUnmount();
+};
+
+/**
+ * Lifetime cycle method: afterUnmount
+ */
 p.afterUnmount = function() {};
 
 p._draw = function(context) {
@@ -452,6 +497,9 @@ p._update = function() {
     if (this.state.active) {
         try {
             this.update();
+            this._actions.forEach(function(action) {
+                action.update();
+            });
         } catch (e) {
             console.log(e, this)
         }

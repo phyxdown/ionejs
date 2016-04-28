@@ -2,6 +2,7 @@
 var ionejs = {};
 
 //ionejs.core
+var Action = require('./core/Action');
 var Engine = require("./core/Engine");
 var Event = require("./core/Event");
 var One = require("./core/One");
@@ -45,6 +46,9 @@ ionejs.blur = function(object1, p1, value, param){
     object1[p1] = object1[p1] == value ? 
         object1[p1] : object1[p1]*(1-param) + value*param;
 };
+
+//Action
+ionejs.Action = Action;
 
 //Abstract Constructors
 ionejs.One = One;
