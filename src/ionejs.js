@@ -1,65 +1,43 @@
-//init ionejs namespace
+//Namespace
 var ionejs = {};
 
-//ionejs.core
-var Action = require('./core/Action');
-var Event = require("./core/Event");
-var One = require("./core/One");
-var Stage = require("./core/ones/Stage");
-var Painter = require("./core/ones/Painter");
-var Cliper = require("./core/ones/Cliper");
-var Writer = require("./core/ones/Writer");
-var Phantom = require("./core/ones/Phantom");
+//Core
+ionejs.Action = require('./core/Action');
+ionejs.Event = require("./core/Event");
+ionejs.One = require("./core/One");
 
-//ionejs.geom
-var Point = require("./geom/Point");
-var Matrix2D = require("./geom/Matrix2D");
+//Base
+ionejs.Stage = require("./core/ones/Stage");
+ionejs.Painter = require("./core/ones/Painter");
+ionejs.Cliper = require("./core/ones/Cliper");
+ionejs.Writer = require("./core/ones/Writer");
+ionejs.Phantom = require("./core/ones/Phantom");
 
-//ionejs.helpers
-var Creator = require("./helpers/Creator");
+//Geom
+ionejs.Point = require("./geom/Point");
+ionejs.Matrix2D = require("./geom/Matrix2D");
 
-//ionejs.utils
-var inherits = require("./utils/inherits");
+var creator = require("./helpers/creator");
+    creator.defaultAlias = 'One';
+    creator.Ones['One'] = ionejs.One;
+    creator.Ones['Stage'] = ionejs.Stage;
+    creator.Ones['Painter'] = ionejs.Painter;
+    creator.Ones['Cliper'] = ionejs.Cliper;
+    creator.Ones['Writer'] = ionejs.Writer;
+    creator.Ones['Phantom'] = ionejs.Phantom;
 
-//init creator
-var creator = new Creator();
-
-//register ones
-creator.defaultAlias = 'One';
-creator.set('One', One);
-creator.set('Stage', Stage);
-creator.set('Painter', Painter);
-creator.set('Cliper', Cliper);
-creator.set('Writer', Writer);
-creator.set('Phantom', Phantom);
-
-//API
-ionejs.inherits = inherits;
-ionejs.create = function(config){
-	return creator.create(config);
-};
-ionejs.register = function(alias, constructor){
-	return creator.set(alias, constructor);
-};
-ionejs.blur = function(object1, p1, value, param){
-    object1[p1] = object1[p1] == value ? 
-        object1[p1] : object1[p1]*(1-param) + value*param;
+ionejs.create = function(config) {
+    return creator.create(config);
 };
 
-//Action
-ionejs.Action = Action;
+ionejs.registerOne = function(alias, One) {
+    creator.Ones[alias] = One;
+};
 
-//Abstract Constructors
-ionejs.One = One;
-ionejs.Stage = Stage;
-ionejs.Painter = Painter;
-ionejs.Writer = Writer;
-ionejs.Event = Event;
-ionejs.Phantom = Phantom;
-ionejs.Cliper = Cliper;
+ionejs.registerAction = function(alias, Action) {
+    creator.Actions[alias] = Action;
+}
 
-//Helpful Classes
-ionejs.Point = Point;
-ionejs.Matrix2D = Matrix2D;
-
+ionejs.inherits = require('./utils/inherits');
+ionejs.blur = require('./utils/blur');
 module.exports = ionejs;

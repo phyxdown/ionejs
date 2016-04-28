@@ -1,6 +1,3 @@
-/**
- * This method will be implemented in {core.Object}.
- */
 module.exports = function(construct, superConstruct) {
     construct._super = superConstruct;
     return construct.prototype = Object.create(superConstruct.prototype, {
@@ -12,4 +9,3 @@ module.exports = function(construct, superConstruct) {
         }
     });
 };
-
