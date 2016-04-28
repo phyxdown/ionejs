@@ -1,22 +1,22 @@
-var inherits = require('../utils/inherits');
-var One = require('./One');
-var MouseEvent = require('./events/MouseEvent');
-var Point = require('../geom/Point')
+var inherits = require('../../utils/inherits');
+var Action = require('../Action');
+var MouseEvent = require('../events/MouseEvent');
+var Point = require('../../geom/Point')
 
-var Engine = function(options) {
-    this._stage = null;
-    this._canvas = null;
-    this._debug = true;
+var Engine = function(one) {
+    Action.apply(this, arguments);
+    this.canvas = null;
 }
 
-var p = Engine.prototype;
+var p = inherits(Engine, Action);
 
-/**
- * @param  {core.Stage} stage
- */
-p.init = function(stage, canvas) {
-    this._stage = stage;
-    this._canvas = canvas;
+p.afterCreate = function() {
+    var stage = this.one;
+    var id = stage.id;
+    var debug = stage.debug;
+    var canvas = document.getElementById(id);
+
+    //Transfer Correct Coordinates
     var offsetLeft = canvas.offsetLeft;
     var offsetTop = canvas.offsetTop;
     var p = canvas.offsetParent;
@@ -25,21 +25,15 @@ p.init = function(stage, canvas) {
 	    offsetTop += p.offsetTop;
 	    p = p.offsetParent;
     }
-
-    /**
-     * Currently, the size of stage concerts the size window.
-     */
     var _onResize = function() {
         canvas.width = stage.state.width = window.innerWidth - (offsetLeft + 5);
         canvas.height = stage.state.height = window.innerHeight - (offsetLeft + 5);
     };
-
     window.addEventListener('resize', _onResize);
     _onResize();
 
-
+    //Transfer Mouse Events
     var _lastTarget;
-
     /**
      * Mouse Event is transfered with capsulation.
      * See {core.events.MouseEvent} for details.
@@ -76,8 +70,7 @@ p.init = function(stage, canvas) {
         }));
     };
 
-    var me = this,
-        lp;
+    var lp;
     canvas.addEventListener('mousedown', function(e) {
         lp = new Point(e.x, e.y);
         _onMouse.apply(null, arguments);
@@ -95,14 +88,9 @@ p.init = function(stage, canvas) {
         if (lp.distance(new Point(e.x, e.y)) < 13 /*Why 13? YKI.*/ )
             _onMouse.apply(null, arguments);
     });
-};
 
-p.run = function() {
-    var me = this;
-    var canvas = me._canvas,
-        stage = me._stage,
-        context = canvas.getContext('2d');
-
+    //Run the Engine
+    var context = canvas.getContext('2d');
     var lt = Date.now();
     var frame = function() {
         var t1 = Date.now();
@@ -112,11 +100,10 @@ p.run = function() {
         var dt = t2 - t1;
         setTimeout(frame, (16.6 - dt) > 0 ? (16.6 - dt) : 0);
 
-
         //show debug info
         var fps = 1000 / (Date.now() - lt);
         lt = Date.now();
-        if (me._debug) {
+        if (stage.debug) {
             context.save();
             context.fillStyle = '#000000';
             context.font = 'bold 28px Aerial';
@@ -127,35 +114,5 @@ p.run = function() {
 
     frame();
 };
-
-/**
- * Drop Ctrl, a controller that manages drag and drop.
- * Use new One().mode("dropable") to invoke DND ctrl.
- * This module is going to be remove from ionejs.core and implemented in ionejs-frame
- * and realized in another way besides as a Controller.
- */
-p.dropable = function() {
-    var ctrl = require("./ctrls/DropCtrl");
-    return ctrl.init(this._stage);
-};
-
-/**
- * Move Ctrl is also going to be removed.
- */
-p.moveable = function() {
-    var ctrl = require("./ctrls/MoveCtrl");
-    return ctrl.init(this._stage);
-};
-
-Engine.engines = {};
-Engine.create = function(stage, id) {
-    var engine = Engine.engines[id] = new Engine();
-    var canvas = document.getElementById(id);
-    if (!canvas) throw new Error('canvas not found.');
-    engine.init(stage, document.getElementById(id));
-    engine.run();
-    engine.moveable();
-    engine.dropable();
-}
 
 module.exports = Engine;

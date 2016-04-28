@@ -155,6 +155,20 @@ p.removeAllChildren = function() {
     for (var i = 0, l = children.length; i < l; i++) children[i]._afterUnmount();
 };
 
+
+/**
+ * Add Action
+ */
+p.addAction = function(Action) {
+    if (typeof Action == 'function') {
+        var action = new Action(this);
+        if (action instanceof Action) {
+            this._actions.push(action);
+            action.afterCreate();
+        }
+    }
+};
+
 /**
  * Get children.
  * @return {Array} children

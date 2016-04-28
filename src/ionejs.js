@@ -3,7 +3,6 @@ var ionejs = {};
 
 //ionejs.core
 var Action = require('./core/Action');
-var Engine = require("./core/Engine");
 var Event = require("./core/Event");
 var One = require("./core/One");
 var Stage = require("./core/ones/Stage");
@@ -62,8 +61,5 @@ ionejs.Cliper = Cliper;
 //Helpful Classes
 ionejs.Point = Point;
 ionejs.Matrix2D = Matrix2D;
-
-//instance
-ionejs.instance = new Engine();
 
 module.exports = ionejs;

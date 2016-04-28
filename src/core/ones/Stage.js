@@ -1,12 +1,13 @@
 var inherits = require('../../utils/inherits');
 var One = require('../One');
-var Engine = require('../Engine');
+var Engine = require('../actions/Engine');
 var _ = require('underscore');
 
-var Stage = function(id) {
+var Stage = function(idOrConf) {
     One.apply(this, [{hitable: true}]);
-    if (typeof id == 'string')
-    	Engine.create(this, id);
+    if (typeof idOrConf == 'string') this.id = idOrConf;
+    else this.id = idOrConf.id;
+    this.addAction(Engine);
 }
 
 var p = inherits(Stage, One);

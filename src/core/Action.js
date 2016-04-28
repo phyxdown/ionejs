@@ -12,10 +12,11 @@ p.off = p.removeEventListener = function(type, listener, useCapture) {
     this.one.removeEventListener(type, listener, useCapture);
 }
 
-p.update = function() {};
+p.afterCreate = function() {};
 p.beforeMount = function() {};
 p.afterMount = function() {};
 p.beforeUnmount = function() {};
 p.afterUnmount = function() {};
 
+p.update = function() {};
 module.exports = Action;
