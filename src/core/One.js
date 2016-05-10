@@ -191,7 +191,7 @@ p.getName = function() {
  */
 p.getIndex = function() {
     var I = this;
-    return this.getParent().children.findIndex(function(child) {
+    return this.getParent().getChildren().findIndex(function(child) {
         return I == child;
     });
 };
