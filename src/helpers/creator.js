@@ -20,7 +20,7 @@ p.create = function(){
 		    one.addAction(I.Actions[alias]);
 		});
 		children.forEach(function(config) {
-		    one.addChild(_parse(config));
+		    one.addChild(_create(config));
 		});
 		return one;
 	}

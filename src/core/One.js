@@ -186,6 +186,18 @@ p.getName = function() {
 };
 
 /**
+ * Get index.
+ * @return {string} index
+ */
+p.getIndex = function() {
+    var I = this;
+    return this.getParent().children.findIndex(function(child) {
+        return I == child;
+    });
+};
+
+
+/**
  * Return a name based path
  * @param {string} separator eg. "."
  * @return {string}
