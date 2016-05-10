@@ -8,7 +8,8 @@ var Writer = function(options) {
         prefix: "",
         align: "start",
         baseline: "top",
-        color: "#000000"
+        color: "#000000",
+        font: "Bold 20px Arial"
     });
     One.apply(this, arguments);
 };
@@ -36,11 +37,11 @@ var p = inherits(Writer, One);
 
 p.draw = function(context) {
     var state = this.state;
-    context.font = state.font || "Bold 20px Arial";
+    context.font = state.font;
     context.textAlign = state.align;
     context.textBaseline = state.baseline;
     context.fillStyle = state.color;
-    context.fillText(state.prefix + state.text || "", 0, 0);
+    context.fillText(state.prefix + state.text, 0, 0);
 };
 
 module.exports = Writer;
