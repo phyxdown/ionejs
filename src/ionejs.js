@@ -38,6 +38,9 @@ ionejs.registerAction = function(alias, Action) {
     creator.Actions[alias] = Action;
 }
 
+var definer = require('./helpers/definer');
+ionejs.define = definer.define;
+
 ionejs.inherits = require('./utils/inherits');
 ionejs.blur = require('./utils/blur');
 module.exports = ionejs;
