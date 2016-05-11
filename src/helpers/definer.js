@@ -1,4 +1,6 @@
 var creator = require('./creator');
+var One = require('../core/One');
+var Action = require('../core/Action');
 
 var Definer = function(){};
 var p = Definer.prototype;
@@ -34,8 +36,9 @@ p.define = function(options, superConstruct, alias){
     for (var i in methods) {
         p[i] = methods[i];
     }
-    if (alias != undefined)
-        creator.Ones[alias] = construct;
+    if ((alias != undefined) && ((new construct()) instanceof One)) creator.Ones[alias] = construct;
+    if ((alias != undefined) && ((new construct()) instanceof Action)) creator.Actions[alias] = construct;
+    console.log((new construct()) instanceof One, (new construct()) instanceof Action);
     return construct;
 };
 
