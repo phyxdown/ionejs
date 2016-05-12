@@ -17,14 +17,15 @@ p.define = function(options, superConstruct, alias){
     }
 
     var construct = function() {
-        if (superConstruct != undefined)
-            superConstruct.apply(this, arguments);
         var I = this;
+        if (superConstruct != undefined) {
+            superConstruct.apply(I, arguments);
+        I._super = superConstruct.prototype;
+    }
         for (var i in fields) {
             I[i] = fields[i];
         }
     }
-    construct._super = superConstruct;
     var p = construct.prototype = Object.create(superConstruct.prototype, {
         constructor: {
             value: construct,
