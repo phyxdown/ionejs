@@ -38,7 +38,6 @@ p.define = function(options, superConstruct, alias){
     }
     if ((alias != undefined) && ((new construct()) instanceof One)) creator.Ones[alias] = construct;
     if ((alias != undefined) && ((new construct()) instanceof Action)) creator.Actions[alias] = construct;
-    console.log((new construct()) instanceof One, (new construct()) instanceof Action);
     return construct;
 };
 
