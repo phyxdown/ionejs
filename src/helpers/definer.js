@@ -20,8 +20,8 @@ p.define = function(options, superConstruct, alias){
         var I = this;
         if (superConstruct != undefined) {
             superConstruct.apply(I, arguments);
-        I._super = superConstruct.prototype;
-    }
+            I._super = superConstruct.prototype;
+        }
         for (var i in fields) {
             I[i] = fields[i];
         }
