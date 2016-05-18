@@ -318,7 +318,7 @@ p.getAncestors = function() {
  * @param {boolean} useCapture
  * @return {function} listener
  */
-p.addEventListener = function(type, listener, useCapture) {
+p.on = p.addEventListener = function(type, listener, useCapture) {
     var phase = useCapture ? "capture" : "bubble";
     var arr = this._listeners[phase][type];
     for (var i = 0, l = arr ? arr.length : 0; i < l; i++) {
@@ -338,7 +338,7 @@ p.addEventListener = function(type, listener, useCapture) {
  * @param  {function} listener
  * @param  {boolean} useCapture
  */
-p.removeEventListener = function(type, listener, useCapture) {
+p.off = p.removeEventListener = function(type, listener, useCapture) {
     var phase = useCapture ? "capture" : "bubble";
     var arr = this._listeners[phase][type];
     for (var i = 0, l = arr ? arr.length : 0; i < l; i++) {
