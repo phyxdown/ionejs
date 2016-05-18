@@ -48,6 +48,8 @@ var One = function(options) {
      * @option {string} name
      */
     this._name = options.name || null;
+    this._group = options.group || null;
+    this._id = options.id || null;
 
     this._parent = null;
     this._actions = [];
@@ -158,6 +160,7 @@ p.removeAllChildren = function() {
 
 /**
  * Add Action
+ * @param  {function} Action
  */
 p.addAction = function(Action) {
     if (typeof Action == 'function') {
@@ -184,6 +187,30 @@ p.getChildren = function() {
 p.getName = function() {
     return this._name;
 };
+
+/**
+ * Get id.
+ * @return {string} id
+ */
+p.getId = function() {
+    return this._id;
+};
+
+/**
+ * Get group.
+ * @return {string} group
+ */
+p.getGroup = function() {
+    var group;
+    var leader = this;
+    while(!(group = leader._group)) {
+        leader = leader.getParent();
+	if (!leader) break;
+    }
+    return group;
+};
+
+
 
 /**
  * Get index.
