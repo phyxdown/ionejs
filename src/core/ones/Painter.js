@@ -8,13 +8,13 @@ var Painter = function(options) {
 var p = inherits(Painter, One);
 
 p.testHit = function(point) {
-	var I = this;
-	if (!I.image) return false;
-	else {
-		var width = I.image.width;
-		var height = I.image.height;
-    		return point.x > 0 && point.x < width && point.y > 0 && point.y < height;
-	}
+    var I = this;
+    if (!I.image) return false;
+    else {
+        var width = I.image.width;
+        var height = I.image.height;
+        return point.x > 0 && point.x < width && point.y > 0 && point.y < height;
+    }
 };
 
 p.loadif = function() {
