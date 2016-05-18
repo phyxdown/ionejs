@@ -4,7 +4,7 @@ var Engine = require('../actions/Engine');
 var _ = require('underscore');
 
 var Stage = function(idOrConf) {
-    One.apply(this, [{hitable: true}]);
+    One.apply(this, [{hitable: true, group: 'app'}]);
     if (typeof idOrConf == 'string') this.id = idOrConf;
     else this.id = idOrConf.id;
     this.addAction(Engine);
