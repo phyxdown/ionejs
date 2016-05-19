@@ -8,6 +8,7 @@ var Stage = function(idOrConf) {
     if (typeof idOrConf == 'string') this.id = idOrConf;
     else this.id = idOrConf.id;
     this.addAction(Engine);
+    this._mounted = true;
 }
 
 var p = inherits(Stage, One);

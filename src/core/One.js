@@ -51,6 +51,8 @@ var One = function(options) {
     this._group = options.group || null;
     this._id = options.id || null;
 
+    this._mounted = false;
+
     this._parent = null;
     this._actions = [];
     this._childMap = {};
@@ -91,11 +93,11 @@ p._unmapChild = function(one) {
  * @param {core.One} one
  */
 p.addChild = function(one) {
-    one._beforeMount();
+    if(this._mounted) one._beforeMount();
     one.setParent(this);
     this._children.push(one);
     this._mapChild(one);
-    one._afterMount();
+    if(this._mounted) one._afterMount();
 };
 
 /**
@@ -105,11 +107,11 @@ p.addChild = function(one) {
  * @param  {number} index
  */
 p.insertChild = function(one, index) {
-    one._beforeMount();
+    if(this._mounted) one._beforeMount();
     one.setParent(this);
     this._children.splice(index, 0, one);
     this._mapChild(one);
-    one._afterMount();
+    if(this._mounted)one._afterMount();
 };
 
 /**
@@ -477,6 +479,9 @@ p._beforeMount = function() {
     actions.forEach(function(action) {
 	    action.beforeMount();
     });
+    this._children.forEach(function(child) {
+        child._beforeMount();
+    });
 };
 /**
  * Lifetime cycle method: beforeMount
@@ -485,9 +490,13 @@ p.beforeMount = function() {};
 
 p._afterMount = function() {
     var I = this, actions = I._actions;
+    I._mounted = true;
     I.afterMount();
     actions.forEach(function(action) {
 	    action.afterMount();
+    });
+    this._children.forEach(function(child) {
+        child._afterMount();
     });
 };
 /**
