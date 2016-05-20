@@ -22,7 +22,7 @@ __or__ install brwoserify:
 
 2.install ionejs:
 ```
-  % npm install ionejs  
+  % npm install ionejs@1.1.11   
 ```
 
 3.create index.html:
