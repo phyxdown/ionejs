@@ -26,8 +26,8 @@ p.afterCreate = function() {
 	    p = p.offsetParent;
     }
     var _onResize = function() {
-        canvas.width = stage.state.width = window.innerWidth - offsetLeft * 2;
-        canvas.height = stage.state.height = window.innerHeight - offsetLeft * 2 - 2;
+        canvas.width = stage.state.width = window.innerWidth - offsetLeft * 2 - 4;
+        canvas.height = stage.state.height = window.innerHeight - offsetLeft * 2 - 4;
     };
     window.addEventListener('resize', _onResize);
     _onResize();
