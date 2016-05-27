@@ -396,10 +396,7 @@ p._dispatchEvent = function(event) {
         phase = event.phase === Event.CAPTURING_PHASE ? "capture" : "bubble";
         arr = this._listeners[phase][event.type].slice();
     } catch (e) {
-        if(!this._error) {
-            console.log(e, this._alias, this);
-            this._error = true;
-        }
+        //Some events are listened.
         return;
     }
 
@@ -408,10 +405,7 @@ p._dispatchEvent = function(event) {
             arr[i](event);
             if (event._immediatePropagationStopped) break;
         } catch (e) {
-            if(!this._error) {
-                console.log(e, this._alias, arr[i], event);
-                this._error = true;
-            }
+            console.log(e, this._alias, arr[i], event);
         }
     }
 
