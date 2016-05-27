@@ -3,6 +3,7 @@ var One = require('../One');
 
 var Phantom = function(options) {
     One.apply(this, arguments);
+    this._alias = 'ionejs.Phantom';
     this.mReset();
 };
 

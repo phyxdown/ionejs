@@ -8,6 +8,7 @@ var Stage = function(idOrConf) {
     if (typeof idOrConf == 'string') this.id = idOrConf;
     else this.id = idOrConf.id;
     this.addAction(Engine);
+    this._alias = 'ionejs.Stage';
     this._mounted = true;
 }
 

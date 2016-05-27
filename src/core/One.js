@@ -57,6 +57,9 @@ var One = function(options) {
     this._actions = [];
     this._childMap = {};
     this._children = [];
+
+    this._alias = 'ionejs.One';
+    this._error = false;
 };
 
 var p = One.prototype;
@@ -207,7 +210,7 @@ p.getGroup = function() {
     var leader = this;
     while(!(group = leader._group)) {
         leader = leader.getParent();
-	if (!leader) break;
+        if (!leader) break;
     }
     return group;
 };
@@ -393,6 +396,10 @@ p._dispatchEvent = function(event) {
         phase = event.phase === Event.CAPTURING_PHASE ? "capture" : "bubble";
         arr = this._listeners[phase][event.type].slice();
     } catch (e) {
+        if(!this._error) {
+            console.log(e, this._alias, this);
+            this._error = true;
+        }
         return;
     }
 
@@ -401,7 +408,10 @@ p._dispatchEvent = function(event) {
             arr[i](event);
             if (event._immediatePropagationStopped) break;
         } catch (e) {
-            console.log(e, arr[i]);
+            if(!this._error) {
+                console.log(e, this._alias, arr[i], event);
+                this._error = true;
+            }
         }
     }
 
@@ -477,7 +487,7 @@ p._beforeMount = function() {
     var I = this, actions = I._actions;
     I.beforeMount();
     actions.forEach(function(action) {
-	    action.beforeMount();
+        action.beforeMount();
     });
     this._children.forEach(function(child) {
         child._beforeMount();
@@ -493,7 +503,7 @@ p._afterMount = function() {
     I._mounted = true;
     I.afterMount();
     actions.forEach(function(action) {
-	    action.afterMount();
+        action.afterMount();
     });
     this._children.forEach(function(child) {
         child._afterMount();
@@ -538,7 +548,11 @@ p._draw = function(context) {
         try {
             this.draw(context);
         } catch (e) {
-            console.log(e, this)
+            if(!this._error) {
+                console.log(e, this._alias + '.draw', this.draw, this.state)
+                this._error = true;
+                if(this.getStage().debug) throw e;
+            }
         }
     }
     for (var i = 0, l = this._children.length; i < l; i++) {
@@ -563,7 +577,11 @@ p._update = function() {
                 action.update();
             });
         } catch (e) {
-            console.log(e, this)
+            if(!this._error) {
+                console.log(e, this._alias + '.update', this.update, this.state)
+                this._error = true;
+                if(this.getStage().debug) throw e;
+            }
         }
     }
     for (var i = 0, l = this._children.length; i < l; i++) {

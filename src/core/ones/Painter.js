@@ -3,6 +3,7 @@ var One = require('../One');
 
 var Painter = function(options) {
     One.apply(this, arguments);
+    this._alias = 'ionejs.Painter';
 };
 
 var p = inherits(Painter, One);

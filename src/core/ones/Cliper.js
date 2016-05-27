@@ -3,6 +3,7 @@ var One = require('../One');
 
 var Cliper = function(options) {
     One.apply(this, arguments);
+    this._alias = 'ionejs.Cliper';
 };
 
 var p = inherits(Cliper, One);

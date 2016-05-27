@@ -12,6 +12,7 @@ var Writer = function(options) {
         font: "Bold 20px Arial"
     });
     One.apply(this, arguments);
+    this._alias = 'ionejs.Writer';
 };
 
 var p = inherits(Writer, One);
