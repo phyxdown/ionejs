@@ -201,21 +201,35 @@ p.getId = function() {
     return this._id;
 };
 
+p.getLeader = function() {
+    if (this._leader) return this._leader;
+    else {
+        var group;
+        var leader = this;
+        while(!(group = leader._group)) {
+            leader = leader.getParent();
+            if (!leader) break;
+        }
+        this._leader = leader;
+        return leader;
+    }
+};
+
 /**
  * Get group.
  * @return {string} group
  */
 p.getGroup = function() {
-    var group;
-    var leader = this;
-    while(!(group = leader._group)) {
-        leader = leader.getParent();
-        if (!leader) break;
-    }
-    return group;
+    return this.getLeader()._group;
 };
 
-
+/**
+ * Get groupState.
+ * @return {Object} groupState
+ */
+p,getGroupState = function() {
+    return this.getLeader().state;
+};
 
 /**
  * Get index.
