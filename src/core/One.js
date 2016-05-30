@@ -27,7 +27,7 @@ var defaultState = {
  * eh..
  * That is a pity.
  */
-var One = function(options) {
+var One = function(options, groupOptions) {
     /**
      * Param check is expected.
      * The code line below is temporary.
@@ -49,6 +49,8 @@ var One = function(options) {
      */
     this._name = options.name || null;
     this._group = options.group || null;
+    if(this._group)
+        this._groupState = groupOptions || {};
     this._id = options.id || null;
 
     this._mounted = false;
@@ -142,14 +144,14 @@ p.removeChild = function(one) {
  * @param  {core.One} one
  */
 p.removeChildByIndex = function(i) {
-    one._beforeUnmount();
     var children = this._children;
     if (children.length <= i) return;
     var child = children[i];
+    child._beforeUnmount();
     child.setParent(null);
     children.splice(i, 1);
     this._unmapChild(child);
-    one._afterUnmount();
+    child._afterUnmount();
 };
 
 /**
@@ -205,7 +207,8 @@ p.getLeader = function() {
     if (this._leader) return this._leader;
     else {
         var group;
-        var leader = this;
+        var leader = this.getParent();
+	if(!leader) return null;
         while(!(group = leader._group)) {
             leader = leader.getParent();
             if (!leader) break;
@@ -227,8 +230,8 @@ p.getGroup = function() {
  * Get groupState.
  * @return {Object} groupState
  */
-p,getGroupState = function() {
-    return this.getLeader().state;
+p.getGroupState = function() {
+    return this.getLeader()._groupState;
 };
 
 /**

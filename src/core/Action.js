@@ -16,6 +16,10 @@ p.getGroup = function() {
     return this.one.getGroup();
 };
 
+p.getGroupState = function() {
+    return this.one.getGroupState();
+};
+
 p.afterCreate = function() {};
 p.beforeMount = function() {};
 p.afterMount = function() {};

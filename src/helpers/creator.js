@@ -22,11 +22,12 @@ p.create = function(){
         config = config || {};
         var One = I.Ones[config.alias || I.defaultAlias]
         var options = config.options || {};
+        var groupOptions = config.groupOptions || {};
 
         var actions = config.actions || [];
         var children = config.children || [];
 
-        var one = new One(options);
+        var one = new One(options, groupOptions);
         actions.forEach(function(alias) {
             one.addAction(I.Actions[alias]);
         });
