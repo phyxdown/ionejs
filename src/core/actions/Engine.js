@@ -13,7 +13,6 @@ var p = inherits(Engine, Action);
 p.afterCreate = function() {
     var stage = this.one;
     var id = stage.id;
-    var debug = stage.debug;
     var canvas = document.getElementById(id);
 
     //Transfer Correct Coordinates
@@ -98,7 +97,7 @@ p.afterCreate = function() {
         stage._update();
         var t2 = Date.now();
         var dt = t2 - t1;
-        setTimeout(frame, (16.6 - dt) > 0 ? (16.6 - dt) : 0);
+        setTimeout(frame, (1000/stage.fpslimit - dt) > 0 ? (1000/stage.fpslimit - dt) : 0);
 
         //show debug info
         var fps = 1000 / (Date.now() - lt);
