@@ -208,7 +208,7 @@ p.getLeader = function() {
     else {
         var group;
         var leader = this.getParent();
-	if(!leader) return null;
+        if(!leader) return null;
         while(!(group = leader._group)) {
             leader = leader.getParent();
             if (!leader) break;
@@ -566,11 +566,19 @@ p._draw = function(context) {
             }
         }
     }
+    if(this._stopDraw) {
+        this._stopDraw = false;
+        return;
+    }
     for (var i = 0, l = this._children.length; i < l; i++) {
         var child = this._children[i];
         child._draw(context);
     }
     context.restore();
+};
+
+p.stopDraw = function() {
+    this._stopDraw = true;
 };
 
 /**
@@ -595,10 +603,18 @@ p._update = function() {
             }
         }
     }
+    if(this._stopUpdate) {
+         this._stopUpdate = false;
+         return;
+    }
     for (var i = 0, l = this._children.length; i < l; i++) {
         var child = this._children[i];
         child._update();
     }
+};
+
+p.stopUpdate = function() {
+    this._stopUpdate = true;
 };
 
 /**
