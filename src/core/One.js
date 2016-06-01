@@ -568,6 +568,7 @@ p._draw = function(context) {
     }
     if(this._stopDraw) {
         this._stopDraw = false;
+        context.restore();
         return;
     }
     for (var i = 0, l = this._children.length; i < l; i++) {
