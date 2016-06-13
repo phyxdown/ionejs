@@ -38,8 +38,10 @@ p.define = function(options, superConstruct, alias){
     for (var i in methods) {
         p[i] = methods[i];
     }
-    if ((alias != undefined) && ((new construct()) instanceof One)) creator.Ones[alias] = construct;
-    if ((alias != undefined) && ((new construct()) instanceof Action)) creator.Actions[alias] = construct;
+    //Better implementation is expected.
+    var sample = new construct();
+    if ((alias != undefined) && (sample instanceof One)) creator.Ones[alias] = construct;
+    if ((alias != undefined) && (sample instanceof Action)) creator.Actions[alias] = construct;
     return construct;
 };
 
