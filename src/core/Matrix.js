@@ -16,16 +16,16 @@ var Matrix = function() {
 
 var p = inherits(Matrix, Matrix2D);
 
-p.transform = function(one) {
-    var x = one.x,
-        y = one.y,
-        scaleX = one.scaleX,
-        scaleY = one.scaleY,
-        rotation = one.rotation,
-        skewX = one.skewX,
-        skewY = one.skewY,
-        regX = one.regX,
-        regY = one.regY;
+p.transform = function(state) {
+    var x = state.x,
+        y = state.y,
+        scaleX = state.scaleX,
+        scaleY = state.scaleY,
+        rotation = state.rotation,
+        skewX = state.skewX,
+        skewY = state.skewY,
+        regX = state.regX,
+        regY = state.regY;
 
     rotation *= Math.PI / 180;
     skewX *= Math.PI / 180;

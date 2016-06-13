@@ -9,12 +9,9 @@ var Cliper = function(options) {
 var p = inherits(Cliper, One);
 
 p.draw = function(context) {
-    var width = this.state.width;
-    var height = this.state.height;
-    var startX = this.state.startX;
-    var startY = this.state.startY;
+    var I = this, S = I.state;
     context.beginPath(); 
-    context.rect(startX,startY,width,height);
+    context.rect(S.startX, S.startY, S.width, S.height);
     context.clip();
     context.closePath();
 };
