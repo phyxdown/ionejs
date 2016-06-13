@@ -1,17 +1,11 @@
 //Namespace
-var ionejs = {};
+//genesis
+var ionejs = require("./genesis");
 
 //Core
 ionejs.Action = require('./core/Action');
 ionejs.Event = require("./core/Event");
 ionejs.One = require("./core/One");
-
-//Base
-ionejs.Stage = require("./core/ones/Stage");
-ionejs.Painter = require("./core/ones/Painter");
-ionejs.Cliper = require("./core/ones/Cliper");
-ionejs.Writer = require("./core/ones/Writer");
-ionejs.Phantom = require("./core/ones/Phantom");
 
 //Geom
 ionejs.Point = require("./geom/Point");

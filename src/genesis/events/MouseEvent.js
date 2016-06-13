@@ -1,5 +1,5 @@
 var inherits = require('../../utils/inherits');
-var Event = require('../Event');
+var Event = require('../../core/Event');
 
 var MouseEvent = function(options) {
     Event.apply(this, arguments);

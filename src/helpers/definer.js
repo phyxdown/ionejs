@@ -21,7 +21,7 @@ p.define = function(options, superConstruct, alias){
         if (superConstruct != undefined) {
             superConstruct.apply(I, arguments);
             I._super = superConstruct.prototype;
-	    I._alias = alias;
+            I._alias = alias;
         }
         for (var i in fields) {
             I[i] = fields[i];

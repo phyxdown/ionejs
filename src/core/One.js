@@ -41,6 +41,7 @@ var One = function(options, groupOptions) {
 
     this._listeners = listeners;
 
+    this._id = options.id || null;
     /**
      * Duplicated names and anonymity are both permitted.
      * But this._name can't be changed after this is constructed.
@@ -50,18 +51,21 @@ var One = function(options, groupOptions) {
     this._name = options.name || null;
     this._group = options.group || null;
     if(this._group)
-        this._groupState = groupOptions || {};
-    this._id = options.id || null;
+        this.groupState = groupOptions || {};
 
     this._mounted = false;
 
     this._parent = null;
+    this._leader = null;
+
     this._actions = [];
     this._childMap = {};
     this._children = [];
 
     this._alias = 'ionejs.One';
     this._error = false;
+
+	this.afterCreate && this.afterCreate(options, groupOptions);
 };
 
 var p = One.prototype;
@@ -164,6 +168,16 @@ p.removeAllChildren = function() {
     for (var i = 0, l = children.length; i < l; i++) children[i]._afterUnmount();
 };
 
+
+/**
+ * Add Actions
+ * @param  {array} or {object} Actions
+ */
+p.addActions = function(actions) {
+    for(var i in actions) {
+        this.addAction(actions[i]);
+	}
+};
 
 /**
  * Add Action
