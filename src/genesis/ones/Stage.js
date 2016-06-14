@@ -1,8 +1,7 @@
 var definer = require('../../helpers/definer');
-var One = require('../../core/One');
 var stageActions = require('../actions/stage');
 
-module.exports = definer.define({
+module.exports = definer.defineOne({
     afterCreate: function(options) {
         var I = this;
             I._mounted = true;
@@ -24,4 +23,4 @@ module.exports = definer.define({
         context.fillStyle = S.fillStyle;
         context.fillRect(0, 0, S.width, S.height);
 	}
-}, One, 'ionejs.Stage');
+}, 'Stage');

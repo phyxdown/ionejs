@@ -20,4 +20,4 @@ module.exports = definer.defineOne({
         context.fillStyle = S.color;
         context.fillText(S.prefix + S.text, 0, 0);
     }
-}, 'ionejs.Writer');
+}, 'Writer');

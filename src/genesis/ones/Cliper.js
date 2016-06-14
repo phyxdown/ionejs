@@ -9,4 +9,4 @@ module.exports = definer.defineOne({
         context.clip();
         context.closePath();
     }
-}, 'ionejs.Cliper');
+}, 'Cliper');

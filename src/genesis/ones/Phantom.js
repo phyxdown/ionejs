@@ -42,4 +42,4 @@ definer.defineOne({
         
         context.restore();
     }
-}, 'ionejs.Phantom');
+}, 'Phantom');

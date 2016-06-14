@@ -1,6 +1,6 @@
 //Namespace
 //genesis
-var ionejs = require("./genesis");
+var ionejs = require("./genesis/ones");
 
 //Core
 ionejs.Action = require('./core/Action');

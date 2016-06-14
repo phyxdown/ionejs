@@ -27,4 +27,4 @@ module.exports = definer.defineOne({
     draw: function(context) {
         var I = this; I.image && context.drawImage(I.image, 0, 0);
     }
-}, 'ionejs.Painter');
+}, 'Painter');
