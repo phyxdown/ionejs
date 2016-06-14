@@ -1,9 +1,9 @@
 var definer = require('../../helpers/definer');
-var Action = require('../../core/Action');
+var MouseEvent = require('../events/MouseEvent');
 var Point = require('../../geom/Point')
 
 //AnimationFrame is the most important Action of ionejs.
-module.exports.AnimationFrame = definer.define({
+module.exports.AnimationFrame = definer.defineAction({
     afterCreate: function() {
         var A = this, I = A.one, S = I.state, canvas = I.canvas, context = canvas.getContext('2d');
         var lt = Date.now();
@@ -30,29 +30,27 @@ module.exports.AnimationFrame = definer.define({
         }
         frame();
     }
-}, Action, 'ionejs.stage.AnimationFrame');
+}, 'ionejs.stage.AnimationFrame');
 
-module.exports.AutoResize = definer.define({
-    update: function(){
-        var A = this, I = A.one, S = I.state, canvas = I.canvas;
-        var offsetLeft = canvas.offsetLeft;
-        var offsetTop = canvas.offsetTop;
-        var p = canvas.offsetParent;
-        while(p) {
-            offsetLeft += p.offsetLeft;
-            offsetTop += p.offsetTop;
-            p = p.offsetParent;
-        }
-
-        S.width = window.innerWidth - offsetLeft * 2 - 4;
-        S.height = window.innerHeight - offsetLeft * 2 - 4;
-
-        if(S.width != canvas.width) canvas.width = S.width;
-        if(S.height != canvas.height) canvas.height = S.height;
+module.exports.AutoResize = definer.defineAction(function(){
+    var A = this, I = A.one, S = I.state, canvas = I.canvas;
+    var offsetLeft = canvas.offsetLeft;
+    var offsetTop = canvas.offsetTop;
+    var p = canvas.offsetParent;
+    while(p) {
+        offsetLeft += p.offsetLeft;
+        offsetTop += p.offsetTop;
+        p = p.offsetParent;
     }
-}, Action, 'ionejs.stage.AutoResize');
 
-module.exports.MouseSensitive = definer.define({
+    S.width = window.innerWidth - offsetLeft * 2 - 4;
+    S.height = window.innerHeight - offsetLeft * 2 - 4;
+
+    if(S.width != canvas.width) canvas.width = S.width;
+    if(S.height != canvas.height) canvas.height = S.height;
+}, 'ionejs.stage.AutoResize');
+
+module.exports.MouseSensitive = definer.defineAction({
     afterCreate: function() {
         var A = this, I = A.one, S = I.state, canvas = I.canvas;
 
@@ -113,4 +111,4 @@ module.exports.MouseSensitive = definer.define({
                 _onMouse.apply(null, arguments);
         });
     }
-}, Action, 'ionejs.stage.MouseSensitive');
+}, 'ionejs.stage.MouseSensitive');
