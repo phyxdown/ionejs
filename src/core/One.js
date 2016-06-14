@@ -49,8 +49,8 @@ var One = function(options, groupOptions) {
      * @option {string} name
      */
     this._name = options.name || null;
-    this._group = options.group || null;
-    if(this._group)
+    this.group = options.group || null;
+    if(this.group)
         this.groupState = groupOptions || {};
 
     this._mounted = false;
@@ -223,7 +223,7 @@ p.getLeader = function() {
         var group;
         var leader = this.getParent();
         if(!leader) return null;
-        while(!(group = leader._group)) {
+        while(!(group = leader.group)) {
             leader = leader.getParent();
             if (!leader) break;
         }
@@ -237,7 +237,7 @@ p.getLeader = function() {
  * @return {string} group
  */
 p.getGroup = function() {
-    return this.getLeader()._group;
+    return this.getLeader().group;
 };
 
 /**
@@ -245,7 +245,7 @@ p.getGroup = function() {
  * @return {Object} groupState
  */
 p.getGroupState = function() {
-    return this.getLeader()._groupState;
+    return this.getLeader().groupState;
 };
 
 /**
