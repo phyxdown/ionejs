@@ -1,5 +1,4 @@
 var definer = require('../../helpers/definer');
-var One = require('../One');
 var _ = require('underscore');
 
 module.exports = definer.defineOne({
