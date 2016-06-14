@@ -14,11 +14,6 @@ ionejs.Matrix2D = require("./geom/Matrix2D");
 var creator = require("./helpers/creator");
     creator.defaultAlias = 'One';
     creator.Ones['One'] = ionejs.One;
-    creator.Ones['Stage'] = ionejs.Stage;
-    creator.Ones['Painter'] = ionejs.Painter;
-    creator.Ones['Cliper'] = ionejs.Cliper;
-    creator.Ones['Writer'] = ionejs.Writer;
-    creator.Ones['Phantom'] = ionejs.Phantom;
 
 ionejs.create = function(config) {
     return creator.create(config);
@@ -36,5 +31,4 @@ var definer = require('./helpers/definer');
 ionejs.define = definer.define;
 
 ionejs.inherits = require('./utils/inherits');
-ionejs.blur = require('./utils/blur');
 module.exports = ionejs;
