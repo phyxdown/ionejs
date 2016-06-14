@@ -15,15 +15,15 @@ module.exports.AnimationFrame = definer.defineAction({
             var dt = t2 - t1;
             if(I.fpslimit != 60)
                 setTimeout(frame, (1000/I.fpslimit - dt) > 0 ? (1000/I.fpslimit - dt) : 0);
-        	else requestAnimationFrame(frame);
+            else requestAnimationFrame(frame);
 
             //show debug info
             var fps = 1000 / (Date.now() - lt);
             lt = Date.now();
-            if (I.debug) {
+            if (S.debug) {
                 context.save();
                 context.fillStyle = '#000000';
-                context.font = 'bold 28px Aerial';
+                context.font = 'bold 14px Aerial';
                 context.fillText('FPS: ' + (((fps * 100) << 0) / 100), 30, 52);
                 context.restore();
             };
