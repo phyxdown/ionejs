@@ -6,25 +6,34 @@ var Point = require('../../geom/Point')
 module.exports.AnimationFrame = definer.defineAction({
     afterCreate: function() {
         var A = this, I = A.one, S = I.state, canvas = I.canvas, context = canvas.getContext('2d');
-        var lt = Date.now();
+        var timer = performance || Date;
+        var lt = timer.now();
+        var accumulate = Number.MAX_VALUE;
+        var fps = 0;
         var frame = function() {
-            var t1 = Date.now();
+            var t1 = timer.now();
             I._draw(context);
             I._update();
-            var t2 = Date.now();
+            var t2 = timer.now();
             var dt = t2 - t1;
-            if(I.fpslimit != 60)
-                setTimeout(frame, (1000/I.fpslimit - dt) > 0 ? (1000/I.fpslimit - dt) : 0);
+            if(S.fpslimit != 60)
+                setTimeout(frame, (1000/S.fpslimit - dt) > 0 ? (1000/S.fpslimit - dt) : 0);
             else requestAnimationFrame(frame);
 
             //show debug info
-            var fps = 1000 / (Date.now() - lt);
-            lt = Date.now();
             if (S.debug) {
+                var interval = timer.now() - lt;
+                lt = timer.now();
+                console.log(interval, accumulate);
+                if (accumulate > 500) {
+                    fps = 1000 / interval;
+                    accumulate = 0;
+                }
+                accumulate += interval;
                 context.save();
                 context.fillStyle = '#000000';
-                context.font = 'bold 14px Aerial';
-                context.fillText('FPS: ' + (((fps * 100) << 0) / 100), 30, 52);
+                context.font = 'bold 28px Aerial';
+                context.fillText('FPS: ' + ((((fps * 100) << 0) / 10) << 0) / 10, 30, 52);
                 context.restore();
             };
         }
@@ -43,8 +52,8 @@ module.exports.AutoResize = definer.defineAction(function(){
         p = p.offsetParent;
     }
 
-    S.width = window.innerWidth - offsetLeft * 2 - 4;
-    S.height = window.innerHeight - offsetLeft * 2 - 4;
+    S.width = window.innerWidth - offsetLeft * 2;
+    S.height = window.innerHeight - offsetLeft * 2;
 
     if(S.width != canvas.width) canvas.width = S.width;
     if(S.height != canvas.height) canvas.height = S.height;
