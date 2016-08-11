@@ -24,7 +24,6 @@ module.exports.AnimationFrame = definer.defineAction({
             if (S.debug) {
                 var interval = timer.now() - lt;
                 lt = timer.now();
-                console.log(interval, accumulate);
                 if (accumulate > 500) {
                     fps = 1000 / interval;
                     accumulate = 0;
