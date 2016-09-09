@@ -8,16 +8,16 @@ var p = Creator.prototype;
 p.create = function(){
     var I = this;
     var _create = function(conf){
-	var config;
+	    var config;
         if (typeof conf == 'string')
             config = {
                 alias: conf
             };
-	else if (conf instanceof Array)
+	    else if (conf instanceof Array)
             config = {
                 children: conf
             };
-	else config = conf;
+	    else config = conf;
 
         config = config || {};
         var One = I.Ones[config.alias || I.defaultAlias]
