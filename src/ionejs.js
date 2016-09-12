@@ -21,18 +21,15 @@ ionejs.create = function(config) {
     return creator.create(config);
 };
 
-ionejs.registerOne = function(alias, One) {
-    register.Ones[alias] = One;
-};
-
-ionejs.registerAction = function(alias, Action) {
-    register.Actions[alias] = Action;
-}
-
 var definer = require('./helpers/definer');
 ionejs.define = definer.define;
 ionejs.defineOne = definer.defineOne;
 ionejs.defineAction = definer.defineAction;
+
+ionejs.addTempalte = function(method, name) {
+    register.Templates[name] = method;
+    return method;
+};
 
 ionejs.inherits = require('./utils/inherits');
 module.exports = ionejs;

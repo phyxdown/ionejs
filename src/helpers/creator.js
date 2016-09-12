@@ -9,6 +9,8 @@ p.create = function(){
     var I = this;
     var _create = function(conf){
 	    var config;
+
+
         if (typeof conf == 'string')
             config = {
                 alias: conf
@@ -18,6 +20,16 @@ p.create = function(){
                 children: conf
             };
 	    else config = conf;
+
+        if(config.template) {
+            if(typeof config.template == 'function')
+                config = config.template(config);
+            else {
+                var template = register.Templates[config.template];
+                if(template)
+                    config = template(config);
+            }
+        }
 
         config = config || {};
         var One = register.Ones[config.alias || I.defaultAlias]
@@ -38,9 +50,7 @@ p.create = function(){
         });
         children.forEach(function(config) {
             one.addChild(_create(config));
-        });
-        return one;
-    }
+        }); return one; }
     return _create.apply(this, arguments);
 };
 
