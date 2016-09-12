@@ -1,4 +1,4 @@
-var creator = require('./creator');
+var register = require('./register');
 var One = require('../core/One');
 var Action = require('../core/Action');
 
@@ -14,6 +14,7 @@ p.defineAction = function(options, alias) {
 }
 
 p.define = function(optionsOrUpdate, superConstruct, alias){
+    alias = alias || 'anonymous';
 
     //Practice to tell whether the check below is necessary.
     //if(typeof superConstruct != 'function')
@@ -61,8 +62,8 @@ p.define = function(optionsOrUpdate, superConstruct, alias){
     var baseConstruct = construct;
     while(baseConstruct._super != undefined)
         baseConstruct = baseConstruct._super;
-    if(baseConstruct == One) creator.Ones[alias] = construct;
-    if(baseConstruct == Action) creator.Actions[alias] = construct;
+    if(baseConstruct == One) register.Ones[alias] = construct;
+    if(baseConstruct == Action) register.Actions[alias] = construct;
     return construct;
 };
 

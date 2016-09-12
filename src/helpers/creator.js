@@ -1,7 +1,7 @@
-var Creator = function(){
-    this.Ones = {};
-    this.Actions = {};
-};
+var register = require('./register');
+var definer = require('./definer');
+
+var Creator = function(){};
 
 var p = Creator.prototype;
 
@@ -20,7 +20,7 @@ p.create = function(){
 	    else config = conf;
 
         config = config || {};
-        var One = I.Ones[config.alias || I.defaultAlias]
+        var One = register.Ones[config.alias || I.defaultAlias]
         var options = config.options || {};
         var groupOptions = config.groupOptions || {};
 
@@ -28,8 +28,11 @@ p.create = function(){
         var children = config.children || [];
 
         var one = new One(options, groupOptions);
-        actions.forEach(function(alias) {
-            one.addAction(I.Actions[alias]);
+        actions.forEach(function(aliasOrUpdate) {
+            if(typeof aliasOrUpdate == 'function') {
+                one.addAction(definer.defineAction(aliasOrUpdate));
+            } else 
+                one.addAction(register.Actions[aliasOrUpdate]);
         });
         children.forEach(function(config) {
             one.addChild(_create(config));
