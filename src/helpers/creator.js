@@ -28,11 +28,13 @@ p.create = function(){
         var children = config.children || [];
 
         var one = new One(options, groupOptions);
-        actions.forEach(function(aliasOrUpdate) {
-            if(typeof aliasOrUpdate == 'function') {
-                one.addAction(definer.defineAction(aliasOrUpdate));
-            } else 
-                one.addAction(register.Actions[aliasOrUpdate]);
+        actions.forEach(function(action) {
+            if(typeof action == 'function')
+                one.addAction(definer.defineAction(action));
+            else if (action.startsWith('@'))
+                one.addAction(register.Actions[action.slice(1)]);
+            else
+                one.addAction(definer.defineAction(action));
         });
         children.forEach(function(config) {
             one.addChild(_create(config));

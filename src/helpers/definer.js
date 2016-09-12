@@ -22,8 +22,16 @@ p.define = function(optionsOrUpdate, superConstruct, alias){
     //if(typeof alias != 'string')
     //    throw new Error('Alias is not string but ' + typeof alias);
 
+    function parseMethod(script) {
+       script = script.slice(1);
+       var pref = "var A = this;var I = A.one;var S = I.state;var P = I.getParent();var PS = P.state;var L = I.getLeader();var GS = I.getGroupState();"
+           console.log(pref + script);
+       return new Function(pref + script);
+    }
+
     var options;
     if(typeof optionsOrUpdate == 'function') options = { update: optionsOrUpdate }
+    else if(typeof optionsOrUpdate == 'string') options = { update: parseMethod(optionsOrUpdate) }
     else options = optionsOrUpdate;
 
     var fields = {};
