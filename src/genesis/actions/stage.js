@@ -38,7 +38,7 @@ module.exports.AnimationFrame = definer.defineAction({
         }
         frame();
     }
-}, 'ionejs.stage.AnimationFrame');
+}, 'stage.AnimationFrame');
 
 module.exports.AutoResize = definer.defineAction(function(){
     var A = this, I = A.one, S = I.state, canvas = I.canvas;
@@ -56,7 +56,7 @@ module.exports.AutoResize = definer.defineAction(function(){
 
     if(S.width != canvas.width) canvas.width = S.width;
     if(S.height != canvas.height) canvas.height = S.height;
-}, 'ionejs.stage.AutoResize');
+}, 'stage.AutoResize');
 
 module.exports.MouseSensitive = definer.defineAction({
     afterCreate: function() {
@@ -119,4 +119,4 @@ module.exports.MouseSensitive = definer.defineAction({
                 _onMouse.apply(null, arguments);
         });
     }
-}, 'ionejs.stage.MouseSensitive');
+}, 'stage.MouseSensitive');
