@@ -604,15 +604,18 @@ p.stopDraw = function() {
 p.draw = function(context) {};
 
 p._update = function() {
+    var update;
     if (this.state.active) {
         try {
-            this.update();
+            update = this.update.bind(this);
+            update();
             this._actions.forEach(function(action) {
-                action.update();
+                update = action.update.bind(action);
+                update();
             });
         } catch (e) {
             if(!this._error) {
-                console.log(e, this._alias + '.update', this.update, this.state)
+                console.log(e, this._alias + '.update', update, this.state)
                 this._error = true;
                 if(this.getStage().debug) throw e;
             }

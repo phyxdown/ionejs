@@ -43,7 +43,7 @@ p.create = function(){
         actions.forEach(function(action) {
             if(typeof action == 'function')
                 one.addAction(definer.defineAction(action));
-            else if (action.startsWith('@'))
+            else if ((typeof action == 'string') && (action.startsWith('@')))
                 one.addAction(register.Actions[action.slice(1)]);
             else
                 one.addAction(definer.defineAction(action));
