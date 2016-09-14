@@ -24,7 +24,6 @@ p.define = function(optionsOrUpdate, superConstruct, alias){
 
     function parseMethod(script) {
        var pref = "var A = this;var I = A.one;var S = I.state;var P = I.getParent();var PS = P.state;var L = I.getLeader();var GS = I.getGroupState();"
-           console.log(pref + script);
        return new Function(pref + script);
     }
 

@@ -395,7 +395,7 @@ p.off = p.removeEventListener = function(type, listener, useCapture) {
  * See {core.Event} for more information.
  * @param  {core.Event} event
  */
-p.dispatchEvent = function(event) {
+p.fire = p.dispatchEvent = function(event) {
     event.target = this;
 
     var arr = this.getAncestors();

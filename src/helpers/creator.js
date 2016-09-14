@@ -43,8 +43,14 @@ p.create = function(){
         actions.forEach(function(action) {
             if(typeof action == 'function')
                 one.addAction(definer.defineAction(action));
-            else if ((typeof action == 'string') && (action.startsWith('@')))
-                one.addAction(register.Actions[action.slice(1)]);
+            else if ((typeof action == 'string') && (action.startsWith('@'))) {
+                var alias = action.slice(1);
+                action = register.Actions[alias];
+                if(action)
+                    one.addAction(action);
+                else 
+                    console.log("Action: ", alias, " not registered.");
+            }
             else
                 one.addAction(definer.defineAction(action));
         });
