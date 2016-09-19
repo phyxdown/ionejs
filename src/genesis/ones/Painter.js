@@ -22,7 +22,11 @@ module.exports = definer.defineOne({
             I.image.src = S.src;
     },
     update: function() {
-        var I = this; I.loadif();
+        var I = this, S = I.state; I.loadif();
+        if (!!I.image) {
+            S.width = I.image.width;
+            S.height = I.image.height;
+        }
     },
     draw: function(context) {
         var I = this; I.image && context.drawImage(I.image, 0, 0);

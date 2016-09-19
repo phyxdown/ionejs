@@ -16,10 +16,6 @@ module.exports.SupportMousedrag = definer.defineAction({
         stage.on('mouseup', function() {
             A.focused = false;
         });
-        stage.on('mouseout', function(e) {
-            if(e.target == stage)
-                A.focused = false;
-        });
         stage.on('mousemove', function(e) {
             var lastGlobal = A.lastGlobal, 
                 lastLocal = A.lastLocal,
