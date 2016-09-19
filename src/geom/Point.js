@@ -5,6 +5,11 @@ var Point = function(x, y) {
 
 var p = Point.prototype;
 
+p.sub = function(point) {
+    if(!point) return new Point(0, 0);
+    return new Point(this.x - point.x, this.y - point.y);
+}
+
 p.distance = function(point){
     var dx = point.x - this.x;
     var dy = point.y - this.y;
