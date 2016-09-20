@@ -576,7 +576,7 @@ p._draw = function(context) {
             if(!this._error) {
                 console.log(e, this._alias + '.draw', this.draw, this.state)
                 this._error = true;
-                if(this.getStage().debug) throw e;
+                if(this.getStage().state.debug) throw e;
             }
         }
     }
@@ -617,7 +617,7 @@ p._update = function() {
             if(!this._error) {
                 console.log(e, this._alias + '.update', update, this.state)
                 this._error = true;
-                if(this.getStage().debug) throw e;
+                if(this.getStage().state.debug) throw e;
             }
         }
     }
