@@ -217,7 +217,19 @@ p.getId = function() {
     return this._id;
 };
 
-p.getLeader = function() {
+p.getLeader = function(groupName) {
+    if(groupName == undefined) return this._getLeader();
+    else {
+        var leader = this._getLeader();
+        while(leader.group != groupName) {
+            leader = leader._getLeader();
+        }
+        if(!leader) throw new Error("group not exist");
+        return leader;
+    }
+};
+
+p._getLeader = function() {
     if (this._leader) return this._leader;
     else {
         var group;
@@ -244,8 +256,8 @@ p.getGroup = function() {
  * Get groupState.
  * @return {Object} groupState
  */
-p.getGroupState = function() {
-    return this.getLeader().groupState;
+p.getGroupState = function(groupName) {
+    return this.getLeader(groupName).groupState;
 };
 
 /**
