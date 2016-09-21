@@ -266,9 +266,7 @@ p.getGroupState = function(groupName) {
  */
 p.getIndex = function() {
     var I = this;
-    return this.getParent().getChildren().findIndex(function(child) {
-        return I == child;
-    });
+    return this.getParent().getChildren().indexOf(I);
 };
 
 
