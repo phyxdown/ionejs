@@ -102,7 +102,7 @@ module.exports.MouseSensitive = definer.defineAction({
 
         var lastPoint;
         canvas.addEventListener('mousedown', function(e) {
-            lastPoint = new Point(e.x, e.y);
+            lastPoint = new Point(e.clientX, e.clientY);
             _onMouse.apply(null, arguments);
         });
 
@@ -115,7 +115,7 @@ module.exports.MouseSensitive = definer.defineAction({
         });
 
         canvas.addEventListener('click', function(e) {
-            if (lastPoint.distance(new Point(e.x, e.y)) < 13 /*Why 13? YKI.*/ )
+            if (lastPoint.distance(new Point(e.clientX, e.clientY)) < 13 /*Why 13? YKI.*/ )
                 _onMouse.apply(null, arguments);
         });
     }
