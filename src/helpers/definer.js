@@ -32,6 +32,12 @@ p.define = function(optionsOrUpdate, superConstruct, alias){
     else if(typeof optionsOrUpdate == 'string') options = { update: parseMethod(optionsOrUpdate) }
     else options = optionsOrUpdate;
 
+    var lifecircleMethodnames = ["update", "afterCreate", "afterMount", "beforeMount", "beforeUnmount", "afterUnmount"];
+    lifecircleMethodnames.forEach(function(methodname) {
+        if(typeof options[methodname] == 'string')
+            options[methodname] = parseMethod(options[methodname]);
+    });
+
     var fields = {};
     var methods = {};
 

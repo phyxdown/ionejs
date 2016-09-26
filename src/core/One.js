@@ -27,7 +27,7 @@ var defaultState = {
  * eh..
  * That is a pity.
  */
-var One = function(options, groupOptions) {
+var One = function(options) {
     /**
      * Param check is expected.
      * The code line below is temporary.
@@ -50,8 +50,6 @@ var One = function(options, groupOptions) {
      */
     this._name = options.name || null;
     this.group = options.group || null;
-    if(this.group)
-        this.groupState = groupOptions || {};
 
     this._mounted = false;
 
@@ -65,7 +63,7 @@ var One = function(options, groupOptions) {
     this._alias = 'ionejs.One';
     this._error = false;
 
-	this.afterCreate && this.afterCreate(options, groupOptions);
+	this.afterCreate && this.afterCreate(options);
 };
 
 var p = One.prototype;
@@ -257,7 +255,7 @@ p.getGroup = function() {
  * @return {Object} groupState
  */
 p.getGroupState = function(groupName) {
-    return this.getLeader(groupName).groupState;
+    return this.getLeader(groupName).state;
 };
 
 /**

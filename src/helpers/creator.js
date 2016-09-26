@@ -34,12 +34,11 @@ p.create = function(){
         config = config || {};
         var One = register.Ones[config.alias || I.defaultAlias]
         var options = config.options || {};
-        var groupOptions = config.groupOptions || {};
 
         var actions = config.actions || [];
         var children = config.children || [];
 
-        var one = new One(options, groupOptions);
+        var one = new One(options);
         actions.forEach(function(action) {
             if(typeof action == 'function')
                 one.addAction(definer.defineAction(action));
