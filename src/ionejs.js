@@ -33,4 +33,7 @@ ionejs.addTempalte = function(method, name) {
 };
 
 ionejs.inherits = require('./utils/inherits');
+
+ionejs.damping = require('./helpers/damping');
+
 module.exports = ionejs;
