@@ -21,6 +21,8 @@ p.create = function(){
             };
 	    else config = conf;
 
+        config = config || {};
+
         if(config.template) {
             if(typeof config.template == 'function')
                 config = config.template(config);
@@ -31,7 +33,6 @@ p.create = function(){
             }
         }
 
-        config = config || {};
         var One = register.Ones[config.alias || I.defaultAlias]
         var options = config.options || {};
 
@@ -56,6 +57,7 @@ p.create = function(){
         children.forEach(function(config) {
             one.addChild(_create(config));
         }); return one; }
+    console.log(arguments);
     return _create.apply(this, arguments);
 };
 
