@@ -1,7 +1,9 @@
 var register = require('./register');
 var definer = require('./definer');
 
-var Creator = function(){};
+var Creator = function(){
+    this.uniqueKeyPref = 0;
+};
 
 var p = Creator.prototype;
 
@@ -40,6 +42,12 @@ p.create = function(){
         var children = config.children || [];
 
         var one = new One(options);
+
+        var ts = Date.now();
+        one._uniqueKey = ts + "_" + I.uniqueKeyPref;
+        one.state._uniqueKey = ts + "_" + I.uniqueKeyPref + ".state";
+        I.uniqueKeyPref ++;
+
         actions.forEach(function(action) {
             if(typeof action == 'function')
                 one.addAction(definer.defineAction(action));
@@ -57,7 +65,6 @@ p.create = function(){
         children.forEach(function(config) {
             one.addChild(_create(config));
         }); return one; }
-    console.log(arguments);
     return _create.apply(this, arguments);
 };
 

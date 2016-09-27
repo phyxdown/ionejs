@@ -14,7 +14,7 @@ function damping() {
         this.active = false;
         return;
     }
-    if(this.object[this.key] == this.targetValue) {
+    if(this.S[this.key] == this.targetValue) {
         this.active = false;
         return;
     }
@@ -23,12 +23,12 @@ function damping() {
 
     if(O instanceof Linear) {
         var interval = 1000/O.fps;
-        this.object[this.key] += (this.targetValue - this.object[this.key])/O.left * interval;
+        this.S[this.key] += (this.targetValue - this.S[this.key])/O.left * interval;
         O.left -= interval;
         if(O.left > 0)
             setTimeout(damping.bind(this), interval);
         else {
-            this.object[this.key] = this.targetValue;
+            this.S[this.key] = this.targetValue;
             this.active = false;
         }
     }
@@ -36,13 +36,13 @@ function damping() {
     if(O instanceof Curve) {
         var interval = 1000/O.fps;
         var nth = O.left/interval;
-        var k = Math.pow(O.deviation/(this.targetValue-this.object[this.key]), 1/nth);
-        this.object[this.key] = this.targetValue * (1 - k) + this.object[this.key] * k;
+        var k = Math.pow(Math.abs(O.deviation/(this.targetValue-this.S[this.key])), 1/nth);
+        this.S[this.key] = this.targetValue * (1 - k) + this.S[this.key] * k;
         O.left -= interval;
         if(O.left > 0)
             setTimeout(damping.bind(this), interval);
         else {
-            this.object[this.key] = this.targetValue;
+            this.S[this.key] = this.targetValue;
             this.active = false;
         }
     }
@@ -54,15 +54,15 @@ var Damping = function() {
 
 var p = Damping.prototype;
 
-p.chase = function(object, key, targetValue, options) {
+p.chase = function(S, key, targetValue, options, restart) {
     var _this = this;
-    if(!object) return;
-    if(object[key] == undefined) return;
-    _this.states[object] = _this.states[object] || {};
-    var state = _this.states[object][key]; 
+    if(!S) return;
+    if(S[key] == undefined) return;
+    _this.states[S._uniqueKey] = _this.states[S._uniqueKey] || {};
+    var state = _this.states[S._uniqueKey][key]; 
     if(state == undefined) {
-        state = _this.states[object][key] = {
-            object: object,
+        state = _this.states[S._uniqueKey][key] = {
+            S: S,
             key: key,
             targetValue: targetValue,
             options: options,
@@ -72,11 +72,12 @@ p.chase = function(object, key, targetValue, options) {
     }
     else {
         state.targetValue = targetValue;
-        state.options = options;
         if(state.active == false) {
+            state.options = options;
             state.active = true;
             setTimeout(damping.bind(state), 1);
-        }
+        } else if(restart) 
+            state.options = options;
     };
 }
 
