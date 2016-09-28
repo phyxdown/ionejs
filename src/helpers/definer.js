@@ -13,6 +13,11 @@ p.defineAction = function(options, alias) {
     return this.define(options, Action, alias);
 }
 
+p.defineTemplate = function(template, alias) {
+    register.Templates[alias] = template;
+    return method;
+}
+
 p.define = function(optionsOrUpdate, superConstruct, alias){
     alias = alias || 'anonymous';
 
