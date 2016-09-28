@@ -28,8 +28,8 @@ p.create = function(){
         if(config.template) {
             if(typeof config.template == 'function')
                 config = config.template(config);
-            else {
-                var template = register.Templates[config.template];
+            else if((typeof config.template == 'string') && (config.template.startsWith('@'))){
+                var template = register.Templates[config.template.slice(1)];
                 if(template)
                     config = template(config);
             }
