@@ -1,6 +1,7 @@
 var register = require('./register');
 var One = require('../core/One');
 var Action = require('../core/Action');
+var Event = require('../core/Event');
 
 var Definer = function(){};
 var p = Definer.prototype;
@@ -13,9 +14,17 @@ p.defineAction = function(options, alias) {
     return this.define(options, Action, alias);
 }
 
+p.defineEvent = function(options) {
+    var E = this.define({}, Event);
+    for (var key in options) {
+        E[key] = options[key];
+    }
+    return E;
+}
+
 p.defineTemplate = function(template, alias) {
     register.Templates[alias] = template;
-    return method;
+    return template;
 }
 
 p.define = function(optionsOrUpdate, superConstruct, alias){
@@ -35,7 +44,7 @@ p.define = function(optionsOrUpdate, superConstruct, alias){
     var options;
     if(typeof optionsOrUpdate == 'function') options = { update: optionsOrUpdate }
     else if(typeof optionsOrUpdate == 'string') options = { update: parseMethod(optionsOrUpdate) }
-    else options = optionsOrUpdate;
+    else options = optionsOrUpdate || {};
 
     var lifecircleMethodnames = ["update", "afterCreate", "afterMount", "beforeMount", "beforeUnmount", "afterUnmount"];
     lifecircleMethodnames.forEach(function(methodname) {
