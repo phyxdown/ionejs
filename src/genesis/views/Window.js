@@ -65,11 +65,36 @@ var SupportWindowScrollConfig = {
  * @children all children will be added into a container.
  * */
 module.exports = definer.defineTemplate(function(config) {
+    config.options = config.options || {};
     var options = _.defaults(config.options, {
         group: 'Window',
         offsetX: 0,
         offsetY: 0
     });
+    /*
+     * A new concept about one's width and height will turn.
+     * And the logic above might be remnant.
+     */
+    var firstChild = config.children[0];
+    if(firstChild) {
+        firstChild.actions = firstChild.actions || [];
+        firstChild.actions.push({
+            originWidth: undefined,
+            originHeight: undefined,
+            update: function() {
+                var A = this, I = this.one, S = I.state;
+                if((S.width != A.originWidth) || (S.height != A.originHeight)) {
+                    I.fire(new WindowEvent({
+                        type: WindowEvent.CONTENTRESIZE,
+                        width: S.width,
+                        height: S.height
+                    }));
+                    A.originWidth = S.width;
+                    A.originHeight = S.height;
+                }
+            }
+        });
+    }
     var children = [
         {
             template: Seekbar,
@@ -91,7 +116,14 @@ module.exports = definer.defineTemplate(function(config) {
                 S.length = GS.visualWidth;\
                 S.breadth = GS.seekbarBreadth;\
             ", 
-            SupportWindowScrollConfig]
+            {
+                afterMount: " \
+                    I.on('mousedrag', function(e) { \
+                        GS.offsetX += (e.data.paternalDistance.x / S.occupancy); \
+                        GS.offsetX = Math.max(GS.offsetX, 0); \
+                        GS.offsetX = Math.min(GS.offsetX, GS.realWidth - GS.visualWidth); \
+                    });" 
+            }]
 
         },
         {
@@ -114,7 +146,14 @@ module.exports = definer.defineTemplate(function(config) {
                 S.length = GS.visualHeight;\
                 S.breadth = GS.seekbarBreadth;\
             ", 
-            SupportWindowScrollConfig]
+            {
+                afterMount: " \
+                    I.on('mousedrag', function(e) { \
+                        GS.offsetY += (e.data.paternalDistance.y / S.occupancy); \
+                        GS.offsetY = Math.max(GS.offsetY, 0); \
+                        GS.offsetY = Math.min(GS.offsetY, GS.realHeight - GS.visualHeight); \
+                    });"
+            }]
         }, {
             alias: 'Cliper',
             options: {
@@ -155,6 +194,7 @@ module.exports = definer.defineTemplate(function(config) {
                     S.realWidth = e.data.width;
                 if(e.data.height != undefined)
                     S.realHeight = e.data.height;
+                e.stopPropagation();
             });
         }
     }];
