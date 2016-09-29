@@ -8,42 +8,6 @@ var WindowEvent = definer.defineEvent({
     CONTENTRESIZE: 'uonejs.Window.CONTENTRESIZE'
 });
 
-var ResizeNotifyConfig = {
-    originWidth: undefined,
-    originHeight: undefined,
-    update: function() {
-        var A = this, I = this.one, S = I.state;
-        if((S.width != A.originWidth) || (S.height != A.originHeight)) {
-            I.fire(new WindowEvent({
-                type: WindowEvent.CONTENTRESIZE,
-                width: S.width,
-                height: S.height
-            }));
-            A.originWidth = S.width;
-            A.originHeight = S.height;
-        }
-    }
-}
-
-
-var SupportWindowScrollConfig = {
-    afterMount: function() {
-        var A = this, I = A.one, S = I.state, GS = I.getGroupState();
-        I.on('mousedrag', function(e) {
-            if(S.horizontal) {
-                GS.offsetX += (e.data.paternalDistance.x / S.occupancy);
-                GS.offsetX = Math.max(GS.offsetX, 0);
-                GS.offsetX = Math.min(GS.offsetX, GS.realWidth - GS.visualWidth);
-            }
-            else {
-                GS.offsetY += (e.data.paternalDistance.y / S.occupancy);
-                GS.offsetY = Math.max(GS.offsetY, 0);
-                GS.offsetY = Math.min(GS.offsetY, GS.realHeight - GS.visualHeight);
-            }
-        });
-    }
-};
-
 /*
  * A window which can contain scalable content.
  *
@@ -206,5 +170,3 @@ module.exports = definer.defineTemplate(function(config) {
         actions: actions
     };
 }, 'Window');
-
-module.exports.ResizeNotifyConfig = ResizeNotifyConfig;
