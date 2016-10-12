@@ -58,6 +58,10 @@ p.chase = function(S, key, targetValue, options, restart) {
     var _this = this;
     if(!S) return;
     if(S[key] == undefined) return;
+    if(!options) {
+        S[key]  = targetValue;
+        return;
+    }
     _this.states[S._uniqueKey] = _this.states[S._uniqueKey] || {};
     var state = _this.states[S._uniqueKey][key]; 
     if(state == undefined) {
