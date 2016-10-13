@@ -593,9 +593,34 @@ p._draw = function(context) {
         context.restore();
         return;
     }
-    for (var i = 0, l = this._children.length; i < l; i++) {
+    for (var i in this._children) {
         var child = this._children[i];
-        child._draw(context);
+        if(child.state.z) {
+            this._supportZ = true;
+            break;
+        }
+    }
+
+    if(this._supportZ) {
+        var childrens = [];
+        for (var i in this._children) {
+            var child = this._children[i];
+            child.state.z = child.state.z || 0;
+            childrens[child.state.z] = childrens[child.state.z] || [];
+            childrens[child.state.z].push(child);
+        }
+        for (var i in childrens) {
+            var children = childrens[i];
+            for(var j in children) {
+                var child = children[j];
+                child._draw(context);
+            }
+        }
+    } else {
+        for (var i in this._children) {
+            var child = this._children[i];
+            child._draw(context);
+        }
     }
     context.restore();
 };
