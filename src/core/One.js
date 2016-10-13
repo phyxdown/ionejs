@@ -496,6 +496,19 @@ p.localToGlobal = function(point) {
  */
 p.hit = function(point) {
     var children = this._children;
+    if(this._supportZ) {
+        console.log("##", this._supportZ, this.childrens);
+        var childrens = [];
+        for(var i in this.childrens) {
+            childrens.unshift(this.childrens[i]);
+        }
+        for(var i in childrens) {
+            for(var j in childrens[i]) {
+                var descendant = childrens[i][j].hit(point);
+                if (descendant) return descendant;
+            }
+        }
+    }
     for (var i = children.length - 1; i > -1; i--) {
         var descendant = children[i].hit(point);
         if (descendant) return descendant;
@@ -602,7 +615,7 @@ p._draw = function(context) {
     }
 
     if(this._supportZ) {
-        var childrens = [];
+        var childrens = this.childrens = [];
         for (var i in this._children) {
             var child = this._children[i];
             child.state.z = child.state.z || 0;
