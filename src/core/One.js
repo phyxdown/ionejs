@@ -497,7 +497,6 @@ p.localToGlobal = function(point) {
 p.hit = function(point) {
     var children = this._children;
     if(this._supportZ) {
-        console.log("##", this._supportZ, this.childrens);
         var childrens = [];
         for(var i in this.childrens) {
             childrens.unshift(this.childrens[i]);
