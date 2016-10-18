@@ -10,6 +10,7 @@ module.exports.AnimationFrame = definer.defineAction({
         var lt = timer.now();
         var accumulate = Number.MAX_VALUE;
         var fps = 0;
+        var time
         var frame = function() {
             var t1 = timer.now();
             I._draw(context);
@@ -26,13 +27,14 @@ module.exports.AnimationFrame = definer.defineAction({
                 lt = timer.now();
                 if (accumulate > 500) {
                     fps = 1000 / interval;
+                    time = dt;
                     accumulate = 0;
                 }
                 accumulate += interval;
                 context.save();
                 context.fillStyle = '#000000';
                 context.font = 'bold 28px Aerial';
-                context.fillText('FPS: ' + ((((fps * 100) << 0) / 10) << 0) / 10, 30, 52);
+                context.fillText('FPS: ' + ((((fps * 100) << 0) / 10) << 0) / 10 + ' Time: ' + (((time * 100) << 0) / 10 << 0) / 10 + 'ms', 30, 52);
                 context.restore();
             };
         }
