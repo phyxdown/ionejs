@@ -29,6 +29,7 @@ p.defineTemplate = function(template, alias) {
 
 p.define = function(optionsOrUpdate, superConstruct, alias){
     alias = alias || 'anonymous';
+    superConstruct = superConstruct || One;
 
     //Practice to tell whether the check below is necessary.
     //if(typeof superConstruct != 'function')
@@ -46,7 +47,7 @@ p.define = function(optionsOrUpdate, superConstruct, alias){
        return new Function(pref + script);
     }
 
-    var baseConstruct = construct;
+    var baseConstruct = superConstruct;
     while(baseConstruct._super != undefined)
         baseConstruct = baseConstruct._super;
 
