@@ -12,7 +12,6 @@ p.create = function(){
     var _create = function(conf){
 	    var config;
 
-
         if (typeof conf == 'string')
             config = {
                 alias: conf
@@ -35,9 +34,18 @@ p.create = function(){
             }
         }
 
-        var One = register.Ones[config.alias || I.defaultAlias]
-        var options = config.options || {};
+        var One;
+        if (config.alias) {
+            if(typeof config.alias == 'function')
+                One = config.alias;
+            else if((typeof config.alias == 'string') && (config.alias.startsWith('@')))
+                One = register.Ones[config.alias.slice(1)];
+            else 
+                console.log("invalid alias of", config);
+        } else 
+            One = register.Ones[I.defaultAlias];
 
+        var options = config.options || {};
         var actions = config.actions || [];
         var children = config.children || [];
 
