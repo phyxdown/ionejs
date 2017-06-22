@@ -2,6 +2,8 @@ var definer = require('../../helpers/definer');
 var stageActions = require('../actions/stage');
 
 module.exports = definer.defineOne({
+    group: 'Stage',
+
     afterCreate: function(options) {
         var I = this;
             I._mounted = true;
