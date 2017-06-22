@@ -25,7 +25,7 @@ ionejs.define = definer.define.bind(definer);
 ionejs.defineOne = definer.defineOne.bind(definer);
 ionejs.defineAction = definer.defineAction.bind(definer);
 ionejs.defineEvent = definer.defineEvent.bind(definer);
-ionejs.defineTempalte = definer.defineTemplate.bind(definer);
+ionejs.defineTemplate = definer.defineTemplate.bind(definer);
 
 ionejs.inherits = require('./utils/inherits');
 
