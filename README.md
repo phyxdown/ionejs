@@ -18,9 +18,9 @@ A full featured rendering engine for html5 canvas.
 
 3.view the page:
 ```
-  % open localhost:8000 with your modern browser.
+  % view localhost:8000 in modern browser.
 ```
-Everything goes smoothly if you see the FPS.
+Everything goes smoothly if you see FPS.
 
 ## Adding a Writer
 Modify main.js:
