@@ -1,7 +1,7 @@
-var definer = require('../../helpers/definer');
-var _ = require('underscore');
+import { definer } from '../../helpers/index.js';
+import _ from 'underscore';
 
-module.exports = definer.defineOne({
+export var Painter = definer.defineOne({
     testHit: function(point) {
         var I = this, S = I.state;
         if (!I.image) return false;

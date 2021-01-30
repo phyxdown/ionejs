@@ -1,7 +1,6 @@
-var Point = require('../geom/Point');
-var Matrix = require('./Matrix');
-var Event = require("./Event");
-var _ = require("underscore");
+import { Matrix } from './Matrix.js';
+import { Event } from './Event.js';
+import _ from 'underscore';
 
 var defaultState = {
     active: true,
@@ -716,4 +715,4 @@ p.mode = function(mode) {
     return this;
 };
 
-module.exports = One;
+export { One }

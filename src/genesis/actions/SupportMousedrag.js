@@ -1,8 +1,8 @@
-var definer = require('../../helpers/definer');
-var MouseEvent = require('../events/MouseEvent');
-var Point = require('../../geom/Point')
+import { definer } from '../../helpers/definer.js';
+import { MouseEvent } from '../events/index.js';
+import { Point } from '../../geom/index.js';
 
-module.exports.SupportMousedrag = definer.defineAction({
+export var SupportMousedrag = definer.defineAction({
     focused: false,
     lastGlobal: null,
     lastLocal: null,

@@ -6,6 +6,7 @@
   "description": "A full featured rendering engine for html5-canvas.",
   "homepage": "https://github.com/phyxdown/ionejs",
   "author": "phyxdown",
+  "type": "module",
   "maintainers": [
     "phyxdown"
   ],

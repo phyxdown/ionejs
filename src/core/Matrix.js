@@ -1,51 +1,40 @@
-var Matrix2D = require("../geom/Matrix2D");
-var Point = require("../geom/Point");
-var inherits = require("../utils/inherits")
+import { Point } from '../geom/Point.js';
+import { Matrix2D } from '../geom/Matrix2D.js';
 
-var Matrix = function() {
-    if (arguments.length == 6) {
-        Matrix2D.apply(this, arguments);
-    } else if (arguments.length == 1) {
-        Matrix2D.apply(this, []);
-        this.transform(arguments[0]);
-    } else if (arguments.length == 0) {
-        Matrix2D.apply(this, []);
-    } else
-        throw new Error("Illegal params for core.Matrix.");
+class Matrix extends Matrix2D {
+	constructor(...args) {
+    	if (args.length == 6)
+			super(...args);
+		else if (args.length == 1)
+			this.transform(args[0]);
+		else if (args.length == 0)
+			;
+		else
+        	throw new Error("Illegal params for core.Matrix.");
+	}
+
+	transform(state) {
+    	var x = state.x,
+    	    y = state.y,
+    	    scaleX = state.scaleX,
+    	    scaleY = state.scaleY,
+    	    rotation = state.rotation,
+    	    skewX = state.skewX,
+    	    skewY = state.skewY,
+    	    regX = state.regX,
+    	    regY = state.regY;
+
+    	rotation *= Math.PI / 180;
+    	skewX *= Math.PI / 180;
+    	skewY *= Math.PI / 180;
+    	var cos = Math.cos,
+    	    sin = Math.sin;
+    	this.prepend(1, 0, 0, 1, regX, regY);
+    	this.prepend(scaleX, 0, 0, scaleY, 0, 0);
+    	this.prepend(cos(rotation), sin(rotation), -sin(rotation), cos(rotation), 0, 0);
+    	this.prepend(cos(skewY), sin(skewY), -sin(skewX), cos(skewX), 0, 0);
+    	this.prepend(1, 0, 0, 1, x, y);
+    	return this;
+	}
 }
-
-var p = inherits(Matrix, Matrix2D);
-
-p.transform = function(state) {
-    var x = state.x,
-        y = state.y,
-        scaleX = state.scaleX,
-        scaleY = state.scaleY,
-        rotation = state.rotation,
-        skewX = state.skewX,
-        skewY = state.skewY,
-        regX = state.regX,
-        regY = state.regY;
-
-    rotation *= Math.PI / 180;
-    skewX *= Math.PI / 180;
-    skewY *= Math.PI / 180;
-    var cos = Math.cos,
-        sin = Math.sin;
-    this.prepend(1, 0, 0, 1, regX, regY);
-    this.prepend(scaleX, 0, 0, scaleY, 0, 0);
-    this.prepend(cos(rotation), sin(rotation), -sin(rotation), cos(rotation), 0, 0);
-    this.prepend(cos(skewY), sin(skewY), -sin(skewX), cos(skewX), 0, 0);
-    this.prepend(1, 0, 0, 1, x, y);
-    return this;
-}
-
-p.translate = function() {};
-
-p.rotate = function() {};
-
-p.skew = function() {};
-
-p.scale = function() {};
-
-module.exports = Matrix;
+export { Matrix }

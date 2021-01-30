@@ -1,18 +1,16 @@
-var inherits = require('../../utils/inherits');
-var Event = require('../../core/Event');
+import { Event } from '../../core/Event.js';
 
-var MouseEvent = function(options) {
-    Event.apply(this, arguments);
-    var local = options.local.clone();
-    var global = options.global.clone();
-    this.x = local.x;
-    this.y = local.y;
-    this.local = local;
-    this.global = global;
-};
+export class MouseEvent extends Event {
 
-MouseEvent.validate = function(options){};
+	constructor(options) {
+		super(options);
+		var local = options.local.clone();
+		var global = options.global.clone();
+		this.x = local.x;
+		this.y = local.y;
+		this.local = local;
+		this.global = global;
+	}
 
-var p = inherits(MouseEvent, Event);
-
-module.exports = MouseEvent;
+	validate(options) {}
+}

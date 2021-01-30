@@ -1,6 +1,4 @@
-var ionejs = {};
-    ionejs.actions = require('./actions');
-    ionejs.ones = require('./ones');
-    ionejs.events = require('./events');
-    ionejs.views = require('./views');
-module.exports = ionejs;
+export * from './actions/index.js';
+export * from './events/index.js';
+export * from './ones/index.js';
+export * from './views/index.js';

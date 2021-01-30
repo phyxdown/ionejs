@@ -1,7 +1,5 @@
-var register = require('./register');
-var One = require('../core/One');
-var Action = require('../core/Action');
-var Event = require('../core/Event');
+import { register } from './register.js';
+import { One, Action, Event } from '../core/index.js';
 
 var Definer = function(){};
 var p = Definer.prototype;
@@ -105,4 +103,4 @@ p.define = function(optionsOrUpdate, superConstruct, alias){
     return construct;
 };
 
-module.exports = new Definer();
+export var definer = new Definer();

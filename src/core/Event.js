@@ -1,36 +1,35 @@
-var _ = require('underscore');
-var Event = function(options) {
+import _ from 'underscore';
 
-    this.type = options.type;
-    this.data = _.omit(options, 'type');
+class Event {
+	constructor(options) {
+		this.type = options.type;
+		this.data = _.omit(options, 'type');
 
-    this.target = null;
+		this.target = null;
+		this.currentTarget = null;
 
-    this.currentTarget = null;
+		this.phase = null;
 
-    this.phase = null;
+    	this._immediatePropagationStopped = false;
+    	this._propagationStopped = false;
+	}
 
-    this._immediatePropagationStopped = false;
-    this._propagationStopped = false;
-};
+	isPropagationStopped() {
+    	return this._propagationStopped;
+	}
+
+	stopImmediatePropagation() {
+    	this._immediatePropagationStopped = true;
+    	this._propagationStopped = true;
+	}
+
+	stopPropagation() {
+    	this._propagationStopped = true;
+	}
+}
 
 Event.CAPTURING_PHASE = 1;
 Event.AT_TARGET = 2;
 Event.BUBBLING_PHASE = 3;
 
-var p = Event.prototype;
-
-p.isPropagationStopped = function() {
-    return this._propagationStopped;
-};
-
-p.stopImmediatePropagation = function() {
-    this._immediatePropagationStopped = true;
-    this._propagationStopped = true;
-};
-
-p.stopPropagation = function() {
-    this._propagationStopped = true;
-};
-
-module.exports = Event;
+export { Event }

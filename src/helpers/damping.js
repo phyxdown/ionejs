@@ -1,15 +1,15 @@
-var Linear  = function(totalTime, fps) {
+export var Linear = function(totalTime, fps) {
     this.left = this.total = totalTime;
     this.fps = fps || 60;
 };
 
-var Curve = function(totalTime, deviation, fps) {
+export var Curve = function(totalTime, deviation, fps) {
     this.left = this.total = totalTime;
     this.deviation = this.deviation || 0.01;
     this.fps = fps || 60;
 };
 
-function damping() {
+function inner() {
     if(!this.active) { 
         this.active = false;
         return;
@@ -26,7 +26,7 @@ function damping() {
         this.S[this.key] += (this.targetValue - this.S[this.key])/O.left * interval;
         O.left -= interval;
         if(O.left > 0)
-            setTimeout(damping.bind(this), interval);
+            setTimeout(inner.bind(this), interval);
         else {
             this.S[this.key] = this.targetValue;
             this.active = false;
@@ -40,7 +40,7 @@ function damping() {
         this.S[this.key] = this.targetValue * (1 - k) + this.S[this.key] * k;
         O.left -= interval;
         if(O.left > 0)
-            setTimeout(damping.bind(this), interval);
+            setTimeout(inner.bind(this), interval);
         else {
             this.S[this.key] = this.targetValue;
             this.active = false;
@@ -72,19 +72,17 @@ p.chase = function(S, key, targetValue, options, restart) {
             options: options,
             active: true
         };
-        setTimeout(damping.bind(state), 1);
+        setTimeout(inner.bind(state), 1);
     }
     else {
         state.targetValue = targetValue;
         if(state.active == false) {
             state.options = options;
             state.active = true;
-            setTimeout(damping.bind(state), 1);
+            setTimeout(inner.bind(state), 1);
         } else if(restart) 
             state.options = options;
     };
 }
 
-module.exports = new Damping();
-module.exports.Linear = Linear;
-module.exports.Curve = Curve;
+export var damping = new Damping();

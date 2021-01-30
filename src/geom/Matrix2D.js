@@ -103,5 +103,4 @@ p.clone = function() {
     return new Matrix2D(this.a, this.b, this.c, this.d, this.tx, this.ty);
 };
 
-module.exports = Matrix2D;
-
+export { Matrix2D };

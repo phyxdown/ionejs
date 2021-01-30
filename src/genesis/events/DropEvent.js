@@ -1,50 +1,48 @@
-var inherits = require('../../utils/inherits');
-var Event = require('../Event');
+import { Event } from '../../core/Event.js';
 
-var DropEvent = function(options) {
-    Event.apply(this, arguments);
-    var local = options.local.clone();
-    var global = options.global.clone();
+export class DropEvent extends Event {
 
-    /**
-     * local x
-     * @type {number}
-     */
-    this.x = local.x;
+	constructor(options) {
+		super(options);
+    	var local = options.local.clone();
+    	var global = options.global.clone();
 
-    /**
-     * local x
-     * @type {number}
-     */
-    this.y = local.y;
+    	/**
+    	 * local x
+    	 * @type {number}
+    	 */
+    	this.x = local.x;
 
-    /**
-     * local coordinates, value type
-     * @type {core.Point} local
-     */
-    this.local = local;
+    	/**
+    	 * local x
+    	 * @type {number}
+    	 */
+    	this.y = local.y;
 
-    /**
-     * global coordinates, value type
-     * @type {core.Point} global
-     */
-    this.global = global;
+    	/**
+    	 * local coordinates, value type
+    	 * @type {core.Point} local
+    	 */
+    	this.local = local;
 
-    /**
-     * drop source, reference type
-     * @type {core.One} dropSource
-     */
-    this.dropSource = options.dropSource;
-};
+    	/**
+    	 * global coordinates, value type
+    	 * @type {core.Point} global
+    	 */
+    	this.global = global;
+
+    	/**
+    	 * drop source, reference type
+    	 * @type {core.One} dropSource
+    	 */
+    	this.dropSource = options.dropSource;
+	}
+
+	validate(options) {}
+}
 
 /**
  * Event type, static string
  * @type {string} DROP
  */
 DropEvent.DROP = 'drop';
-
-DropEvent.validate = function(options){};
-
-var p = inherits(DropEvent, Event);
-
-module.exports = DropEvent;

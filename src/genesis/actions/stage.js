@@ -1,9 +1,9 @@
-var definer = require('../../helpers/definer');
-var MouseEvent = require('../events/MouseEvent');
-var Point = require('../../geom/Point')
+import { definer } from '../../helpers/definer.js';
+import { MouseEvent } from '../events/index.js';
+import { Point } from '../../geom/index.js';
 
 //AnimationFrame is the most important Action of ionejs.
-module.exports.AnimationFrame = definer.defineAction({
+export var AnimationFrame = definer.defineAction({
     afterCreate: function() {
         var A = this, I = A.one, S = I.state, canvas = I.canvas, context = canvas.getContext('2d');
         var timer = performance || Date;
@@ -42,7 +42,7 @@ module.exports.AnimationFrame = definer.defineAction({
     }
 }, 'stage.AnimationFrame');
 
-module.exports.AutoResize = definer.defineAction(function(){
+export var AutoResize = definer.defineAction(function(){
     var A = this, I = A.one, S = I.state, canvas = I.canvas;
     var offsetLeft = canvas.offsetLeft;
     var offsetTop = canvas.offsetTop;
@@ -60,7 +60,7 @@ module.exports.AutoResize = definer.defineAction(function(){
     if(S.height != canvas.height) canvas.height = S.height;
 }, 'stage.AutoResize');
 
-module.exports.MouseSensitive = definer.defineAction({
+export var MouseSensitive = definer.defineAction({
     afterCreate: function() {
         var A = this, I = A.one, S = I.state, canvas = I.canvas;
 

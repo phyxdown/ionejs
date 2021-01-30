@@ -1,5 +1,5 @@
-var _ = require('underscore');
-var definer = require('../../helpers/definer');
+import _ from 'underscore';
+import { definer } from '../../helpers/definer.js';
 /**
  *
  * @option horizontal
@@ -18,7 +18,7 @@ var definer = require('../../helpers/definer');
  * @option deviation
  * distance between content reference point and window reference point devided by content size
  * */
-module.exports = definer.defineTemplate(function(config) {
+export var Seekbar = definer.defineTemplate(function(config) {
     return {
         options: _.defaults(config.options, {
             group: 'Seekbar'

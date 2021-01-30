@@ -4,4 +4,4 @@ var Register = function(){
     this.Templates = {};
 };
 
-module.exports = new Register();
+export var register = new Register();

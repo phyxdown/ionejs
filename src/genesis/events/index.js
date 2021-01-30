@@ -1,4 +1,2 @@
-var events = {};
-    events.MouseEvent = require('./MouseEvent');
-
-module.exports = events;
+export * from './MouseEvent.js'
+export * from './DropEvent.js'

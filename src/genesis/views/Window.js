@@ -1,8 +1,8 @@
-var _ = require('underscore');
-var Seekbar = require('./Seekbar');
-var Event = require('../../core/Event');
+import _ from 'underscore';
+import { Seekbar } from './Seekbar.js';
+import { Event } from '../../core/index.js';
 
-var definer = require('../../helpers/definer');
+import { definer } from '../../helpers/index.js';
 var WindowEvent = definer.defineEvent({
     SCROLL: 'uonejs.Window.SCROLL',
     CONTENTRESIZE: 'uonejs.Window.CONTENTRESIZE'
@@ -28,7 +28,7 @@ var WindowEvent = definer.defineEvent({
  *
  * @children all children will be added into a container.
  * */
-module.exports = definer.defineTemplate(function(config) {
+export var Window = definer.defineTemplate(function(config) {
     config.options = config.options || {};
     var options = _.defaults(config.options, {
         group: 'Window',

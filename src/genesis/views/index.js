@@ -1,3 +1,2 @@
-var views = {};
-    views.Window = require('./Window');
-module.exports = views;
+export * from './Window.js'
+export * from './Seekbar.js'

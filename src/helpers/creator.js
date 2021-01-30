@@ -1,5 +1,5 @@
-var register = require('./register');
-var definer = require('./definer');
+import { register } from './register.js';
+import { definer } from'./definer.js';
 
 var Creator = function(){
     this.uniqueKeyPref = 0;
@@ -76,4 +76,4 @@ p.create = function(){
     return _create.apply(this, arguments);
 };
 
-module.exports = new Creator();
+export var creator =  new Creator();

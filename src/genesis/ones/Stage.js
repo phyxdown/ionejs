@@ -1,7 +1,7 @@
-var definer = require('../../helpers/definer');
-var stageActions = require('../actions/stage');
+import { definer } from '../../helpers/index.js';
+import * as stageActions from '../actions/stage.js';
 
-module.exports = definer.defineOne({
+export var Stage = definer.defineOne({
     group: 'Stage',
 
     afterCreate: function(options) {

@@ -1,7 +1,7 @@
-var definer = require('../../helpers/definer');
-var _ = require('underscore');
+import { definer } from '../../helpers/index.js';
+import _ from 'underscore';
 
-module.exports = definer.defineOne({
+export var Cliper = definer.defineOne({
     draw: function(context) {
         var I = this, S = I.state;
         context.beginPath(); 

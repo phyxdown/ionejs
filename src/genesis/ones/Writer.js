@@ -1,7 +1,7 @@
-var definer = require('../../helpers/definer');
-var _ = require('underscore');
+import { definer } from '../../helpers/index.js';
+import _ from 'underscore';
 
-module.exports = definer.defineOne({
+export var Writer = definer.defineOne({
     afterCreate: function(options) {
         _.defaults(options, {
             text: "text",

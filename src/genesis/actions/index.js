@@ -1,5 +1,2 @@
-var actions = {};
-    actions.stage = require('./stage');
-    actions.SupportMousedrag = require('./SupportMousedrag');
-
-module.exports = actions;
+export * from './stage.js';    
+export * from './SupportMousedrag.js';    

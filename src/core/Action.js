@@ -1,14 +1,15 @@
-var Action = function(one) {
-    this.one = one;
-};
+class Action {
+    constructor(one) {
+        this.one = one;
+    }
 
-var p = Action.prototype;
+	afterCreate() {};
+	beforeMount() {};
+	afterMount() {};
+	beforeUnmount() {};
+	afterUnmount() {};
 
-p.afterCreate = function() {};
-p.beforeMount = function() {};
-p.afterMount = function() {};
-p.beforeUnmount = function() {};
-p.afterUnmount = function() {};
+	update() {};
+}
 
-p.update = function() {};
-module.exports = Action;
+export { Action }
