@@ -1,4 +1,3 @@
-import _ from 'underscore';
 import { definer } from '../../helpers/definer.js';
 /**
  *
@@ -19,10 +18,9 @@ import { definer } from '../../helpers/definer.js';
  * distance between content reference point and window reference point devided by content size
  * */
 export var Seekbar = definer.defineTemplate(function(config) {
+	config.options.group = config.options.group || 'Seekbar';
     return {
-        options: _.defaults(config.options, {
-            group: 'Seekbar'
-        }),
+        options: config.options,
         actions: config.actions,
         children: [{
             alias: 'uonejs.ones.Rect',

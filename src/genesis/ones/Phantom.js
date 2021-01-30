@@ -1,7 +1,6 @@
-var definer = require('../../helpers/definer');
-var _ = require('underscore');
+import { definer } from '../../helpers/index.js';
 
-definer.defineOne({
+export var Phantom = definer.defineOne({
     afterCreate: function() {
         this.mReset();
     },

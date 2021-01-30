@@ -1,4 +1,3 @@
-import _ from 'underscore';
 import { Seekbar } from './Seekbar.js';
 import { Event } from '../../core/index.js';
 
@@ -30,11 +29,9 @@ var WindowEvent = definer.defineEvent({
  * */
 export var Window = definer.defineTemplate(function(config) {
     config.options = config.options || {};
-    var options = _.defaults(config.options, {
-        group: 'Window',
-        offsetX: 0,
-        offsetY: 0
-    });
+	config.options.group = config.options.group || 'Window';
+	config.options.offsetX = config.options.offsetX || 0;
+	config.options.offsetY = config.options.offsetY || 0;
     /*
      * A new concept about one's width and height will turn.
      * And the logic above might be remnant.

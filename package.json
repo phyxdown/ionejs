@@ -18,8 +18,5 @@
     "url": ""
   },
   "keywords": [],
-  "licenses": "MIT",
-  "dependencies": {
-    "underscore": "^1.8.3"
-  }
+  "licenses": "MIT"
 }

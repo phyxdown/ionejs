@@ -1,9 +1,8 @@
-import _ from 'underscore';
-
 class Event {
 	constructor(options) {
-		this.type = options.type;
-		this.data = _.omit(options, 'type');
+		var { type, ...data} = options.type;
+		this.type = type;
+		this.data = data;
 
 		this.target = null;
 		this.currentTarget = null;

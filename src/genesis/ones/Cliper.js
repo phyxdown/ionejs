@@ -1,5 +1,4 @@
 import { definer } from '../../helpers/index.js';
-import _ from 'underscore';
 
 export var Cliper = definer.defineOne({
     draw: function(context) {

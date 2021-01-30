@@ -1,16 +1,13 @@
 import { definer } from '../../helpers/index.js';
-import _ from 'underscore';
 
 export var Writer = definer.defineOne({
     afterCreate: function(options) {
-        _.defaults(options, {
-            text: "text",
-            prefix: "",
-            align: "start",
-            baseline: "top",
-            color: "#000000",
-            font: "Bold 20px Arial"
-        });
+		options.text = options.text || "text";
+		options.prefix = options.text || "";
+		options.align = options.text || "start";
+		options.baseline = options.text || "top";
+		options.color = options.text || "#000000";
+		options.font = options.text || "Bold 20px Arial";
     },
     draw: function(context) {
         var I = this, S = I.state;

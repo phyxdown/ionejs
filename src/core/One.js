@@ -1,24 +1,30 @@
 import { Matrix } from './Matrix.js';
 import { Event } from './Event.js';
-import _ from 'underscore';
 
-var defaultState = {
-    active: true,
-    visible: true,
-    hitable: false,
-    moveable: false,
-    dropable: false,
-    x: 0,
-    y: 0,
-    regX: 0,
-    regY: 0,
-    rotation: 0,
-    scaleX: 1,
-    scaleY: 1,
-    skewX: 0,
-    skewY: 0,
-    alpha: 1
-};
+class State {
+	constructor() {
+		this.active = true;
+		this.visible = true;
+		this.hitable = false;
+		this.moveable = false;
+		this.dropable = false;
+		this.x = 0;
+		this.y = 0;
+		this.regX = 0;
+		this.regY = 0;
+		this.rotation = 0;
+		this.scaleX = 1;
+		this.scaleY = 1;
+		this.skewX = 0;
+		this.skewY = 0;
+		this.alpha = 1
+	}
+
+	assign(options) {
+		Object.assign(this, options);
+		return this;
+	}
+}
 
 /**
  * What is one?
@@ -32,7 +38,7 @@ var One = function(options) {
      * The code line below is temporary.
      */
     options = options || {};
-    this.state = _.defaults(options, defaultState);
+	this.state = new State().assign(options);
 
     var listeners = {};
     listeners["bubble"] = {};
