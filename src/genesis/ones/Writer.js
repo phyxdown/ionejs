@@ -1,15 +1,18 @@
-import { definer } from '../../helpers/index.js';
+import { register } from '../../helpers/index.js';
+import { One, Action, Event } from '../../core/index.js';
 
-export var Writer = definer.defineOne({
-    afterCreate: function(options) {
+export class Writer extends One {
+	constructor(options) {
+		super(options);
 		options.text = options.text || "text";
-		options.prefix = options.text || "";
-		options.align = options.text || "start";
-		options.baseline = options.text || "top";
-		options.color = options.text || "#000000";
-		options.font = options.text || "Bold 20px Arial";
-    },
-    draw: function(context) {
+		options.prefix = options.prefix || "";
+		options.align = options.align || "start";
+		options.baseline = options.baseline || "top";
+		options.color = options.color || "#000000";
+		options.font = options.font || "Bold 20px Arial";
+	}
+
+	draw(context) {
         var I = this, S = I.state;
         context.font = S.font;
         context.textAlign = S.align;
@@ -17,4 +20,6 @@ export var Writer = definer.defineOne({
         context.fillStyle = S.color;
         context.fillText(S.prefix + S.text, 0, 0);
     }
-}, 'Writer');
+}
+
+register.Actions["Writer"] = Writer;
